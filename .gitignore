@@ -1,0 +1,30 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon?
+
+# Editörler
+.vscode/
+.idea/
+*.swp
+
+# Node / Next.js (uygulama kodu eklendiğinde)
+node_modules/
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Ortam değişkenleri — asla commit'lenmez
+.env
+.env.*
+!.env.example
+
+# Log ve geçici
+*.log
+npm-debug.log*
+yarn-debug.log*
+.cache/
+tmp/

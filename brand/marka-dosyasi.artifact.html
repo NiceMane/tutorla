@@ -1,0 +1,1320 @@
+<title>Tutorla Marka Dosyası</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700;800&family=Newsreader:ital,opsz,wght@1,6..72,200;1,6..72,300;1,6..72,400&display=swap">
+
+<style>
+:root{
+  --bg:#F9FDFB;
+  --surface:#EFF7F4;
+  --surface-2:#DCECE6;
+  --border:#C8D9D2;
+  --border-2:#AEC7BF;
+  --ink:#071F1E;
+  --ink-2:#425B59;
+  --ink-3:#5E7A77;
+  --primary:#008668;
+  --primary-ink:#00654F;
+  --accent:#A45C31;
+  --us:#008668;
+  --glow:#008668;
+  --on-primary:#FFFFFF;
+  --logo-l-bg:#F9FDFB; --logo-l-ink:#071F1E; --logo-l-mark:#008668; --logo-l-us:#008668;
+  --logo-d-bg:#012523; --logo-d-ink:#D8E9E2; --logo-d-mark:#4AB494; --logo-d-us:#4AB494;
+  --deep:#012523;
+  --deep-2:#173937;
+  --deep-line:#20423F;
+  --deep-ink:#D8E9E2;
+  --deep-mute:#90ABA9;
+  --deep-primary:#4AB494;
+  --deep-accent:#E6996D;
+  --shadow:0 1px 2px rgba(7,31,30,.05);
+  --r-card:10px;
+  --r-ui:6px;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#041B1A;
+    --surface:#082623;
+    --surface-2:#0E332F;
+    --border:#1C443F;
+    --border-2:#2A5651;
+    --ink:#DCEDE7;
+    --ink-2:#A3BEB8;
+    --ink-3:#8AA7A1;
+    --primary:#4AB494;
+    --primary-ink:#6ECBAD;
+    --accent:#E6996D;
+    --deep:#002E2A;
+    --deep-2:#0E3D39;
+    --deep-line:#1C4B46;
+    --shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#041B1A;
+  --surface:#082623;
+  --surface-2:#0E332F;
+  --border:#1C443F;
+  --border-2:#2A5651;
+  --ink:#DCEDE7;
+  --ink-2:#A3BEB8;
+  --ink-3:#8AA7A1;
+  --primary:#4AB494;
+  --primary-ink:#6ECBAD;
+  --accent:#E6996D;
+  --deep:#002E2A;
+  --deep-2:#0E3D39;
+  --deep-line:#1C4B46;
+  --shadow:0 1px 2px rgba(0,0,0,.3);
+}
+
+*{box-sizing:border-box}
+body{
+  background:var(--bg);
+  color:var(--ink);
+  font-family:Figtree,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  font-size:16px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.page{max-width:1080px;margin:0 auto;padding-inline:28px;padding-block:0 96px}
+@media (max-width:560px){.page{padding-inline:18px}}
+
+/* ---- type ---- */
+h1,h2,h3{margin:0;text-wrap:balance;letter-spacing:-0.035em;font-weight:700;line-height:1.12}
+h2{font-size:30px}
+h3{font-size:19px;letter-spacing:-0.02em}
+p{margin:0}
+.lede{font-size:20px;line-height:1.45;font-weight:500;letter-spacing:-0.015em;max-width:60ch}
+.prose{max-width:64ch;display:flex;flex-direction:column;gap:14px;color:var(--ink-2)}
+.prose strong{color:var(--ink);font-weight:600}
+.eyebrow{
+  font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;
+  font-size:17px;color:var(--primary);line-height:1;letter-spacing:0;
+}
+.meta{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:15px;color:var(--ink-3)}
+.mono{font-variant-numeric:tabular-nums}
+
+/* ---- rhythm ---- */
+section{padding-block:52px;border-top:1px solid var(--border)}
+section:first-of-type{border-top:none}
+.sec-head{display:flex;flex-direction:column;gap:10px;margin-bottom:26px}
+
+/* ---- header ---- */
+.masthead{padding-block:64px 8px;display:flex;flex-direction:column;gap:30px}
+.lockup{display:flex;align-items:center;gap:16px}
+.lockup .mk{width:52px;height:52px;border-radius:12px;background:var(--mark,var(--primary));flex:none}
+.lockup .wm{font-weight:800;font-size:64px;line-height:.9;letter-spacing:-0.045em}
+.lockup .wm i{font-style:normal;color:var(--us)}
+/* Alt tire, harflerin altına sarkmaz — tabanı harflerin tabanıyla aynı düzlemde.
+   Kaldırma miktarı Figtree'nin gerçek glif metriklerinden ölçülüp --us-raise'e yazılıyor. */
+.wm i{display:inline-block;transform:translateY(calc(-1 * var(--us-raise,0.145em)))}
+@media (max-width:560px){.lockup .wm{font-size:44px}.lockup .mk{width:38px;height:38px;border-radius:9px}}
+.stamp{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline}
+.stamp span{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:15px;color:var(--ink-3)}
+.dir-switch{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:14px 16px;border:1px solid var(--border);border-radius:var(--r-card);background:var(--surface);max-width:fit-content}
+.ds-row{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.ds-row>.meta{min-width:74px}
+.dir-switch .meta{line-height:1.35}
+#dir-note{max-width:34ch}
+
+/* ---- generic blocks ---- */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.g2,.g3{grid-template-columns:1fr}}
+.card{
+  background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);
+  padding:20px;display:flex;flex-direction:column;gap:9px;
+}
+.card h3{font-size:17px}
+.card p{font-size:15px;color:var(--ink-2);line-height:1.5}
+
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{
+  border:1px solid var(--border-2);border-radius:var(--r-ui);padding:5px 11px;
+  font-size:13px;font-weight:600;color:var(--ink-2);background:transparent;
+}
+.chip.on{background:var(--primary);border-color:var(--primary);color:var(--on-primary,#fff)}
+
+/* ---- steps ---- */
+.steps{display:flex;flex-direction:column;gap:0;border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden}
+.step{display:grid;grid-template-columns:52px 1fr;gap:16px;padding:16px 20px;border-top:1px solid var(--border);background:var(--surface)}
+.step:first-child{border-top:none}
+.step .n{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:26px;color:var(--primary);line-height:1.1}
+.step h3{font-size:16px;margin-bottom:3px}
+.step p{font-size:14.5px;color:var(--ink-2);line-height:1.5}
+.step em{font-style:normal;color:var(--accent);font-weight:600}
+
+/* ---- session mock ---- */
+.mock{
+  border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;
+  display:grid;grid-template-columns:212px minmax(0,1fr) 246px;background:var(--surface);
+  font-size:13px;
+}
+@media (max-width:900px){.mock{grid-template-columns:1fr}}
+.mk-side{background:var(--deep);color:var(--deep-ink);padding:18px 15px;display:flex;flex-direction:column;gap:18px}
+.mk-side .lbl{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:14px;color:var(--deep-mute)}
+.mk-side .wm{display:flex;align-items:center;gap:7px;font-weight:800;font-size:17px;letter-spacing:-0.045em}
+.mk-side .wm b{width:16px;height:16px;border-radius:4px;background:var(--deep-primary);display:block}
+.mk-side .wm i{font-style:normal;color:var(--deep-primary)}
+.mk-row{display:flex;justify-content:space-between;padding:6px 9px;border-radius:var(--r-ui);color:var(--deep-mute)}
+.mk-row.on{background:var(--deep-2);color:#fff;font-weight:600}
+.mk-row span:last-child{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:14px;color:var(--deep-primary)}
+.mk-row.on span:last-child{color:var(--deep-accent)}
+.mk-row.off span:last-child{color:var(--deep-mute);opacity:.5}
+.mk-avatars{display:flex;gap:7px}
+.mk-avatars i{width:32px;height:32px;border-radius:30%;display:block;background:repeating-linear-gradient(135deg,var(--deep-2) 0 4px,var(--deep) 4px 8px);border:1px solid var(--deep-line)}
+.mk-avatars i:first-child{border:2px solid var(--deep-primary)}
+.mk-main{padding:18px;display:flex;flex-direction:column;gap:14px;min-width:0}
+.mk-top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.mk-bub{border-radius:9px;padding:11px 13px;max-width:85%;line-height:1.5}
+.mk-bub.ai{background:var(--surface-2);border:1px solid var(--border)}
+.mk-bub.me{background:var(--primary);color:var(--on-primary,#fff);align-self:flex-end}
+.mk-gap{
+  align-self:flex-start;font-size:12px;font-weight:600;color:var(--accent);
+  border:1px dashed var(--accent);border-radius:var(--r-ui);padding:4px 9px;
+}
+.mk-input{margin-top:auto;border:1px solid var(--border-2);border-radius:8px;background:var(--bg);padding:10px 12px;display:flex;flex-direction:column;gap:9px}
+.mk-input .ph{color:var(--ink-3)}
+.mk-tools{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.mk-tools b{font-weight:600;font-size:12px;border:1px solid var(--border);border-radius:var(--r-ui);padding:3px 8px;color:var(--ink-2)}
+.mk-tools u{margin-left:auto;text-decoration:none;font-size:12px;color:var(--ink-3);font-family:Newsreader,Georgia,serif;font-style:italic}
+.mk-right{padding:18px 16px;border-left:1px solid var(--border);display:flex;flex-direction:column;gap:14px;background:var(--bg)}
+@media (max-width:900px){.mk-right{border-left:none;border-top:1px solid var(--border)}}
+.mk-cons{display:flex;flex-direction:column;gap:6px}
+.mk-cons div{display:flex;gap:8px;align-items:baseline;color:var(--ink-2)}
+.mk-cons .y{color:var(--primary);font-weight:700}
+.mk-cons .n{color:var(--accent);font-weight:700}
+.mk-cons .off{color:var(--ink-3)}
+.mk-bar{height:5px;border-radius:3px;background:var(--surface-2);overflow:hidden}
+.mk-bar i{display:block;height:100%;width:40%;background:var(--glow)}
+.mk-stats{display:flex;gap:18px}
+.mk-stats b{display:block;font-size:22px;font-weight:700;letter-spacing:-0.03em}
+.mk-stats span{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:13px;color:var(--ink-3)}
+.mk-note{font-size:13px;color:var(--ink-2);line-height:1.5;border-top:1px solid var(--border);padding-top:12px}
+
+/* ---- personas ---- */
+.persona{align-items:flex-start}
+.persona .face{width:64px;height:64px;border-radius:30%;background:repeating-linear-gradient(135deg,var(--surface-2) 0 6px,var(--surface) 6px 12px);border:1px solid var(--border-2);display:grid;place-items:center;font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:12px;color:var(--ink-3)}
+.persona h3{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:400;font-size:22px;letter-spacing:0;font-weight:300}
+
+/* ---- table ---- */
+.tbl-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r-card)}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:14.5px;background:var(--surface)}
+th,td{text-align:left;padding:11px 16px;border-top:1px solid var(--border);vertical-align:top}
+thead th{border-top:none;font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:14px;color:var(--ink-3);letter-spacing:0}
+td.num{font-variant-numeric:tabular-nums;white-space:nowrap}
+td b{font-weight:700}
+.ok{color:var(--primary);font-weight:700}
+.no{color:var(--accent);font-weight:700}
+
+/* ---- logo panels ---- */
+.logo-panels{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:760px){.logo-panels{grid-template-columns:1fr}}
+.lp{border:1px solid var(--border);border-radius:var(--r-card);padding:34px 26px;display:flex;align-items:center;justify-content:center;min-height:150px}
+.lp.light{background:var(--logo-l-bg)}
+.lp.dark{background:var(--logo-d-bg);border-color:var(--logo-d-bg)}
+.lp .wm{font-weight:800;font-size:44px;letter-spacing:-0.045em;line-height:1;display:flex;align-items:center;gap:12px}
+.lp .wm b{width:34px;height:34px;border-radius:8px;display:block}
+.lp.light .wm{color:var(--logo-l-ink)}
+.lp.light .wm b{background:var(--logo-l-mark)}
+.lp.light .wm i{font-style:normal;color:var(--logo-l-us)}
+.lp.dark .wm{color:var(--logo-d-ink)}
+.lp.dark .wm b{background:var(--logo-d-mark)}
+.lp.dark .wm i{font-style:normal;color:var(--logo-d-us)}
+.cap{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:14px;color:var(--ink-3);margin-top:8px}
+
+/* ---- workshop ---- */
+.shop{display:grid;grid-template-columns:300px minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.shop{grid-template-columns:1fr}}
+.panel{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:18px}
+.ctrl{display:flex;flex-direction:column;gap:18px}
+.field{display:flex;flex-direction:column;gap:8px}
+.field>label{display:flex;justify-content:space-between;align-items:baseline;gap:10px;font-size:13px;font-weight:600;color:var(--ink-2)}
+.field>label b{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:15px;color:var(--primary);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--primary);height:20px}
+.seg{display:flex;gap:6px;flex-wrap:wrap}
+.seg button{
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;
+  background:transparent;color:var(--ink-2);
+  border:1px solid var(--border-2);border-radius:var(--r-ui);padding:6px 11px;
+  transition:background .12s,color .12s,border-color .12s;
+}
+.seg button:hover{border-color:var(--primary)}
+.seg button[aria-pressed=true]{background:var(--primary);border-color:var(--primary);color:var(--on-primary,#fff)}
+.swatch-btns{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.swatch-btns button{
+  cursor:pointer;border:1px solid var(--border-2);border-radius:var(--r-ui);
+  padding:0;height:46px;display:grid;place-items:center;background:transparent;
+}
+.swatch-btns button[aria-pressed=true]{border-color:var(--primary);outline:2px solid var(--primary);outline-offset:2px}
+.swatch-btns i{width:26px;height:26px;border-radius:7px;display:block}
+
+.stage{display:flex;flex-direction:column;gap:20px}
+.stage-top{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-card);padding:24px;display:flex;gap:26px;align-items:flex-end;flex-wrap:wrap}
+.sizes{display:flex;gap:18px;align-items:flex-end;flex-wrap:wrap}
+.size{display:flex;flex-direction:column;align-items:center;gap:7px}
+.size .box{display:grid;place-items:center}
+.size span{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:13px;color:var(--ink-3);font-variant-numeric:tabular-nums}
+.markbox svg{display:block}
+.markbox .txt{display:grid;place-items:center;font-weight:800;letter-spacing:-0.045em;line-height:1;overflow:hidden}
+
+.contexts{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (max-width:640px){.contexts{grid-template-columns:1fr}}
+.ctx{border:1px solid var(--border);border-radius:var(--r-card);padding:16px;background:var(--surface);display:flex;flex-direction:column;gap:12px}
+.tabbar{background:var(--surface-2);border-radius:8px 8px 0 0;padding:7px 7px 0;display:flex;gap:5px}
+.tab{background:var(--bg);border-radius:7px 7px 0 0;padding:7px 12px;display:flex;align-items:center;gap:7px;font-size:12.5px;font-weight:600;max-width:190px}
+.tab.dim{background:transparent;color:var(--ink-3);font-weight:500}
+.tab .t{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.home{background:linear-gradient(160deg,var(--deep-2),var(--deep));border-radius:12px;padding:16px;display:grid;grid-template-columns:repeat(4,1fr);gap:12px 10px}
+.appicon{display:flex;flex-direction:column;align-items:center;gap:5px}
+.appicon .ph{width:100%;aspect-ratio:1;border-radius:24%;background:rgba(255,255,255,.07)}
+.appicon span{font-size:10px;color:#D8E9E2;opacity:.85}
+
+.export{background:var(--deep);border:1px solid var(--deep-line);border-radius:var(--r-card);padding:16px;display:flex;flex-direction:column;gap:11px}
+.export .hd{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+.export .hd span{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:15px;color:var(--deep-mute)}
+.export textarea{
+  width:100%;min-height:132px;resize:vertical;background:rgba(0,0,0,.3);color:var(--deep-ink);
+  border:1px solid var(--deep-line);border-radius:var(--r-ui);padding:11px;
+  font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px;line-height:1.55;
+}
+.btn{
+  font:inherit;font-size:13px;font-weight:600;cursor:pointer;border-radius:var(--r-ui);
+  padding:7px 13px;border:1px solid var(--deep-primary);background:transparent;color:var(--deep-primary);
+  transition:background .12s,color .12s;
+}
+.btn:hover{background:var(--deep-primary);color:#012523}
+.specline{font-size:13px;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.specline b{color:var(--ink);font-weight:600}
+
+/* ---- palette ---- */
+.pal{display:grid;grid-template-columns:repeat(auto-fill,minmax(158px,1fr));gap:10px}
+.sw{border:1px solid var(--border);border-radius:var(--r-card);overflow:hidden;background:var(--surface);text-align:left;cursor:pointer;font:inherit;padding:0;color:inherit}
+.sw .fill{height:56px;display:block;box-shadow:inset 0 0 0 1px rgba(0,0,0,.09)}
+.sw .info{padding:9px 11px;display:flex;flex-direction:column;gap:1px}
+.sw .nm{font-size:13px;font-weight:600}
+.sw .hx{font-size:12px;color:var(--ink-3);font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,monospace}
+.sw:hover{border-color:var(--primary)}
+
+/* ---- specimen ---- */
+.spec{display:flex;flex-direction:column;gap:18px}
+.spec-row{display:grid;grid-template-columns:120px minmax(0,1fr);gap:18px;align-items:baseline;padding-bottom:16px;border-bottom:1px solid var(--border)}
+.spec-row:last-child{border-bottom:none;padding-bottom:0}
+.spec-row>.k{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:15px;color:var(--ink-3)}
+@media (max-width:560px){.spec-row{grid-template-columns:1fr;gap:6px}}
+
+/* ---- radii ---- */
+.radii{display:flex;gap:14px;flex-wrap:wrap}
+.radii div{display:flex;flex-direction:column;align-items:center;gap:7px}
+.radii i{display:block;width:64px;height:64px;background:var(--surface-2);border:1px solid var(--border-2)}
+.radii span{font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:13px;color:var(--ink-3)}
+
+/* ---- checklist ---- */
+.todo{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 26px}
+@media (max-width:760px){.todo{grid-template-columns:1fr}}
+.todo-group h3{font-size:15px;margin-bottom:9px}
+.todo-group ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+.todo-group li{display:grid;grid-template-columns:16px 1fr;gap:10px;font-size:14.5px;color:var(--ink-2);line-height:1.45}
+.todo-group li i{width:14px;height:14px;border:1.5px solid var(--border-2);border-radius:3px;margin-top:5px;display:block}
+
+footer{border-top:1px solid var(--border);padding-top:24px;margin-top:52px;display:flex;flex-direction:column;gap:8px}
+footer a{color:var(--primary);text-decoration:none;border-bottom:1px solid transparent;font-size:14.5px}
+footer a:hover{border-bottom-color:var(--primary)}
+:focus-visible{outline:2px solid var(--primary);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="page">
+
+  <header class="masthead">
+    <div class="lockup">
+      <span class="mk" aria-hidden="true"></span>
+      <span class="wm">tutorla<i>_</i></span>
+    </div>
+    <p class="lede">Bir konuyu bilmenin testi, onu birine anlatabilmektir.</p>
+    <div class="stamp">
+      <span>marka &amp; ürün dosyası</span>
+      <span>sürüm 1.0 · 9 Eylül 2026</span>
+      <span>2 kişilik ekip · web MVP</span>
+      <span id="stamp-dir">yön: 1c · laboratuvar</span>
+    </div>
+    <div class="dir-switch">
+      <div class="ds-row">
+        <span class="meta">marka yönü</span>
+        <div class="seg" id="c-palette">
+          <button type="button" data-val="petrol" aria-pressed="true">1c · Laboratuvar</button>
+          <button type="button" data-val="gojo" aria-pressed="false">Sınırsız · deneysel</button>
+          <button type="button" data-val="nanami" aria-pressed="false">Mesai · deneysel</button>
+        </div>
+      </div>
+      <div class="ds-row">
+        <span class="meta">tema</span>
+        <div class="seg" id="c-theme">
+          <button type="button" data-val="system" aria-pressed="true">sistem</button>
+          <button type="button" data-val="light" aria-pressed="false">açık</button>
+          <button type="button" data-val="dark" aria-pressed="false">koyu</button>
+        </div>
+        <span class="meta" id="dir-note"></span>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============ KONSEPT ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">konsept</p>
+      <h2>Roller ters: öğrenci AI, öğretmen sen</h2>
+    </div>
+    <div class="grid g2">
+      <div class="card">
+        <h3>Problem</h3>
+        <p>Öğrenciler bir konuyu “anladım” sanır, ama anlayış çoğu zaman yüzeyseldir. Gerçek anlama ancak konuyu başkasına anlatmaya çalışınca ortaya çıkar — o an hangi adımın ezberlendiği belli olur. Test çözmek boşluğu yakalar ama <em>nedenini</em> göstermez.</p>
+      </div>
+      <div class="card">
+        <h3>Çözüm</h3>
+        <p>Kullanıcı konuyu Tutorla’ya anlatır. AI meraklı bir öğrenci gibi davranır: soru sorar, “neden” der, atlanan adımı fark eder. Oturum sonunda hangi kavramın oturduğu, hangisinin boşta kaldığı görünür hale gelir.</p>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:18px">
+      <p><strong>Pedagojik dayanak:</strong> protégé effect / Feynman Tekniği / <em>Lernen durch Lehren</em>. Seneca’nın <em>docendo discimus</em> — “öğreterek öğreniriz” — sözü markanın felsefi çıkış noktası.</p>
+      <p><strong>Kategori boşluğu:</strong> Türkiye’deki eğitim–AI uygulamalarının neredeyse tamamı ters yönde çalışıyor: AI öğretir, öğrenci öğrenir. Yapılan araştırmada “AI’ya öğreterek öğrenme” konseptine odaklanmış yerli bir uygulama bulunamadı. Küresel emsaller (Teach Bob, StudyWizardry) var; Türkçe karşılıkları yok.</p>
+    </div>
+  </section>
+
+  <!-- ============ KİTLE ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">kime</p>
+      <h2>Sınava hazırlanan, ezberden rahatsız öğrenci</h2>
+    </div>
+    <div class="grid g3">
+      <div class="card"><h3>YKS</h3><p>Ana kitle, en geniş hacim. Konu sayısı çok, tekrar döngüsü uzun — ilerleme takibi burada değer üretiyor.</p></div>
+      <div class="card"><h3>TÜBİTAK olimpiyatları</h3><p>Küçük ama yüksek motivasyonlu kesim. Kavramsal derinlik arıyor; “neden” sorusu bu grupta ürünün merkezinde.</p></div>
+      <div class="card"><h3>SAT</h3><p>Yurt dışı başvurusu yapan kesim. İngilizce–Türkçe arası geçiş yapan, açıklama pratiğine alışkın profil.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ AKIŞ ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">ürün mantığı</p>
+      <h2>Bir oturum nasıl işliyor</h2>
+      <p class="meta">Sıra önemli — her adım bir öncekinin çıktısını kullanıyor.</p>
+    </div>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><div>
+        <h3>Bağlam seçimi</h3>
+        <p>Sınav modu (YKS / SAT / TÜBİTAK), ardından ders ve konu. Örnek: matematik → türev → zincir kuralı.</p></div></div>
+      <div class="step"><div class="n">2</div><div>
+        <h3>Öğrenci personası</h3>
+        <p>AI’ın nasıl bir öğrenci olacağı seçilir: meraklı, şüpheci ya da aceleci. Persona, oturumun zorluk ayarıdır.</p></div></div>
+      <div class="step"><div class="n">3</div><div>
+        <h3>Anlatım</h3>
+        <p>Dört giriş kanalı: <strong>yaz · konuş · tahta · fotoğraf</strong>. Tahta serbest çizim ve formül için, fotoğraf defterden yüklenen çözüm için.</p></div></div>
+      <div class="step"><div class="n">4</div><div>
+        <h3>Boşluk yakalama</h3>
+        <p>AI anlatımı takip ederken eksik kalan yeri işaretler: <em>boşluk: çarpımın nedeni açıklanmadı</em>. Ürünün en ayırt edici mekanizması — cevap vermez, eksiği görünür kılar.</p></div></div>
+      <div class="step"><div class="n">5</div><div>
+        <h3>Anlayış haritası</h3>
+        <p>Konu alt kavramlara bölünür, her biri oturum boyunca işaretlenir. Yüzde buradan çıkar.</p></div></div>
+      <div class="step"><div class="n">6</div><div>
+        <h3>Seans notu</h3>
+        <p>Davranışsal geri bildirim: <em>“Öğrencin ‘neden’ sorularına takılıyor. Sebep-sonuçla anlatmayı dene.”</em></p></div></div>
+      <div class="step"><div class="n">7</div><div>
+        <h3>İlerleme</h3>
+        <p>Konu listesi ve yüzdeler kalıcı olarak tutulur. Uygulamanın uzun vadeli tutundurma motoru bu liste.</p></div></div>
+    </div>
+  </section>
+
+  <!-- ============ EKRAN ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">ana ekran</p>
+      <h2>Öğretme seansı</h2>
+      <p class="meta">Üç kolon: solda ilerleme, ortada konuşma, sağda analiz.</p>
+    </div>
+
+    <div class="mock">
+      <aside class="mk-side">
+        <div class="wm"><b></b>tutorla<i>_</i></div>
+        <div style="display:flex;flex-direction:column;gap:7px">
+          <span class="lbl">sınav</span>
+          <div class="chips">
+            <span class="chip on" style="font-size:11.5px;padding:4px 9px">YKS</span>
+            <span class="chip" style="font-size:11.5px;padding:4px 9px;border-color:var(--deep-line);color:var(--deep-mute)">SAT</span>
+            <span class="chip" style="font-size:11.5px;padding:4px 9px;border-color:var(--deep-line);color:var(--deep-mute)">TÜBİTAK</span>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <span class="lbl" style="margin-bottom:5px">matematik</span>
+          <div class="mk-row"><span>Limit</span><span>100</span></div>
+          <div class="mk-row"><span>Türev tanımı</span><span>92</span></div>
+          <div class="mk-row on"><span>Zincir kuralı</span><span>40</span></div>
+          <div class="mk-row off"><span>Kapalı türev</span><span>—</span></div>
+          <div class="mk-row off"><span>İntegral</span><span>—</span></div>
+        </div>
+        <div style="margin-top:auto;display:flex;flex-direction:column;gap:7px">
+          <span class="lbl">öğrencin</span>
+          <div class="mk-avatars"><i></i><i></i><i></i></div>
+          <span class="lbl" style="font-size:13px">meraklı · çok soru sorar</span>
+        </div>
+      </aside>
+
+      <div class="mk-main">
+        <div class="mk-top">
+          <div>
+            <h3 style="font-size:19px">Zincir kuralı</h3>
+            <span class="meta">yks / matematik / türev · seans 03</span>
+          </div>
+          <span class="meta" style="color:var(--primary)">● 12:40</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:9px">
+          <div class="mk-bub ai">Türevi biraz biliyorum. Ama “zincir kuralı” ismi nereden geliyor? Zincirle ne alakası var?</div>
+          <div class="mk-bub me">İç içe fonksiyonları düşün: f(g(x)). Dıştaki fonksiyonun türevini alıp içtekinin türeviyle çarpıyorsun. Halkalar gibi birbirine bağlı.</div>
+          <div class="mk-bub ai">Tamam, halkalar güzel. Peki neden <strong>çarpıyoruz</strong> da toplamıyoruz? Bir örnekle gösterebilir misin?</div>
+          <div class="mk-gap">boşluk: çarpımın nedeni açıklanmadı</div>
+        </div>
+        <div class="mk-input">
+          <span class="ph">Anlatmaya devam et…</span>
+          <div class="mk-tools"><b>Yaz</b><b>Konuş</b><b>Tahta</b><b>Fotoğraf</b><u>⏎ gönder</u></div>
+        </div>
+      </div>
+
+      <aside class="mk-right">
+        <div style="display:flex;flex-direction:column;gap:8px">
+          <span class="meta">anlayış haritası</span>
+          <div style="display:flex;justify-content:space-between;align-items:baseline"><b style="font-weight:600">Zincir kuralı</b><span class="meta mono" style="color:var(--primary)">%40</span></div>
+          <div class="mk-bar"><i></i></div>
+        </div>
+        <div class="mk-cons">
+          <div><span class="y">✓</span><span>Tanım</span></div>
+          <div><span class="y">✓</span><span>Bileşke fonksiyon</span></div>
+          <div><span class="n">✕</span><span>Neden çarpım?</span></div>
+          <div><span class="off">✕</span><span class="off">Örnek: sin(x²)</span></div>
+          <div><span class="off">✕</span><span class="off">Sık yapılan hatalar</span></div>
+        </div>
+        <div class="mk-stats">
+          <div><b class="mono">4</b><span>soru soruldu</span></div>
+          <div><b class="mono">2/5</b><span>kavram oturdu</span></div>
+        </div>
+        <p class="mk-note"><span class="meta">not —</span> Öğrencin “neden” sorularına takılıyor. Sebep-sonuçla anlatmayı dene.</p>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============ PERSONALAR ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">karakterler</p>
+      <h2>Üç öğrenci personası</h2>
+      <p class="meta">Maskot tasarımı henüz yapılmadı — buradaki formlar yer tutucu.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card persona"><div class="face">maskot</div><h3>meraklı</h3><p>Çok soru sorar, “neden” der, derinleşmek ister. Başlangıç personası — en davetkâr olanı.</p></div>
+      <div class="card persona"><div class="face">maskot</div><h3>şüpheci</h3><p>İkna olmaz, karşı örnek arar, gerekçe ister. Konuyu bildiğini sananı en çok zorlayan.</p></div>
+      <div class="card persona"><div class="face">maskot</div><h3>aceleci</h3><p>Hızlı geçmek ister, özet bekler. Kullanıcıyı sadeleştirmeye ve öncelik kurmaya zorlar.</p></div>
+    </div>
+  </section>
+
+  <!-- ============ İSİM ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">isim</p>
+      <h2>Neden Tutorla</h2>
+    </div>
+    <div class="prose" style="margin-bottom:20px">
+      <p>İngilizce <strong>tutor</strong> + Türkçe <strong>-la</strong> eki. Türkçe okuyan “öğret-le” emir kipini duyar, İngilizce okuyan Wordle/Kahoot ailesinden bir isim görür. Eleme süreci:</p>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>aday</th><th>durum</th><th>gerekçe</th></tr></thead>
+        <tbody>
+          <tr><td><b>Teachle</b></td><td class="no">dolu</td><td>Güney Kore merkezli edtech, App Store + Google Play’de aktif (teachle.co.kr). Ayrıca Teachly, Teachley, Teachable var.</td></tr>
+          <tr><td><b>Grasple</b></td><td class="no">dolu</td><td>Amsterdam merkezli, Delft/Utrecht ile çalışan matematik–istatistik platformu. Aynı sektörde kurumsal marka.</td></tr>
+          <tr><td><b>Tutorca</b></td><td>riskli</td><td>Temiz, ama <em>Tutoria</em> (AI dil öğrenme uygulaması) sesçe çok yakın.</td></tr>
+          <tr><td><b>Tutorla</b></td><td class="ok">seçildi</td><td>Birebir eşleşen marka bulunamadı. En yakını <em>Tutorali</em> (Şili, PAES hazırlık) — yeterince farklı.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="prose" style="margin-top:18px">
+      <p><strong>SEO:</strong> Rakipsiz bir marka adı olduğu için “Tutorla” aramasında ilk sıraya çıkmak kolay — domain + yayın + Search Console kaydı sonrası birkaç gün ile birkaç hafta. “AI ile öğren” gibi genel kelimeler ayrı bir iş ve aylar sürer.</p>
+    </div>
+  </section>
+
+  <!-- ============ LOGO ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">logo</p>
+      <h2>Ana kilit — olduğu gibi kalıyor</h2>
+      <p class="meta" id="logo-meta"></p>
+    </div>
+    <div class="logo-panels">
+      <div>
+        <div class="lp light"><span class="wm"><b></b>tutorla<i>_</i></span></div>
+        <p class="cap" id="cap-light"></p>
+      </div>
+      <div>
+        <div class="lp dark"><span class="wm"><b></b>tutorla<i>_</i></span></div>
+        <p class="cap" id="cap-dark"></p>
+      </div>
+    </div>
+    <div class="prose" style="margin-top:18px">
+      <p>Alt tire, imleç/terminal çağrışımıyla “yazmaya hazır, anlat” davetini taşıyor — markanın en ayırt edici öğesi. Küçük boyuta inerken korunması gereken şey de bu.</p>
+    </div>
+  </section>
+
+  <!-- ============ ATÖLYE ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">küçük logo atölyesi</p>
+      <h2>Favicon ve uygulama ikonu</h2>
+      <p class="meta">Kenarları yumuşatılmış kare · içinde logonun <b style="font-style:normal;font-weight:600;color:var(--ink-2)">t</b>’si ve alt tire. Ayarları değiştir, 16px’te ne olduğuna bak.</p>
+    </div>
+
+    <div class="shop">
+      <div class="panel ctrl">
+        <div class="field">
+          <label for="c-radius">Köşe yuvarlaklığı <b><span id="v-radius">24</span>%</b></label>
+          <input type="range" id="c-radius" min="0" max="50" step="1" value="24">
+        </div>
+        <div class="field">
+          <label for="c-pad">İç boşluk <b><span id="v-pad">18</span>%</b></label>
+          <input type="range" id="c-pad" min="6" max="34" step="1" value="18">
+        </div>
+        <div class="field">
+          <label for="c-weight"><span id="l-weight">t ↔ alt tire aralığı</span> <b><span id="v-weight">8</span></b></label>
+          <input type="range" id="c-weight" min="0" max="40" step="1" value="8">
+        </div>
+        <div class="field">
+          <span style="font-size:13px;font-weight:600;color:var(--ink-2)">İçerik</span>
+          <div class="seg" id="c-content">
+            <button type="button" data-val="t_" aria-pressed="true">t + alt tire</button>
+            <button type="button" data-val="t" aria-pressed="false">sadece t</button>
+          </div>
+        </div>
+        <div class="field">
+          <span style="font-size:13px;font-weight:600;color:var(--ink-2)">Harf biçimi</span>
+          <div class="seg" id="c-mode">
+            <button type="button" data-val="font" aria-pressed="true">logodaki harf</button>
+            <button type="button" data-val="geo" aria-pressed="false">geometrik</button>
+          </div>
+        </div>
+        <div class="field">
+          <span style="font-size:13px;font-weight:600;color:var(--ink-2)">Renk şeması</span>
+          <div class="swatch-btns" id="c-scheme"></div>
+        </div>
+        <div class="field">
+          <span style="font-size:13px;font-weight:600;color:var(--ink-2)">Alt tire rengi</span>
+          <div class="seg" id="c-uscore">
+            <button type="button" data-val="same" aria-pressed="true">harfle aynı</button>
+            <button type="button" data-val="accent" aria-pressed="false">vurgu</button>
+          </div>
+        </div>
+        <p class="specline" id="specline"></p>
+      </div>
+
+      <div class="stage">
+        <div class="stage-top">
+          <div class="size">
+            <div class="box markbox" id="p-hero"></div>
+            <span>128 px</span>
+          </div>
+          <div class="sizes" id="p-sizes"></div>
+        </div>
+
+        <div class="contexts">
+          <div class="ctx">
+            <span class="meta">tarayıcı sekmesi</span>
+            <div class="tabbar">
+              <div class="tab"><span class="markbox" id="p-tab"></span><span class="t">Tutorla — Zincir kuralı</span></div>
+              <div class="tab dim"><span class="t">YKS Matematik Konuları</span></div>
+            </div>
+          </div>
+          <div class="ctx">
+            <span class="meta">telefon ana ekranı</span>
+            <div class="home">
+              <div class="appicon"><span class="markbox" id="p-home" style="width:100%"></span><span>Tutorla</span></div>
+              <div class="appicon"><span class="ph"></span><span>&nbsp;</span></div>
+              <div class="appicon"><span class="ph"></span><span>&nbsp;</span></div>
+              <div class="appicon"><span class="ph"></span><span>&nbsp;</span></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="export">
+          <div class="hd">
+            <span>svg — kopyala, favicon.svg olarak kaydet</span>
+            <button class="btn" type="button" id="copy-svg">SVG’yi kopyala</button>
+          </div>
+          <textarea id="svg-out" readonly spellcheck="false"></textarea>
+          <p style="font-size:12.5px;color:var(--deep-mute);margin:0" id="export-note"></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ RENK ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">renk</p>
+      <h2 id="pal-title">1c · Laboratuvar paleti</h2>
+      <p class="meta" id="pal-note"></p>
+    </div>
+    <div class="pal" id="palette"></div>
+  </section>
+
+  <!-- ============ TİPOGRAFİ ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">tipografi</p>
+      <h2>Figtree + Newsreader</h2>
+    </div>
+    <div class="spec">
+      <div class="spec-row">
+        <span class="k">başlık</span>
+        <div>
+          <div style="font-weight:700;font-size:34px;letter-spacing:-0.035em;line-height:1.1">Zincir kuralı, halkalar gibi</div>
+          <p class="cap">Figtree Bold 700 · letter-spacing −0.03 / −0.04em</p>
+        </div>
+      </div>
+      <div class="spec-row">
+        <span class="k">metin</span>
+        <div>
+          <div style="font-size:17px;line-height:1.55;max-width:52ch">Sınava değil, anlamaya çalışıyorsun. Şu an bildiğini sandığın şeyi birine anlatmayı dene — nerede tıkandığın orada görünür.</div>
+          <p class="cap">Figtree Regular / Medium · 15–17px</p>
+        </div>
+      </div>
+      <div class="spec-row">
+        <span class="k">etiket</span>
+        <div>
+          <div style="font-family:Newsreader,Georgia,serif;font-style:italic;font-weight:300;font-size:20px;color:var(--primary)">yks / mat / türev · seans 03 · 12:40</div>
+          <p class="cap">Newsreader Light Italic 300 · petrol yeşili · yalnızca etiket ve meta bilgide, gövde metninde asla</p>
+        </div>
+      </div>
+      <div class="spec-row">
+        <span class="k">türkçe</span>
+        <div>
+          <div style="font-size:24px;font-weight:600;letter-spacing:-0.02em">ığĞİŞşÇçÖöÜü — bağıntı, öğrenci, çözüm, şüpheci</div>
+          <p class="cap">Her iki fontun Türkçe karakter seti üretimden önce doğrulanmalı.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FORM ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">form dili</p>
+      <h2>Küçük ve keskin yarıçaplar</h2>
+      <p class="meta">Gölge yok ya da çok hafif · 1px kenarlıklar · maskot ve avatarlar squircle</p>
+    </div>
+    <div class="radii">
+      <div><i style="border-radius:6px"></i><span>6px · buton, rozet</span></div>
+      <div><i style="border-radius:8px"></i><span>8px · logo işareti</span></div>
+      <div><i style="border-radius:10px"></i><span>10px · kart, panel</span></div>
+      <div><i style="border-radius:30%"></i><span>%30 · maskot, avatar</span></div>
+    </div>
+  </section>
+
+  <!-- ============ TEKNİK ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">teknik &amp; maliyet</p>
+      <h2>Web MVP, Haiku ile başla</h2>
+      <p class="meta">Next.js · Supabase · Claude API · Vercel. Mobil, talep görürse ikinci aşamada.</p>
+    </div>
+    <div class="tbl-wrap" style="margin-bottom:16px">
+      <table>
+        <thead><tr><th>model</th><th>fiyat (girdi/çıktı · M token)</th><th>oturum başı</th><th>10.000 oturum/ay</th></tr></thead>
+        <tbody>
+          <tr><td><b>Haiku 4.5</b></td><td class="num">$1 / $5</td><td class="num">~$0,008</td><td class="num">~$80</td></tr>
+          <tr><td><b>Sonnet 5</b></td><td class="num">$2 / $10</td><td class="num">~$0,016</td><td class="num">~$160</td></tr>
+          <tr><td><b>Opus 5</b></td><td class="num">$5 / $25</td><td class="num">~$0,040</td><td class="num">~$400</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="grid g3">
+      <div class="card"><h3>Geliştirme</h3><p>Claude Max 5x × 2 kişi ≈ <b class="mono">$200/ay</b> · domain ~$10–15/yıl. Asıl maliyet kalemi zaman.</p></div>
+      <div class="card"><h3>Lansman sonrası</h3><p>Vercel + Supabase başta ücretsiz katman, büyüdükçe <b class="mono">$20–50/ay</b>. Toplam beklenti <b class="mono">$50–150/ay</b>.</p></div>
+      <div class="card"><h3>Takvim</h3><p>~<b class="mono">2,5–3 hafta</b>. 1. hafta paralel (A: prompt+API, B: arayüz+auth), 2. hafta entegrasyon, 3. hafta test ve cila.</p></div>
+    </div>
+    <div class="prose" style="margin-top:18px">
+      <p><strong>Ürünün kalbi prompt, kod değil.</strong> İlk haftayı hiç koda dokunmadan persona prompt’unu olgunlaştırmaya ayırmak, sonradan mimariyi değiştirmek zorunda kalmayı önler.</p>
+      <p><strong>Kapsam daraltma önerisi:</strong> ilk sürüm tek ders (matematik), tek sınav modu (YKS), tek persona (meraklı). Üç persona, tahta ve fotoğraf girişi ikinci sürüme.</p>
+      <p class="meta">Fiyatlar 5 gün önceki araştırmadan — sözleşme öncesi doğrulanmalı.</p>
+    </div>
+  </section>
+
+  <!-- ============ AÇIK İŞLER ============ -->
+  <section>
+    <div class="sec-head">
+      <p class="eyebrow">açık işler</p>
+      <h2>Sıradaki adımlar</h2>
+    </div>
+    <div class="todo">
+      <div class="todo-group">
+        <h3>Marka &amp; hukuk</h3>
+        <ul>
+          <li><i></i><span>tutorla.com / .app / .co domain müsaitliği</span></li>
+          <li><i></i><span>TÜRKPATENT’te “Tutorla” sorgusu ve başvuru</span></li>
+          <li><i></i><span>@tutorla — Instagram, X, LinkedIn</span></li>
+        </ul>
+      </div>
+      <div class="todo-group">
+        <h3>Tasarım</h3>
+        <ul>
+          <li><i></i><span>Favicon üretimi — bu sayfadaki ayarları kesinleştir, koyu/açık varyant</span></li>
+          <li><i></i><span>Üç maskot karakterinin gerçek tasarımı</span></li>
+          <li><i></i><span>Onboarding, oturum sonu özet, profil ekranları</span></li>
+        </ul>
+      </div>
+      <div class="todo-group">
+        <h3>Ürün</h3>
+        <ul>
+          <li><i></i><span>Persona prompt’unun “gerçekten öğrenci gibi” seviyesine getirilmesi</span></li>
+          <li><i></i><span>Anlayış haritası kavram listesi — elle mi, modelle mi?</span></li>
+          <li><i></i><span>Yüzde skorunun hesaplanma mantığı</span></li>
+          <li><i></i><span>Kapalı test için 5–10 gerçek öğrenci</span></li>
+        </ul>
+      </div>
+      <div class="todo-group">
+        <h3>İş modeli</h3>
+        <ul>
+          <li><i></i><span>Fiyatlandırma — ücretsiz oturum kotası + abonelik? Henüz konuşulmadı.</span></li>
+          <li><i></i><span>Birim ekonomi: oturum başı API maliyeti vs. abonelik fiyatı</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p class="meta">kaynaklar</p>
+    <a href="https://claude.ai/share/056cb2c1-bfdf-44b8-84bb-c00aaeb3a79c" target="_blank" rel="noopener">Konsept ve marka konuşması — pazar araştırması, isim eleme, teknik plan</a>
+    <a href="https://claude.ai/code/artifact/23db43fd-4506-4607-bbc6-f54221bec04c" target="_blank" rel="noopener">Marka yönü tasarımı (1a / 1b / 1c) — seçilen: 1c · Laboratuvar</a>
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ================= marka yönleri =================
+     İki tam token seti. Aktif olan, geçerli temaya göre <html> üzerine
+     inline custom property olarak yazılıyor. */
+  var PALETTES = {
+    petrol: {
+      label:"1c · Laboratuvar",
+      stamp:"yön: 1c · laboratuvar",
+      dirNote:"Karar verilen yön. Sakin, odaklı, bilimsel ama yumuşak.",
+      palTitle:"1c · Laboratuvar paleti",
+      palNote:"Petrol yeşili = ilerleme, doğru, aktif. Turuncu = boşluk, eksik kavram — asla “yanlış/kırmızı” değil, davetkâr bir uyarı. Ekranda nadir görünmeli ki anlamı korunsun. Karta tıkla, hex kopyalansın.",
+      logoMeta:"Figtree 800 · letter-spacing −0.045em · kare işaret ve alt tire aynı renk (petrol yeşili) · alt tirenin tabanı harflerin tabanıyla aynı düzlemde · işaret %22 yarıçap",
+      capLight:"açık zemin — #F9FDFB üzerine mürekkep + petrol",
+      capDark:"koyu zemin — #012523 üzerine açık metin + #4AB494",
+      light:{
+        "bg":"#F9FDFB","surface":"#EFF7F4","surface-2":"#DCECE6","border":"#C8D9D2","border-2":"#AEC7BF",
+        "ink":"#071F1E","ink-2":"#425B59","ink-3":"#5E7A77",
+        "primary":"#008668","primary-ink":"#00654F","accent":"#A45C31","us":"#008668","glow":"#008668","mark":"#008668","on-primary":"#FFFFFF",
+        "deep":"#012523","deep-2":"#173937","deep-line":"#20423F",
+        "deep-ink":"#D8E9E2","deep-mute":"#90ABA9","deep-primary":"#4AB494","deep-accent":"#E6996D"
+      },
+      dark:{
+        "bg":"#041B1A","surface":"#082623","surface-2":"#0E332F","border":"#1C443F","border-2":"#2A5651",
+        "ink":"#DCEDE7","ink-2":"#A3BEB8","ink-3":"#8AA7A1",
+        "primary":"#4AB494","primary-ink":"#6ECBAD","accent":"#E6996D","us":"#4AB494","glow":"#4AB494","mark":"#4AB494","on-primary":"#04211C",
+        "deep":"#002E2A","deep-2":"#0E3D39","deep-line":"#1C4B46",
+        "deep-ink":"#DCEDE7","deep-mute":"#90ABA9","deep-primary":"#4AB494","deep-accent":"#E6996D"
+      },
+      logo:{"logo-l-bg":"#F9FDFB","logo-l-ink":"#071F1E","logo-l-mark":"#008668","logo-l-us":"#008668",
+            "logo-d-bg":"#012523","logo-d-ink":"#D8E9E2","logo-d-mark":"#4AB494","logo-d-us":"#4AB494"},
+      list:[
+        ["Ana metin / mürekkep","#071F1E","oklch(22% .03 190)"],
+        ["Koyu panel","#012523","oklch(24% .04 190)"],
+        ["Koyu panel aktif","#173937","oklch(32% .04 190)"],
+        ["Primary — petrol","#008668","oklch(55% .11 170)"],
+        ["Primary açık","#4AB494","oklch(70% .11 170)"],
+        ["Accent — turuncu","#A45C31","oklch(55% .11 50)"],
+        ["Accent açık","#E6996D","oklch(75% .11 50)"],
+        ["Yüzey tint","#DCECE6","oklch(93% .02 170)"],
+        ["Arka plan","#F9FDFB","oklch(99% .005 170)"],
+        ["Panel arka planı","#EFF7F4","oklch(97% .01 170)"],
+        ["Kenarlık","#C8D9D2","oklch(87% .02 170)"],
+        ["İkincil metin","#425B59","oklch(45% .03 190)"],
+        ["Etiket / soluk","#506967","oklch(50% .03 190)"],
+        ["Koyu zeminde metin","#D8E9E2","oklch(92% .02 170)"],
+        ["Koyu zeminde soluk","#90ABA9","oklch(72% .03 190)"]
+      ],
+      schemes:[
+        {id:"a", bg:"#008668", fg:"#F9FDFB", ac:"#DCECE6", name:"petrol zemin"},
+        {id:"b", bg:"#EFF7F4", fg:"#008668", ac:"#A45C31", name:"açık zemin"},
+        {id:"c", bg:"#012523", fg:"#4AB494", ac:"#E6996D", name:"koyu zemin"},
+        {id:"d", bg:"#FFFFFF", fg:"#071F1E", ac:"#008668", name:"beyaz zemin"}
+      ]
+    },
+
+    gojo: {
+      label:"Sınırsız · deneysel",
+      stamp:"yön: sınırsız · deneysel",
+      dirNote:"JJK / Gojo esinli deneme. Gece indigosu + mor, üstüne açık cyan parıltı.",
+      palTitle:"Sınırsız paleti — deneysel",
+      palNote:"Cyan = ilerleme, aktif, “anladı”. Mor = boşluk, eksik kavram. Gece indigosu zemin taşıyor, cyan sadece parıltı olarak görünüyor — az kullanıldığı için etkili. Karta tıkla, hex kopyalansın.",
+      logoMeta:"Figtree 800 · letter-spacing −0.045em · kare işaret ve alt tire aynı renk (cyan parıltı) · alt tirenin tabanı harflerin tabanıyla aynı düzlemde · işaret %22 yarıçap",
+      capLight:"açık zemin — #F6F2FA üzerine gece + #2C9EC2 işaret/alt tire",
+      capDark:"gece zemin — #232047 üzerine lavanta + #6BD3F0 işaret/alt tire",
+      light:{
+        "bg":"#F6F2FA","surface":"#EFE9F6","surface-2":"#DFD7EE","border":"#CBC2E1","border-2":"#B0A4CB",
+        "ink":"#1F232F","ink-2":"#4A4570","ink-3":"#6E668E",
+        "primary":"#106D8C","primary-ink":"#0B566F","accent":"#5D4FA6","us":"#2C9EC2","glow":"#5FC9E9","mark":"#2C9EC2","on-primary":"#FFFFFF",
+        "deep":"#232047","deep-2":"#322D63","deep-line":"#3D3775",
+        "deep-ink":"#EDE8F8","deep-mute":"#9B8AB4","deep-primary":"#6BD3F0","deep-accent":"#A99BE0"
+      },
+      dark:{
+        "bg":"#14152A","surface":"#1E1F3A","surface-2":"#2A2A4E","border":"#37375F","border-2":"#4A4879",
+        "ink":"#EDE8F8","ink-2":"#B3AACE","ink-3":"#9187AE",
+        "primary":"#6BD3F0","primary-ink":"#93E1F7","accent":"#A99BE0","us":"#6BD3F0","glow":"#7EDBF3","mark":"#6BD3F0","on-primary":"#0E2430",
+        "deep":"#1E1F3A","deep-2":"#2E2E58","deep-line":"#3A3968",
+        "deep-ink":"#EDE8F8","deep-mute":"#9B8AB4","deep-primary":"#6BD3F0","deep-accent":"#A99BE0"
+      },
+      logo:{"logo-l-bg":"#F6F2FA","logo-l-ink":"#1F232F","logo-l-mark":"#2C9EC2","logo-l-us":"#2C9EC2",
+            "logo-d-bg":"#232047","logo-d-ink":"#EDE8F8","logo-d-mark":"#6BD3F0","logo-d-us":"#6BD3F0"},
+      list:[
+        ["Gece — ana metin","#1F232F","referans 6"],
+        ["Gece indigo — panel","#232047","referans 1"],
+        ["İndigo aktif satır","#322D63","türetilmiş"],
+        ["Primary — derin cyan","#106D8C","metin için güvenli"],
+        ["Cyan parıltı","#5FC9E9","referans 5, açıldı"],
+        ["Cyan açık (koyu zemin)","#6BD3F0","türetilmiş"],
+        ["Accent — mor","#5D4FA6","referans 2"],
+        ["Mor açık (koyu zemin)","#A99BE0","türetilmiş"],
+        ["Lila — soluk metin","#9B8AB4","referans 3"],
+        ["Yüzey tint","#DFD7EE","türetilmiş"],
+        ["Arka plan","#F6F2FA","referans 4"],
+        ["Panel arka planı","#EFE9F6","türetilmiş"],
+        ["Kenarlık","#CBC2E1","türetilmiş"],
+        ["İkincil metin","#4A4570","türetilmiş"],
+        ["Koyu zeminde metin","#EDE8F8","türetilmiş"]
+      ],
+      schemes:[
+        {id:"a", bg:"#232047", fg:"#EDE8F8", ac:"#6BD3F0", name:"gece zemin"},
+        {id:"b", bg:"#5FC9E9", fg:"#152036", ac:"#3D3775", name:"cyan zemin"},
+        {id:"c", bg:"#5D4FA6", fg:"#F2EEFB", ac:"#7EDBF3", name:"mor zemin"},
+        {id:"d", bg:"#F6F2FA", fg:"#232047", ac:"#106D8C", name:"açık zemin"}
+      ]
+    },
+
+    nanami: {
+      label:"Mesai · deneysel",
+      stamp:"yön: mesai · deneysel",
+      dirNote:"JJK / Nanami esinli deneme. Orman yeşili + kum, derin gömlek mavisi ve kavrulmuş amber.",
+      palTitle:"Mesai paleti — deneysel",
+      palNote:"Gömlek mavisi = ilerleme, aktif, “anladı”. Kavrulmuş amber = boşluk, eksik kavram. Zemin kum ve sıcak gri; orman yeşili panel taşıyor. Referanstaki çelik mavisi (#345276) kurumsal/LinkedIn hissi verdiği için hue karakterin gömleğine doğru kaydırıldı — daha teal, daha az “iş ağı mavisi”. Karta tıkla, hex kopyalansın.",
+      logoMeta:"Figtree 800 · letter-spacing −0.045em · kare işaret ve alt tire aynı renk (derin gömlek mavisi) · alt tirenin tabanı harflerin tabanıyla aynı düzlemde · işaret %22 yarıçap",
+      capLight:"kum zemin — #F8F5EC üzerine orman + #1F6E85 işaret/alt tire",
+      capDark:"orman zemin — #333F26 üzerine kum + #8FC4D6 işaret/alt tire",
+      light:{
+        "bg":"#F8F5EC","surface":"#F0ECDF","surface-2":"#E3DECB","border":"#CFC8B4","border-2":"#B5ACA4",
+        "ink":"#22271A","ink-2":"#4C513E","ink-3":"#676B58",
+        "primary":"#1F6E85","primary-ink":"#175766","accent":"#9A5615","us":"#1F6E85","glow":"#4E9BB5",
+        "mark":"#1F6E85","on-primary":"#FFFFFF",
+        "deep":"#333F26","deep-2":"#45523A","deep-line":"#55634A",
+        "deep-ink":"#EAE6D3","deep-mute":"#A7A382","deep-primary":"#8FC4D6","deep-accent":"#E0A55A"
+      },
+      dark:{
+        "bg":"#14170F","surface":"#1D2116","surface-2":"#292E1F","border":"#3A402D","border-2":"#4E553D",
+        "ink":"#EAE6D3","ink-2":"#B4B098","ink-3":"#95917A",
+        "primary":"#8FC4D6","primary-ink":"#AFD8E5","accent":"#E0A55A","us":"#8FC4D6","glow":"#8FC4D6",
+        "mark":"#8FC4D6","on-primary":"#12232A",
+        "deep":"#1D2116","deep-2":"#2C3322","deep-line":"#3A402D",
+        "deep-ink":"#EAE6D3","deep-mute":"#A7A382","deep-primary":"#8FC4D6","deep-accent":"#E0A55A"
+      },
+      logo:{"logo-l-bg":"#F8F5EC","logo-l-ink":"#22271A","logo-l-mark":"#1F6E85","logo-l-us":"#1F6E85",
+            "logo-d-bg":"#333F26","logo-d-ink":"#EAE6D3","logo-d-mark":"#8FC4D6","logo-d-us":"#8FC4D6"},
+      list:[
+        ["Orman — koyu panel","#333F26","referans 2"],
+        ["Ana metin","#22271A","türetilmiş"],
+        ["Primary — derin gömlek mavisi","#1F6E85","gömlekten türetildi"],
+        ["Çelik mavisi — referans","#345276","referans 5, hue kaydırıldı"],
+        ["Gömlek mavisi — parıltı","#4E9BB5","karakterden"],
+        ["Mavi açık (koyu zemin)","#8FC4D6","türetilmiş"],
+        ["Accent — kavrulmuş amber","#9A5615","karakterden"],
+        ["Amber açık (koyu zemin)","#E0A55A","türetilmiş"],
+        ["Zeytin — soluk metin","#8A8659","referans 4"],
+        ["Sıcak gri","#CEC4C2","referans 3"],
+        ["Kum tint","#E3DECB","türetilmiş"],
+        ["Arka plan","#F8F5EC","referans 1, açıldı"],
+        ["Panel arka planı","#F0ECDF","türetilmiş"],
+        ["Kenarlık","#CFC8B4","türetilmiş"],
+        ["İkincil metin","#4C513E","türetilmiş"],
+        ["Koyu zeminde metin","#EAE6D3","türetilmiş"]
+      ],
+      schemes:[
+        {id:"a", bg:"#333F26", fg:"#EAE6D3", ac:"#E0A55A", name:"orman zemin"},
+        {id:"b", bg:"#1F6E85", fg:"#F8F5EC", ac:"#E0A55A", name:"derin mavi zemin"},
+        {id:"c", bg:"#E3DECB", fg:"#333F26", ac:"#1F6E85", name:"kum zemin"},
+        {id:"d", bg:"#4E9BB5", fg:"#16303A", ac:"#333F26", name:"gömlek mavisi"}
+      ]
+    }
+  };
+
+  var PID = "petrol";
+  try {
+    var sp = localStorage.getItem("tutorla-dir-v1");
+    if (sp && PALETTES[sp]) PID = sp;
+  } catch(e){}
+
+  function themeIsDark(){
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t === "dark") return true;
+    if (t === "light") return false;
+    try { return window.matchMedia("(prefers-color-scheme: dark)").matches; } catch(e){ return false; }
+  }
+
+  var palEl = document.getElementById("palette");
+
+  function renderPaletteList(){
+    var P = PALETTES[PID];
+    palEl.innerHTML = "";
+    P.list.forEach(function(c){
+      var b = document.createElement("button");
+      b.type = "button"; b.className = "sw";
+      b.innerHTML = '<span class="fill" style="background:'+c[1]+'"></span>' +
+        '<span class="info"><span class="nm">'+c[0]+'</span><span class="hx">'+c[1]+'</span>' +
+        '<span class="hx" style="opacity:.7">'+c[2]+'</span></span>';
+      b.addEventListener("click", function(){
+        copyText(c[1]);
+        var hx = b.querySelector(".hx");
+        var old = hx.textContent; hx.textContent = "kopyalandı";
+        setTimeout(function(){ hx.textContent = old; }, 1100);
+      });
+      palEl.appendChild(b);
+    });
+  }
+
+  function applyPalette(){
+    var P = PALETTES[PID], t = themeIsDark() ? P.dark : P.light;
+    var st = document.documentElement.style, k;
+    for (k in t) st.setProperty("--" + k, t[k]);
+    for (k in P.logo) st.setProperty("--" + k, P.logo[k]);
+    document.getElementById("stamp-dir").textContent = P.stamp;
+    document.getElementById("dir-note").textContent = P.dirNote;
+    document.getElementById("pal-title").textContent = P.palTitle;
+    document.getElementById("pal-note").textContent = P.palNote;
+    document.getElementById("logo-meta").textContent = P.logoMeta;
+    document.getElementById("cap-light").textContent = P.capLight;
+    document.getElementById("cap-dark").textContent = P.capDark;
+  }
+
+  try {
+    var mq = window.matchMedia("(prefers-color-scheme: dark)");
+    if (mq.addEventListener) mq.addEventListener("change", applyPalette);
+    else if (mq.addListener) mq.addListener(applyPalette);
+  } catch(e){}
+  try {
+    new MutationObserver(applyPalette).observe(document.documentElement,
+      { attributes:true, attributeFilter:["data-theme"] });
+  } catch(e){}
+
+  /* ---------------- mark workshop ---------------- */
+  function schemes(){ return PALETTES[PID].schemes; }
+
+  var S = { radius:24, pad:18, weight:14, gap:8, content:"t_", mode:"font", scheme:"a", uscore:"same" };
+
+  try {
+    var saved = JSON.parse(localStorage.getItem("tutorla-mark-v2") || "null");
+    if (saved && typeof saved === "object") { for (var k in S) if (k in saved) S[k] = saved[k]; }
+  } catch(e){}
+
+  function save(){ try{ localStorage.setItem("tutorla-mark-v2", JSON.stringify(S)); }catch(e){} }
+
+  /* ---- Figtree glyph metrics, measured at runtime ----
+     Everything positional (the wordmark's raised underscore, the mark's optical
+     centring) comes from the real font rather than guessed numbers. */
+  var EM = 100, TRACK = -0.045 * EM, FM = null;
+  function measure(){
+    try{
+      var cx = document.createElement("canvas").getContext("2d");
+      cx.font = '800 ' + EM + 'px Figtree, sans-serif';
+      var t = cx.measureText("t"), u = cx.measureText("_");
+      if (!("actualBoundingBoxRight" in t)) return;
+      FM = {
+        tL:t.actualBoundingBoxLeft, tR:t.actualBoundingBoxRight,
+        tA:t.actualBoundingBoxAscent, tD:t.actualBoundingBoxDescent, tAdv:t.width,
+        uR:u.actualBoundingBoxRight, uL:u.actualBoundingBoxLeft, uD:u.actualBoundingBoxDescent
+      };
+      document.documentElement.style.setProperty("--us-raise", (FM.uD/EM).toFixed(4) + "em");
+    }catch(e){ FM = null; }
+  }
+
+  function scheme(){
+    var L = schemes();
+    for (var i=0;i<L.length;i++) if (L[i].id === S.scheme) return L[i];
+    return L[0];
+  }
+
+  /* geometry in a normalized 0..100 glyph box, then fitted into the padded square */
+  /* A "t" needs three strokes — stem, crossbar and foot. Without the foot the
+     mark reads as a dagger, not a letter. The underscore sits below the
+     baseline and to the right, the way it does in the wordmark. */
+  function shapes(){
+    var W = S.weight, r = W/2;
+    if (S.content === "t"){
+      return { bbox:[0,0,58,100], parts:[
+        {x:16, y:0,     w:W,  h:100, rx:r, role:"letter"},
+        {x:0,  y:18,    w:58, h:W,   rx:r, role:"letter"},
+        {x:16, y:100-W, w:30, h:W,   rx:r, role:"letter"}
+      ]};
+    }
+    return { bbox:[0,0,100,100], parts:[
+      {x:14, y:0,     w:W,  h:84, rx:r, role:"letter"},
+      {x:0,  y:18,    w:50, h:W,  rx:r, role:"letter"},
+      {x:14, y:84-W,  w:26, h:W,  rx:r, role:"letter"},
+      {x:56, y:100-W, w:44, h:W,  rx:r, role:"under"}
+    ]};
+  }
+
+  function fitted(){
+    var g = shapes(), inner = 100 - S.pad*2;
+    var bw = g.bbox[2], bh = g.bbox[3];
+    var sc = Math.min(inner/bw, inner/bh);
+    var tx = S.pad + (inner - bw*sc)/2;
+    var ty = S.pad + (inner - bh*sc)/2;
+    return g.parts.map(function(p){
+      return {
+        x:+(tx + p.x*sc).toFixed(2), y:+(ty + p.y*sc).toFixed(2),
+        w:+(p.w*sc).toFixed(2),      h:+(p.h*sc).toFixed(2),
+        rx:+(p.rx*sc).toFixed(2),    role:p.role
+      };
+    });
+  }
+
+  /* Figtree modu: gerçek "t" ve "_" glifleri, alt tire taban çizgisine kaldırılmış,
+     mürekkep kutusu kare içine optik olarak ortalanmış. */
+  function fontMark(){
+    var m = FM || { tL:2, tR:44, tA:88, tD:0, tAdv:47, uR:56, uL:0, uD:14.5 };
+    var uX = m.tAdv + TRACK + S.gap;
+    var x0 = -m.tL, y1 = Math.max(m.tD, 0), y0 = -m.tA;
+    var x1 = (S.content === "t_") ? uX + m.uR : m.tR;
+    var inner = 100 - S.pad*2;
+    var bw = x1 - x0, bh = y1 - y0;
+    var sc = Math.min(inner/bw, inner/bh);
+    return {
+      sc:sc,
+      tx:S.pad + (inner - bw*sc)/2 - x0*sc,
+      ty:S.pad + (inner - bh*sc)/2 - y0*sc,
+      uX:uX, uShift:m.uD
+    };
+  }
+
+  function svgString(){
+    var c = scheme();
+    var uc = S.uscore === "accent" ? c.ac : c.fg;
+    var out = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512" role="img" aria-label="Tutorla">\n';
+    out += '  <rect width="100" height="100" rx="' + S.radius + '" fill="' + c.bg + '"/>\n';
+    if (S.mode === "font"){
+      var f = fontMark();
+      out += '  <g transform="translate(' + f.tx.toFixed(3) + ',' + f.ty.toFixed(3) +
+             ') scale(' + f.sc.toFixed(5) + ')" font-family="Figtree, sans-serif" font-weight="800" font-size="' + EM + '">\n';
+      out += '    <text x="0" y="0" fill="' + c.fg + '">t</text>\n';
+      if (S.content === "t_")
+        out += '    <text x="' + f.uX.toFixed(2) + '" y="' + (-f.uShift).toFixed(2) + '" fill="' + uc + '">_</text>\n';
+      out += '  </g>\n';
+    } else {
+      fitted().forEach(function(p){
+        out += '  <rect x="'+p.x+'" y="'+p.y+'" width="'+p.w+'" height="'+p.h+'" rx="'+p.rx+
+               '" fill="' + (p.role === "under" ? uc : c.fg) + '"/>\n';
+      });
+    }
+    return out + '</svg>';
+  }
+
+  function renderInto(el, px){
+    el.innerHTML = svgString().replace('width="512" height="512"', 'width="'+px+'" height="'+px+'"');
+  }
+
+  var SIZES = [16, 24, 32, 48, 64];
+  var sizesWrap = document.getElementById("p-sizes");
+  SIZES.forEach(function(px){
+    var d = document.createElement("div");
+    d.className = "size";
+    d.innerHTML = '<div class="box markbox" data-px="'+px+'"></div><span>'+px+' px</span>';
+    sizesWrap.appendChild(d);
+  });
+
+  var elHero = document.getElementById("p-hero");
+  var elTab  = document.getElementById("p-tab");
+  var elHome = document.getElementById("p-home");
+  var out    = document.getElementById("svg-out");
+  var specline = document.getElementById("specline");
+  var note = document.getElementById("export-note");
+
+  var wSlider = document.getElementById("c-weight");
+  var wLabel  = document.getElementById("v-weight");
+  var wText   = document.getElementById("l-weight");
+  function syncW(){
+    var fontMode = S.mode === "font";
+    wText.textContent = fontMode ? "t ↔ alt tire aralığı" : "Çizgi kalınlığı";
+    wSlider.min = fontMode ? 0 : 8;
+    wSlider.max = fontMode ? 40 : 20;
+    wSlider.value = fontMode ? S.gap : S.weight;
+    wLabel.textContent = wSlider.value;
+  }
+  wSlider.addEventListener("input", function(){
+    if (S.mode === "font") S.gap = +wSlider.value; else S.weight = +wSlider.value;
+    wLabel.textContent = wSlider.value;
+    paint();
+  });
+
+  function paint(){
+    syncW();
+    renderInto(elHero, 128);
+    Array.prototype.forEach.call(sizesWrap.querySelectorAll(".markbox"), function(b){
+      renderInto(b, +b.getAttribute("data-px"));
+    });
+    renderInto(elTab, 16);
+    renderInto(elHome, 56);
+    out.value = svgString();
+    var c = scheme();
+    specline.innerHTML = 'yarıçap <b>%'+S.radius+'</b> · boşluk <b>%'+S.pad+'</b> · ' +
+      (S.mode === "font" ? 'aralık <b>'+S.gap+'</b>' : 'kalınlık <b>'+S.weight+'</b>') +
+      ' · zemin <b>'+c.bg+'</b> · harf <b>'+c.fg+'</b>';
+    note.textContent = S.mode === "font"
+      ? "Logodaki harf: gerçek Figtree “t” ve alt tire, ikisi de taban çizgisinde. SVG metin taşıdığı için final asset’te harfi outline’a çevir (Figma’da Outline Stroke / Flatten) — yoksa fontu olmayan cihazda bozulur."
+      : "Geometrik mod kendi kendine yeter: font gerekmez, 16px’te net kalır. Logodan uzaklaşır, sadece çok küçük boyut sorun olursa.";
+    save();
+  }
+
+  function bindRange(id, key, label){
+    var el = document.getElementById(id), lab = document.getElementById(label);
+    el.value = S[key]; lab.textContent = S[key];
+    el.addEventListener("input", function(){ S[key] = +el.value; lab.textContent = el.value; paint(); });
+  }
+  bindRange("c-radius","radius","v-radius");
+  bindRange("c-pad","pad","v-pad");
+
+  function bindSeg(id, key){
+    var wrap = document.getElementById(id);
+    Array.prototype.forEach.call(wrap.querySelectorAll("button"), function(b){
+      b.setAttribute("aria-pressed", String(b.getAttribute("data-val") === S[key]));
+      b.addEventListener("click", function(){
+        S[key] = b.getAttribute("data-val");
+        Array.prototype.forEach.call(wrap.querySelectorAll("button"), function(o){
+          o.setAttribute("aria-pressed", String(o === b));
+        });
+        paint();
+      });
+    });
+  }
+  bindSeg("c-content","content");
+  bindSeg("c-mode","mode");
+  bindSeg("c-uscore","uscore");
+
+  var schemeWrap = document.getElementById("c-scheme");
+  function buildSchemes(){
+    schemeWrap.innerHTML = "";
+    schemes().forEach(function(c){
+      var b = document.createElement("button");
+      b.type = "button"; b.title = c.name;
+      b.setAttribute("aria-label", c.name);
+      b.setAttribute("aria-pressed", String(c.id === S.scheme));
+      b.style.background = c.bg;
+      b.innerHTML = '<i style="background:'+c.fg+'"></i>';
+      b.addEventListener("click", function(){
+        S.scheme = c.id;
+        Array.prototype.forEach.call(schemeWrap.querySelectorAll("button"), function(o){
+          o.setAttribute("aria-pressed", String(o === b));
+        });
+        paint();
+      });
+      schemeWrap.appendChild(b);
+    });
+  }
+  buildSchemes();
+
+  /* Tema anahtarı — sayfa normalde okuyanın temasını izler; bu, her iki
+     varyantı da yerinde görebilmek için elle geçersiz kılar. */
+  var themeWrap = document.getElementById("c-theme");
+  var TMODE = "system";
+  try {
+    var st0 = localStorage.getItem("tutorla-theme-v1");
+    if (st0 === "light" || st0 === "dark" || st0 === "system") TMODE = st0;
+  } catch(e){}
+  function applyThemeMode(){
+    var el = document.documentElement;
+    if (TMODE === "system"){ el.removeAttribute("data-theme"); el.style.colorScheme = ""; }
+    else { el.setAttribute("data-theme", TMODE); el.style.colorScheme = TMODE; }
+    Array.prototype.forEach.call(themeWrap.querySelectorAll("button"), function(o){
+      o.setAttribute("aria-pressed", String(o.getAttribute("data-val") === TMODE));
+    });
+  }
+  Array.prototype.forEach.call(themeWrap.querySelectorAll("button"), function(b){
+    b.addEventListener("click", function(){
+      TMODE = b.getAttribute("data-val");
+      try { localStorage.setItem("tutorla-theme-v1", TMODE); } catch(e){}
+      applyThemeMode();
+      applyPalette();
+      paint();
+    });
+  });
+
+  var palWrap = document.getElementById("c-palette");
+  Array.prototype.forEach.call(palWrap.querySelectorAll("button"), function(b){
+    b.setAttribute("aria-pressed", String(b.getAttribute("data-val") === PID));
+    b.addEventListener("click", function(){
+      PID = b.getAttribute("data-val");
+      try { localStorage.setItem("tutorla-dir-v1", PID); } catch(e){}
+      Array.prototype.forEach.call(palWrap.querySelectorAll("button"), function(o){
+        o.setAttribute("aria-pressed", String(o === b));
+      });
+      applyPalette();
+      renderPaletteList();
+      buildSchemes();
+      paint();
+    });
+  });
+
+  function copyText(txt){
+    try {
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(txt).catch(function(){ legacy(txt); });
+        return true;
+      }
+    } catch(e){}
+    legacy(txt); return true;
+  }
+  function legacy(txt){
+    try {
+      var ta = document.createElement("textarea");
+      ta.value = txt; ta.style.position = "fixed"; ta.style.opacity = "0";
+      document.body.appendChild(ta); ta.select(); document.execCommand("copy");
+      document.body.removeChild(ta);
+    } catch(e){}
+  }
+
+  document.getElementById("copy-svg").addEventListener("click", function(){
+    var b = this;
+    copyText(out.value);
+    out.select();
+    b.textContent = "Kopyalandı";
+    setTimeout(function(){ b.textContent = "SVG’yi kopyala"; }, 1400);
+  });
+
+  applyThemeMode();
+  applyPalette();
+  renderPaletteList();
+  measure();
+  paint();
+
+  /* Font yüklendiğinde metrikleri yeniden ölç ve her şeyi tazele. */
+  if (document.fonts && document.fonts.ready){
+    var again = function(){ measure(); paint(); };
+    try {
+      Promise.all([
+        document.fonts.load('800 ' + EM + 'px Figtree'),
+        document.fonts.load('700 ' + EM + 'px Figtree')
+      ]).then(again, again);
+    } catch(e){}
+    document.fonts.ready.then(again, function(){});
+  }
+})();
+</script>
