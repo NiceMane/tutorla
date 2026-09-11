@@ -202,5 +202,29 @@
       "soon": "soon",
       "empty": "Start explaining the topic in your own words."
     }
+  },
+  "auth": {
+    "title": "Sign in",
+    "subtitle": "Your student is waiting.",
+    "titleSignup": "Create account",
+    "subtitleSignup": "Takes a few seconds.",
+    "email": "e-mail",
+    "password": "password",
+    "signIn": "Sign in",
+    "signUp": "Create account",
+    "toSignup": "No account? Create one",
+    "toSignin": "Already have an account? Sign in",
+    "google": "Continue with Google",
+    "or": "or",
+    "checkMail": "Check your e-mail",
+    "checkMailText": "Click the link we sent to confirm your account, then come back here.",
+    "working": "One moment…",
+    "signOut": "Sign out",
+    "errInvalid": "Wrong e-mail or password.",
+    "errShort": "Password must be at least 8 characters.",
+    "errEmail": "Enter a valid e-mail.",
+    "errGoogle": "Google sign-in isn't enabled on this project yet.",
+    "errGeneric": "Something went wrong — try again?",
+    "backHome": "Back to home"
   }
 }

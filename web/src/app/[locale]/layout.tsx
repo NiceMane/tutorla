@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
 import "../globals.css";
 
@@ -46,7 +47,7 @@ export default async function LocaleLayout({ children, params }: { children: Rea
       <body className="min-h-dvh">
         <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem disableTransitionOnChange>
           <NextIntlClientProvider>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
           </NextIntlClientProvider>
         </ThemeProvider>
       </body>

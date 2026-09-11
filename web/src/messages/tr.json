@@ -202,5 +202,29 @@
       "soon": "yakında",
       "empty": "Konuyu kendi cümlelerinle anlatmaya başla."
     }
+  },
+  "auth": {
+    "title": "Giriş yap",
+    "subtitle": "Öğrencin seni bekliyor.",
+    "titleSignup": "Hesap aç",
+    "subtitleSignup": "Birkaç saniye sürer.",
+    "email": "e-posta",
+    "password": "şifre",
+    "signIn": "Giriş yap",
+    "signUp": "Hesap aç",
+    "toSignup": "Hesabın yok mu? Hesap aç",
+    "toSignin": "Hesabın var mı? Giriş yap",
+    "google": "Google ile devam et",
+    "or": "ya da",
+    "checkMail": "E-postanı kontrol et",
+    "checkMailText": "Hesabını doğrulamak için gönderdiğimiz bağlantıya tıkla, sonra buraya dön.",
+    "working": "Bir saniye…",
+    "signOut": "Çıkış yap",
+    "errInvalid": "E-posta ya da şifre hatalı.",
+    "errShort": "Şifre en az 8 karakter olmalı.",
+    "errEmail": "Geçerli bir e-posta gir.",
+    "errGoogle": "Google girişi bu projede henüz açık değil.",
+    "errGeneric": "Bir şeyler ters gitti, tekrar dener misin?",
+    "backHome": "Ana sayfaya dön"
   }
 }

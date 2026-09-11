@@ -1,0 +1,93 @@
+"use client";
+/* Oturum durumu. RLS zaten veritabanında koruyor; buradaki iş kullanıcıyı
+   doğru ekrana yönlendirmek ve kim olduğunu göstermek. */
+import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import type { Session, User } from "@supabase/supabase-js";
+import { getSupabase, supabaseConfigured } from "@/lib/supabase";
+
+export type AuthError = "invalid" | "short" | "email" | "google" | "generic";
+
+type AuthState = {
+  ready: boolean;
+  user: User | null;
+  /* Supabase yapılandırılmamışsa uygulama tarayıcı deposuyla çalışır,
+     giriş ekranı da devre dışı kalır. */
+  enabled: boolean;
+  signIn(email: string, password: string): Promise<AuthError | null>;
+  signUp(email: string, password: string): Promise<AuthError | "confirm" | null>;
+  signInWithGoogle(redirectTo: string): Promise<AuthError | null>;
+  signOut(): Promise<void>;
+};
+
+const Ctx = createContext<AuthState | null>(null);
+
+function classify(message: string): AuthError {
+  const m = message.toLowerCase();
+  if (m.includes("invalid login") || m.includes("invalid credentials")) return "invalid";
+  if (m.includes("password") && m.includes("least")) return "short";
+  if (m.includes("email")) return "email";
+  if (m.includes("provider") || m.includes("not enabled")) return "google";
+  return "generic";
+}
+
+export function AuthProvider({ children }: { children: ReactNode }) {
+  const enabled = supabaseConfigured;
+  const [ready, setReady] = useState(!enabled);
+  const [session, setSession] = useState<Session | null>(null);
+
+  useEffect(() => {
+    if (!enabled) return;
+    const sb = getSupabase();
+    let alive = true;
+    sb.auth.getSession().then(({ data }) => {
+      if (!alive) return;
+      setSession(data.session);
+      setReady(true);
+    });
+    const { data: sub } = sb.auth.onAuthStateChange((_e, s) => {
+      setSession(s);
+      setReady(true);
+    });
+    return () => {
+      alive = false;
+      sub.subscription.unsubscribe();
+    };
+  }, [enabled]);
+
+  const value = useMemo<AuthState>(
+    () => ({
+      ready,
+      user: session?.user ?? null,
+      enabled,
+      async signIn(email, password) {
+        const { error } = await getSupabase().auth.signInWithPassword({ email, password });
+        return error ? classify(error.message) : null;
+      },
+      async signUp(email, password) {
+        const { data, error } = await getSupabase().auth.signUp({ email, password });
+        if (error) return classify(error.message);
+        /* Oturum gelmediyse e-posta doğrulaması bekleniyor demektir */
+        return data.session ? null : "confirm";
+      },
+      async signInWithGoogle(redirectTo) {
+        const { error } = await getSupabase().auth.signInWithOAuth({
+          provider: "google",
+          options: { redirectTo },
+        });
+        return error ? classify(error.message) : null;
+      },
+      async signOut() {
+        await getSupabase().auth.signOut();
+      },
+    }),
+    [ready, session, enabled],
+  );
+
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
+}
+
+export function useAuth(): AuthState {
+  const v = useContext(Ctx);
+  if (!v) throw new Error("useAuth, AuthProvider içinde çağrılmalı");
+  return v;
+}

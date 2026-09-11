@@ -4,7 +4,7 @@ Kullanıcının bir konuyu yapay zekâya **anlatarak** öğrendiği eğitim uygu
 
 > Bir konuyu bilmenin testi, onu birine anlatabilmektir.
 
-**Durum:** Marka net, landing page yayına hazır, uygulama iskeleti çalışıyor. Yapay zekâ ve giriş ekranları bekliyor.
+**Durum:** Marka net · landing page hazır · uygulama giriş dahil çalışıyor · yapay zekâ bekliyor.
 **Ekip:** 2 kişi · Claude Code (Max) · günde ~3 saat
 **Hedef:** ~2,5–3 haftada web MVP
 
@@ -89,13 +89,24 @@ NEXT_PUBLIC_DEV_PASSWORD=...     # geçici
 
 Değişkenler yoksa uygulama tarayıcı deposuna düşer ve yine çalışır (`src/lib/repo/index.ts`).
 
-### Auth — açık iş
+### Giriş
 
-RLS gerçek bir `auth.uid()` istiyor, ama giriş ekranları henüz yok. Köprü olarak tek bir
-geliştirme hesabı kullanılıyor ve **şifresi tarayıcı paketine giriyor** — yayına çıkmadan önce
-mutlaka kaldırılmalı. Daha temizi: Supabase panelinde
-`Authentication → Sign In / Providers → Anonymous sign-ins` açılırsa her cihaz kendi hesabını alır;
-kod bunu zaten destekliyor (`src/lib/supabase.ts`).
+`/giris` — e-posta + şifre ve Google ile giriş. `/app` altındaki her şey `RequireAuth` ile korunuyor;
+oturum yoksa girişe yönlendiriyor. Asıl güvenlik sınırı yine RLS, bu katman yalnızca kullanıcıyı
+boş ekranla baş başa bırakmamak için.
+
+Tarayıcı paketinde artık hiçbir şifre yok; geçici otomatik giriş kaldırıldı.
+
+**İki dashboard ayarı gerekiyor:**
+
+1. **Google girişi** — Google Cloud'da bir OAuth istemcisi açıp Supabase'de
+   `Authentication → Sign In / Providers → Google` altına anahtarları girmek gerek.
+   Yapılmadan düğme "Google girişi bu projede henüz açık değil" der.
+2. **E-posta onayı** — yeni kayıtlarda Supabase doğrulama e-postası bekliyor, kullanıcı
+   linke tıklayana kadar giremiyor (arayüz bunu "E-postanı kontrol et" ekranıyla gösteriyor).
+   Geliştirirken kapatmak için `Authentication → Sign In / Providers → Email → Confirm email`.
+   Yayında kendi SMTP'nizi bağlamak gerekiyor — Supabase'in yerleşik e-postası saatte birkaç
+   mesajla sınırlı.
 
 `brand/marka-dosyasi.html` interaktif: üç marka yönü arasında geçiş yapar, tema anahtarı taşır ve içinde favicon/küçük logo atölyesi var (ayarları değiştir, SVG'yi kopyala).
 
@@ -135,7 +146,7 @@ Model stratejisi: Haiku ile başla, gerektikçe Sonnet'e geç. Ürünün kalbi p
 - [x] Landing page — `web/`, iki dil, açık/koyu tema
 - [x] Veritabanı şeması ve RLS — Supabase `tutorla`
 - [x] Uygulama iskeleti — panel + seans ekranı, çalışır durumda
-- [ ] **Auth** — e-posta + Google; şu an geçici geliştirme hesabı var, şifresi tarayıcıya giriyor
+- [x] **Giriş ekranları** — e-posta + şifre çalışıyor; Google için dashboard ayarı gerekiyor
 - [ ] **Claude API** — persona prompt'u ve `ClaudeEngine`
 - [ ] `tutorla.com` / `.app` / `.co` domain müsaitliği
 - [ ] TÜRKPATENT'te "Tutorla" sorgusu ve başvuru

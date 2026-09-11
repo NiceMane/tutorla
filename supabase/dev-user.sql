@@ -1,17 +1,19 @@
 -- GEÇİCİ — migration DEĞİL, bilerek migrations/ dışında.
 --
--- Auth ekranları (e-posta + Google) henüz yazılmadı, ama RLS gerçek bir auth.uid()
--- istiyor. Uygulamanın güvenliği gevşetmeden çalışabilmesi için tek bir geliştirme
--- hesabı açıyoruz. Auth geldiğinde bu kullanıcı silinecek:
+-- Geliştirme sırasında elle kullanabileceğiniz bir hesap. Giriş ekranı (/giris)
+-- yazıldıktan sonra bu artık "otomatik giriş" değil — sadece normal bir hesap,
+-- giriş formuna yazarak kullanılıyor. İhtiyaç kalmayınca silinebilir:
 --   delete from auth.users where email = 'dev@tutorla.app';
 --
 -- Daha temiz alternatif: Supabase panelinde
 --   Authentication → Sign In / Providers → Anonymous sign-ins
 -- açılırsa her cihaz kendi hesabını alır ve bu dosyaya gerek kalmaz.
 --
--- ŞİFRE BURADA DEĞİL. Aşağıdaki DEGISTIR_BENI yerine kendi şifreni yaz ve
--- aynısını web/.env.local içindeki NEXT_PUBLIC_DEV_PASSWORD'a koy.
--- (Şifreyi depoya yazmıyoruz; .env.local zaten git dışında.)
+-- ŞİFRE BURADA DEĞİL: DEGISTIR_BENI yerine kendi şifreni yaz.
+-- Şifre depoya yazılmıyor; giriş formuna elle girilir.
+--
+-- Not: bu yol auth.users'a doğrudan yazdığı için e-posta onayını atlar.
+-- Normal kullanıcılar /giris üzerinden kaydolur ve doğrulama e-postası alır.
 
 do $$
 declare uid uuid := gen_random_uuid();

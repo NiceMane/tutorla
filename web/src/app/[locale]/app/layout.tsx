@@ -1,5 +1,6 @@
 import { setRequestLocale } from "next-intl/server";
 import { AppProvider } from "@/lib/store";
+import { RequireAuth } from "@/components/auth/RequireAuth";
 
 /* Uygulama kabuğu: pazarlama sayfasının navbar/footer'ı burada yok. */
 export default async function AppLayout({
@@ -11,5 +12,9 @@ export default async function AppLayout({
 }) {
   const { locale } = await params;
   setRequestLocale(locale);
-  return <AppProvider>{children}</AppProvider>;
+  return (
+    <RequireAuth>
+      <AppProvider>{children}</AppProvider>
+    </RequireAuth>
+  );
 }

@@ -1,7 +1,7 @@
 # Tutorla — Proje Dosyası
 
 **Sürüm:** 1.1 · 11 Eylül 2026
-**Durum:** Marka net · landing page hazır · uygulama iskeleti çalışıyor · yapay zekâ ve giriş ekranları bekliyor
+**Durum:** Marka net · landing page hazır · uygulama giriş dahil çalışıyor · yapay zekâ bekliyor
 **Ekip:** 2 kişi · Claude Code (Max üyelik) · günde ~3 saat
 
 ---
@@ -298,7 +298,9 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
 
 **Teknik**
-- [ ] **Giriş ekranları** — e-posta + Google. Şu an geçici bir geliştirme hesabı kullanılıyor ve **şifresi tarayıcı paketine giriyor**; yayına çıkmadan kaldırılmalı. Alternatif: Supabase panelinde anonim girişi aç.
+- [x] **Giriş ekranları** — `/giris`, e-posta + şifre çalışıyor, `/app` korumalı, çıkış var. Tarayıcıda şifre kalmadı.
+- [ ] Google girişi — Google Cloud'da OAuth istemcisi + Supabase'de sağlayıcı ayarı (kod hazır)
+- [ ] E-posta onayı / SMTP — yeni kayıtlar doğrulama bekliyor; yayında kendi SMTP'niz gerekli
 - [ ] Vercel'e deploy ve domain bağlama
 - [ ] Mobilde sol konu listesi (anlayış haritası mobilde açılır panel olarak çözüldü)
 

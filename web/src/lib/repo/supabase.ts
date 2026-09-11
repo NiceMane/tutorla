@@ -1,7 +1,7 @@
 "use client";
 /* Supabase veri katmanı. Metotlar local.ts ile aynı sözleşmeyi uygular;
    fark yalnızca verinin nereden geldiği. */
-import { ensureSession, getSupabase } from "@/lib/supabase";
+import { getSupabase } from "@/lib/supabase";
 import type {
   Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole,
   Persona, PersonaCode, Session, SessionStatus, Subject, Topic, TopicProgress,
@@ -17,8 +17,9 @@ export class SupabaseRepo implements Repo {
   private curriculum: Curriculum | null = null;
   private personaByCode = new Map<PersonaCode, string>();
 
+  /* Oturum açma işi AuthProvider'da; buraya gelindiğinde kullanıcı girmiş olur
+     (uygulama rotaları RequireAuth ile korunuyor). */
   private async sb() {
-    await ensureSession();
     return getSupabase();
   }
 
