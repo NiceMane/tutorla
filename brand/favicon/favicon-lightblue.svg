@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="512" height="512" role="img" aria-label="Tutorla">
+  <title>Tutorla — gömlek mavisi</title>
+  <rect width="100" height="100" rx="24" fill="#4E9BB5"/>
+  <g transform="translate(17.100,74.159) scale(0.75029)" fill="#16303A">
+    <path d="M26.56 1.2Q17.74 1.2 13.36 -3.05Q8.98 -7.3 8.98 -15.2V-36.9H1.2V-50H8.98V-65.6H24.58V-50H36V-36.9H24.58V-19.12Q24.58 -16.08 25.68 -14.67Q26.78 -13.26 29.12 -13.26Q30 -13.26 31.19 -13.73Q32.38 -14.2 33.38 -14.9L38.76 -3.46Q36.38 -1.54 33.06 -0.17Q29.74 1.2 26.56 1.2Z"/>
+    <path d="M46.5 0V-13.14H86.5V0Z"/>
+  </g>
+</svg>
