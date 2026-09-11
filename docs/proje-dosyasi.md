@@ -1,7 +1,7 @@
 # Tutorla — Proje Dosyası
 
-**Sürüm:** 1.0 · 9 Eylül 2026
-**Durum:** Marka ve konsept netleşti, MVP geliştirmesi başlamadı
+**Sürüm:** 1.1 · 11 Eylül 2026
+**Durum:** Marka net · landing page hazır · uygulama iskeleti çalışıyor · yapay zekâ ve giriş ekranları bekliyor
 **Ekip:** 2 kişi · Claude Code (Max üyelik) · günde ~3 saat
 
 ---
@@ -107,11 +107,12 @@ Sol panelde konu listesi ve her konunun yüzdesi tutulur (Limit 100 · Türev ta
 
 ---
 
-## 7. Marka kimliği — yön `1c · Laboratuvar`
+## 7. Marka kimliği — yön `Mesai`
 
-Üç yön çalışıldı (`1a` Kütüphane — sıcak kâğıt/kehribar, `1b`, `1c` Laboratuvar). **Karar: 1c.**
+Önce `1c · Laboratuvar` (petrol yeşili) seçilmişti; sonra **`Mesai` yönüne geçildi** ve karar bu.
+JJK/Nanami esinli: orman yeşili + kum zemin, derin gömlek mavisi ve kavrulmuş amber.
 
-**Karakter:** Sakin petrol yeşili, hafif italik etiketler. Odaklı ve bilimsel, ama yumuşak. Klinik mavi-beyaz edtech'ten uzak; "çalışma masası" hissi veren, ciddi ama soğuk olmayan bir dil.
+**Karakter:** Kum rengi kâğıt üstünde orman yeşili paneller, derin gömlek mavisi vurgular. Odaklı ve sakin, "mesai" disiplini taşıyan bir dil. Klinik mavi-beyaz edtech'ten uzak.
 
 **Ana slogan:**
 > Bir konuyu bilmenin testi, onu birine anlatabilmektir.
@@ -127,27 +128,28 @@ Ton kuralları: AI asla üstten bakmaz, asla doğrudan öğretmez, cümleleri k�
 
 ## 8. Görsel sistem
 
-### 8.1 Renk paleti
+### 8.1 Renk paleti — `Mesai`
 
-| Rol | oklch | HEX |
-|---|---|---|
-| Ana metin / mürekkep | `oklch(22% 0.03 190)` | `#071F1E` |
-| Koyu panel (sidebar) | `oklch(24% 0.04 190)` | `#012523` |
-| Koyu panel aktif satır | `oklch(32% 0.04 190)` | `#173937` |
-| **Primary — petrol yeşili** | `oklch(55% 0.11 170)` | `#008668` |
-| Primary açık (koyu zeminde) | `oklch(70% 0.11 170)` | `#4AB494` |
-| **Accent — sıcak turuncu** (uyarı/boşluk) | `oklch(55% 0.11 50)` | `#A45C31` |
-| Accent açık (koyu zeminde) | `oklch(75% 0.11 50)` | `#E6996D` |
-| Yüzey tint | `oklch(93% 0.02 170)` | `#DCECE6` |
-| Arka plan | `oklch(99% 0.005 170)` | `#F9FDFB` |
-| Panel arka planı | `oklch(97% 0.01 170)` | `#EFF7F4` |
-| Kenarlık | `oklch(87% 0.02 170)` | `#C8D9D2` |
-| İkincil metin | `oklch(45% 0.03 190)` | `#425B59` |
-| Etiket / soluk metin | `oklch(50% 0.03 190)` | `#506967` |
-| Koyu zeminde metin | `oklch(92% 0.02 170)` | `#D8E9E2` |
-| Koyu zeminde soluk metin | `oklch(72% 0.03 190)` | `#90ABA9` |
+| Rol | HEX |
+|---|---|
+| Ana metin / mürekkep | `#22271A` |
+| Koyu panel — orman | `#333F26` |
+| Koyu panel açık | `#45523A` |
+| **Primary — derin gömlek mavisi** | `#1F6E85` |
+| Primary açık (koyu zeminde) | `#8FC4D6` |
+| **Accent — kavrulmuş amber** (uyarı/boşluk) | `#9A5615` |
+| Accent açık (koyu zeminde) | `#E0A55A` |
+| Parıltı | `#4E9BB5` |
+| Kum tint | `#E3DECB` |
+| Arka plan | `#F8F5EC` |
+| Panel arka planı | `#F0ECDF` |
+| Kenarlık | `#CFC8B4` |
+| İkincil metin | `#4C513E` |
+| Koyu zeminde metin | `#EAE6D3` |
 
-**Kullanım kuralı:** Petrol yeşili = ilerleme, doğru, aktif. Turuncu = boşluk, eksik kavram, dikkat — asla "yanlış/kırmızı" tonunda değil, davetkâr bir uyarı. Turuncu ekranda nadir görünmeli ki anlamı korunsun.
+**Kullanım kuralı:** Derin mavi = ilerleme, doğru, aktif. Amber = boşluk, eksik kavram, dikkat — asla "yanlış/kırmızı" tonunda değil, davetkâr bir uyarı. Amber ekranda nadir görünmeli ki anlamı korunsun.
+
+Önceki petrol paleti (`1c`) `brand/marka-dosyasi.html` içinde duruyor; dosyanın varsayılanı hâlâ petrol, `Mesai · deneysel` düğmesiyle aktif yöne geçiliyor.
 
 ### 8.2 Tipografi
 
@@ -159,7 +161,9 @@ Ton kuralları: AI asla üstten bakmaz, asla doğrudan öğretmez, cümleleri k�
 
 Newsreader italik, arayüzün "laboratuvar defteri" hissini veren imza öğesi — sadece etiketlerde kullanılır, gövde metninde asla.
 
-Türkçe karakter desteği (ı, ş, ğ, ü, ö, ç) her iki fontta da doğrulanmalı.
+**Türkçe karakter kontrolü yapıldı:** `ı İ ş Ş ğ Ğ ü Ü ö Ö ç Ç` dört dosyada da tam (Figtree ve Newsreader, düz + italik). Tipografik tırnak ve tireler de sağlam.
+
+**Bulunan eksik:** Hiçbirinde `✓` `✕` `●` glifi yok; bu karakterler kullanılırsa sistem fontuna düşer. Uygulamada onay/çarpı işaretleri bu yüzden inline SVG olarak çiziliyor. `₺` Figtree'de yok, Newsreader'da var — fiyat TL gösterilecekse dikkat.
 
 ### 8.3 Form dili
 
@@ -174,8 +178,13 @@ Türkçe karakter desteği (ı, ş, ğ, ü, ö, ç) her iki fontta da doğrulanm
 
 Alt tire, imleç/terminal çağrışımıyla "yazmaya hazır, anlat" davetini taşıyor — markanın en ayırt edici öğesi.
 
-**Favicon ve küçük logo (karar):**
-Kenarları yumuşatılmış bir kare içinde, logonun **`t`** harfi ve sondaki **`_`** alt tiresi. Petrol yeşili zemin üzerine açık renk, ya da açık zemin üzerine petrol yeşili — her iki varyant da üretilmeli (koyu/açık tema, App Store, tarayıcı sekmesi).
+**Favicon ve küçük logo — üretildi:** `brand/favicon/`
+
+Yumuşatılmış kare içinde logonun `t` harfi ve sondaki `_` alt tiresi, ikisi aynı renkte. Dört şema (orman, derin mavi, kum, gömlek mavisi) + maskelenebilir uygulama ikonu. Yarıçap %24, iç boşluk %18, `t`↔`_` aralığı 8 birim.
+
+Harfler Figtree ExtraBold gliflerinden **outline'a çevrilmiş path** olarak gömülü — font bağımlılığı yok. Ölçüler ve gerekçeler `brand/favicon/README.md` içinde.
+
+**Bilinen sınır:** 16 px'te alt tire ~1.6 piksele düşer ve tarayıcı yarı saydam çizer. Sekmede netlik şartsa iç boşluğu %12'ye çeken ayrı bir küçük boy varyantı ya da elde ayarlanmış `.ico` gerekir.
 
 ### 8.5 Maskotlar
 
@@ -207,6 +216,12 @@ Tasarlanacak diğer ekranlar: onboarding/karşılama · konu seçimi · oturum s
 ## 10. Teknik plan
 
 **Yığın:** Next.js / React (frontend) · Supabase (auth + veritabanı) · Claude API (backend'de) · Vercel (hosting).
+
+**Kurulan (11 Eylül 2026):** Next.js 16 · React 19 · Tailwind v4 · TypeScript · next-intl (tr/en) · next-themes · GSAP + Three.js (landing hero). Supabase projesi `tutorla`, ref `bupgkfzkuanzysdpteiy`, eu-central-1, Postgres 17.
+
+**Veri modeli:** `exams → subjects → topics → concepts` müfredat ağacı; `sessions / messages / gaps / concept_states` kullanıcı verisi; `waitlist` erken erişim. İlerleme yüzdesi saklanmaz, `topic_progress` görünümünde türetilir. RLS veritabanının içinde zorlanır.
+
+**Yapay zekâ tek arayüzün arkasında:** `web/src/lib/engine/`. Şu an `ScriptedEngine` (elle yazılmış kurallar) devrede ve arayüzde `senaryolu öğrenci` rozetiyle işaretli; `ClaudeEngine` geldiğinde `engine/index.ts` içinde tek satır değişecek. **Model eğitmek gerekmiyor** — API'ye istek atılıyor.
 
 **İlk sürüm web MVP** — mobil değil. Gerekçe: App Store / Play Store süreci hem yavaş hem maliyetli; talep görürse sonra eklenir.
 
@@ -268,22 +283,28 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [ ] @tutorla — Instagram, X, LinkedIn handle'ları
 
 **Tasarım**
-- [ ] Favicon üretimi (yuvarlatılmış kare + `t` + `_`, koyu/açık varyant)
-- [ ] Üç maskot karakterinin gerçek tasarımı
-- [ ] Onboarding, oturum sonu özet, profil ekranları
-- [ ] Figtree ve Newsreader'ın Türkçe karakter kontrolü
+- [x] Favicon üretimi — `brand/favicon/`, dört şema + maskelenebilir
+- [x] Figtree ve Newsreader'ın Türkçe karakter kontrolü — tam
+- [x] Logo kilitleri düzenlendi — `brand/logo/`
+- [ ] Üç maskot karakterinin gerçek tasarımı (arayüzde yer tutucu duruyor)
+- [ ] Onboarding ve profil/ilerleme ekranları
+- [ ] Logo kilitleriyle favicon arasındaki küçük renk farkının giderilmesi
 
 **Ürün**
-- [ ] Persona prompt'unun "gerçekten öğrenci gibi" seviyesine getirilmesi
-- [ ] "Anlayış haritası"nın nasıl üretileceği — konu başına kavram listesi elle mi, modelle mi?
-- [ ] Yüzde skorunun hesaplanma mantığı
-- [ ] Kapalı test için 5–10 gerçek öğrenci bulunması
+- [ ] **Persona prompt'u ve Claude entegrasyonu** — asıl iş burada
+- [x] Anlayış haritasının nasıl üretileceği — konu başına kavram listesi müfredatta elle tanımlı
+- [x] Yüzde skorunun hesaplanma mantığı — oturan kavram / toplam kavram, `topic_progress` görünümü
+- [ ] Kapalı test için 5–10 gerçek öğrenci
+- [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
+
+**Teknik**
+- [ ] **Giriş ekranları** — e-posta + Google. Şu an geçici bir geliştirme hesabı kullanılıyor ve **şifresi tarayıcı paketine giriyor**; yayına çıkmadan kaldırılmalı. Alternatif: Supabase panelinde anonim girişi aç.
+- [ ] Vercel'e deploy ve domain bağlama
+- [ ] Mobilde sol konu listesi (anlayış haritası mobilde açılır panel olarak çözüldü)
 
 **İş modeli**
 - [ ] Fiyatlandırma kararı (ücretsiz oturum kotası + abonelik?) — henüz konuşulmadı
-- [ ] Birim ekonomi: oturum başı API maliyeti vs. abonelik fiyatı
-
----
+- [ ] Birim ekonomi: oturum başına API maliyeti vs. abonelik fiyatı
 
 ## Kaynaklar
 
