@@ -5,7 +5,7 @@ import { createContext, useContext, useEffect, useMemo, useState, type ReactNode
 import type { Session, User } from "@supabase/supabase-js";
 import { getSupabase, supabaseConfigured } from "@/lib/supabase";
 
-export type AuthError = "invalid" | "short" | "email" | "google" | "generic";
+export type AuthError = "invalid" | "short" | "email" | "google" | "rate" | "taken" | "generic";
 
 type AuthState = {
   ready: boolean;
@@ -23,12 +23,26 @@ const Ctx = createContext<AuthState | null>(null);
 
 function classify(message: string): AuthError {
   const m = message.toLowerCase();
+  /* Sıra önemli: "email rate limit exceeded" mesajı "email" içerdiği için
+     hız sınırı kontrolü e-posta kontrolünden ÖNCE gelmeli. */
+  if (
+    m.includes("rate limit") ||
+    m.includes("too many") ||
+    /* Supabase'in kısıtlama mesajı bu kalıpta gelir ve "rate" kelimesi geçmez */
+    m.includes("for security purposes") ||
+    m.includes("you can only request this after")
+  )
+    return "rate";
+  if (m.includes("already registered") || m.includes("already been registered")) return "taken";
   if (m.includes("invalid login") || m.includes("invalid credentials")) return "invalid";
   if (m.includes("password") && m.includes("least")) return "short";
-  if (m.includes("email")) return "email";
   if (m.includes("provider") || m.includes("not enabled")) return "google";
+  if (m.includes("email")) return "email";
   return "generic";
 }
+
+/* Mesaj eşlemesini testten doğrulayabilmek için dışarı açıyoruz. */
+export const __classify = classify;
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const enabled = supabaseConfigured;

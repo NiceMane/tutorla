@@ -95,6 +95,13 @@ Değişkenler yoksa uygulama tarayıcı deposuna düşer ve yine çalışır (`s
 oturum yoksa girişe yönlendiriyor. Asıl güvenlik sınırı yine RLS, bu katman yalnızca kullanıcıyı
 boş ekranla baş başa bırakmamak için.
 
+Hesap açarken: şifre iki kez, canlı koşul listesi (en az 8 karakter · bir harf · bir rakam) ve
+göster/gizle düğmesi. Koşullar sağlanana ve iki alan eşleşene kadar düğme pasif. Girişte yalnızca
+uzunluk kontrolü var — eski hesaplar yeni kurallara takılmasın diye.
+
+Not: bu koşullar istemcide. Sunucu tarafında da zorlamak isterseniz Supabase panelinde
+`Authentication → Policies → Password requirements` ayarlanabilir.
+
 Tarayıcı paketinde artık hiçbir şifre yok; geçici otomatik giriş kaldırıldı.
 
 **İki dashboard ayarı gerekiyor:**

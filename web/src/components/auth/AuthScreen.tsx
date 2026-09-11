@@ -5,6 +5,8 @@ import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth, type AuthError } from "@/lib/auth";
 import { Wordmark } from "@/components/ui/Wordmark";
+import { PasswordField } from "./PasswordField";
+import { PasswordRules, passwordOk } from "./PasswordRules";
 import { ThemeToggle } from "@/components/nav/ThemeToggle";
 
 type Mode = "signin" | "signup";
@@ -19,9 +21,14 @@ export function AuthScreen() {
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [password2, setPassword2] = useState("");
+  const [showPw, setShowPw] = useState(false);
   const [busy, setBusy] = useState(false);
-  const [err, setErr] = useState<AuthError | null>(null);
+  const [err, setErr] = useState<AuthError | "mismatch" | "weak" | null>(null);
   const [confirm, setConfirm] = useState(false);
+
+  const signup = mode === "signup";
+  const mismatch = signup && password2.length > 0 && password !== password2;
 
   /* Zaten girmişse uygulamaya al */
   useEffect(() => {
@@ -33,10 +40,18 @@ export function AuthScreen() {
     if (busy) return;
     setErr(null);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErr("email");
-    if (password.length < 8) return setErr("short");
+
+    if (signup) {
+      /* Hesap açarken tam koşul seti; girişte yalnızca uzunluk — eski
+         hesaplar yeni kurallara takılmasın. */
+      if (!passwordOk(password)) return setErr("weak");
+      if (password !== password2) return setErr("mismatch");
+    } else if (password.length < 8) {
+      return setErr("short");
+    }
 
     setBusy(true);
-    const res = mode === "signin" ? await signIn(email.trim(), password) : await signUp(email.trim(), password);
+    const res = signup ? await signUp(email.trim(), password) : await signIn(email.trim(), password);
     setBusy(false);
     if (res === "confirm") return setConfirm(true);
     if (res) return setErr(res);
@@ -53,9 +68,11 @@ export function AuthScreen() {
     }
   }
 
-  const errText: Record<AuthError, string> = {
+  const errText: Record<AuthError | "mismatch" | "weak", string> = {
     invalid: t("errInvalid"), short: t("errShort"), email: t("errEmail"),
     google: t("errGoogle"), generic: t("errGeneric"),
+    rate: t("errRate"), taken: t("errTaken"),
+    mismatch: t("errMismatch"), weak: t("errWeak"),
   };
 
   return (
@@ -73,15 +90,15 @@ export function AuthScreen() {
             <div className="card p-7" role="status">
               <h1 className="text-[1.5rem]">{t("checkMail")}</h1>
               <p className="mt-3 text-[15px] leading-[1.55] text-ink-2">{t("checkMailText")}</p>
-              <button type="button" onClick={() => { setConfirm(false); setMode("signin"); }} className="btn btn-ghost mt-5">
+              <button type="button" onClick={() => { setConfirm(false); setMode("signin"); setPassword(""); setPassword2(""); }} className="btn btn-ghost mt-5">
                 {t("signIn")}
               </button>
             </div>
           ) : (
             <>
-              <p className="eyebrow">{mode === "signin" ? t("subtitle") : t("subtitleSignup")}</p>
+              <p className="eyebrow">{signup ? t("subtitleSignup") : t("subtitle")}</p>
               <h1 className="mt-2 text-[clamp(1.7rem,4vw,2.2rem)]">
-                {mode === "signin" ? t("title") : t("titleSignup")}
+                {signup ? t("titleSignup") : t("title")}
               </h1>
 
               {!enabled ? (
@@ -99,21 +116,42 @@ export function AuthScreen() {
                       placeholder="ad@ornek.com"
                     />
                   </label>
-                  <label className="flex flex-col gap-2">
-                    <span className="meta text-[14px]">{t("password")}</span>
-                    <input
-                      type="password" value={password} disabled={busy}
-                      autoComplete={mode === "signin" ? "current-password" : "new-password"}
-                      onChange={(e) => { setPassword(e.target.value); setErr(null); }}
-                      className="h-11 rounded-[var(--radius-ui)] border border-line-2 bg-surface px-3.5 outline-none focus:border-primary disabled:opacity-60"
-                      placeholder="••••••••"
-                    />
-                  </label>
+                  <PasswordField
+                    label={t("password")}
+                    value={password}
+                    onChange={(v) => { setPassword(v); setErr(null); }}
+                    visible={showPw}
+                    onToggleVisible={() => setShowPw((v) => !v)}
+                    autoComplete={signup ? "new-password" : "current-password"}
+                    disabled={busy}
+                    invalid={err === "weak"}
+                  />
+
+                  {signup && (
+                    <>
+                      <PasswordField
+                        label={t("passwordAgain")}
+                        value={password2}
+                        onChange={(v) => { setPassword2(v); setErr(null); }}
+                        visible={showPw}
+                        onToggleVisible={() => setShowPw((v) => !v)}
+                        autoComplete="new-password"
+                        disabled={busy}
+                        invalid={mismatch || err === "mismatch"}
+                      />
+                      {mismatch && <p className="-mt-2 text-[13.5px] text-accent">{t("errMismatch")}</p>}
+                      <PasswordRules password={password} />
+                    </>
+                  )}
 
                   {err && <p className="text-[14px] text-accent" role="alert">{errText[err]}</p>}
 
-                  <button type="submit" disabled={busy} className="btn btn-primary justify-center disabled:opacity-60">
-                    {busy ? t("working") : mode === "signin" ? t("signIn") : t("signUp")}
+                  <button
+                    type="submit"
+                    disabled={busy || (signup && (!passwordOk(password) || password !== password2))}
+                    className="btn btn-primary justify-center disabled:opacity-50"
+                  >
+                    {busy ? t("working") : signup ? t("signUp") : t("signIn")}
                   </button>
 
                   <div className="flex items-center gap-3 py-1">
@@ -134,10 +172,14 @@ export function AuthScreen() {
 
                   <button
                     type="button"
-                    onClick={() => { setMode(mode === "signin" ? "signup" : "signin"); setErr(null); }}
+                    onClick={() => {
+                      setMode(signup ? "signin" : "signup");
+                      setErr(null);
+                      setPassword2("");
+                    }}
                     className="meta mt-1 text-[14px] underline decoration-dotted underline-offset-4 hover:text-primary"
                   >
-                    {mode === "signin" ? t("toSignup") : t("toSignin")}
+                    {signup ? t("toSignin") : t("toSignup")}
                   </button>
                 </form>
               )}

@@ -225,6 +225,17 @@
     "errEmail": "Geçerli bir e-posta gir.",
     "errGoogle": "Google girişi bu projede henüz açık değil.",
     "errGeneric": "Bir şeyler ters gitti, tekrar dener misin?",
-    "backHome": "Ana sayfaya dön"
+    "backHome": "Ana sayfaya dön",
+    "passwordAgain": "şifre tekrar",
+    "showPassword": "Şifreyi göster",
+    "hidePassword": "Şifreyi gizle",
+    "rules": "şifre koşulları",
+    "ruleLength": "En az 8 karakter",
+    "ruleLetter": "En az bir harf",
+    "ruleDigit": "En az bir rakam",
+    "errMismatch": "Şifreler eşleşmiyor.",
+    "errWeak": "Şifre koşullarını sağlamıyor.",
+    "errRate": "Çok fazla deneme oldu. Birkaç dakika bekleyip tekrar dene.",
+    "errTaken": "Bu e-posta zaten kayıtlı. Giriş yapmayı dene."
   }
 }

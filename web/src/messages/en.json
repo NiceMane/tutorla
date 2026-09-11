@@ -225,6 +225,17 @@
     "errEmail": "Enter a valid e-mail.",
     "errGoogle": "Google sign-in isn't enabled on this project yet.",
     "errGeneric": "Something went wrong — try again?",
-    "backHome": "Back to home"
+    "backHome": "Back to home",
+    "passwordAgain": "repeat password",
+    "showPassword": "Show password",
+    "hidePassword": "Hide password",
+    "rules": "password requirements",
+    "ruleLength": "At least 8 characters",
+    "ruleLetter": "At least one letter",
+    "ruleDigit": "At least one number",
+    "errMismatch": "Passwords don't match.",
+    "errWeak": "Password doesn't meet the requirements.",
+    "errRate": "Too many attempts. Wait a few minutes and try again.",
+    "errTaken": "That e-mail is already registered. Try signing in."
   }
 }
