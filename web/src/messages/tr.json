@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "title": "Tutorla — Yapay zekâya sen öğret",
+    "description": "Bir konuyu bilmenin testi, onu birine anlatabilmektir. Tutorla'da öğrenci yapay zekâ, öğretmen sensin. YKS, TÜBİTAK ve SAT için."
+  },
+  "nav": {
+    "ters": "Neden ters",
+    "nasil": "Nasıl çalışır",
+    "personalar": "Personalar",
+    "neden": "Neden işe yarıyor",
+    "erken": "Erken erişim",
+    "cta": "Erken erişim",
+    "badge": "yapım aşamasında",
+    "menu": "Menü",
+    "close": "Kapat",
+    "themeLight": "Açık temaya geç",
+    "themeDark": "Koyu temaya geç",
+    "lang": "English"
+  },
+  "loader": {
+    "label": "yükleniyor"
+  },
+  "hero": {
+    "eyebrow": "sınava değil, anlamaya çalışıyorsun",
+    "title": "Yapay zekâya sen öğret.",
+    "lead": "Bir konuyu bilmenin testi, onu birine anlatabilmektir. Tutorla'da öğrenci yapay zekâ, öğretmen sensin.",
+    "cta": "Erken erişime katıl",
+    "secondary": "Nasıl çalışır?",
+    "bullet1": "Soru sorar, cevap vermez",
+    "bullet2": "Boşluğu görünür kılar",
+    "scroll": "kaydır",
+    "fallbackAlt": "Tutorla logosu"
+  },
+  "mock": {
+    "exam": "sınav",
+    "subject": "matematik",
+    "topics": {
+      "limit": "Limit",
+      "turev": "Türev tanımı",
+      "zincir": "Zincir kuralı",
+      "kapali": "Kapalı türev",
+      "integral": "İntegral"
+    },
+    "student": "öğrencin",
+    "persona": "meraklı · çok soru sorar",
+    "title": "Zincir kuralı",
+    "crumbs": "yks / matematik / türev · seans 03",
+    "ai1": "Türevi biraz biliyorum. Ama “zincir kuralı” ismi nereden geliyor? Zincirle ne alakası var?",
+    "me1": "İç içe fonksiyonları düşün: f(g(x)). Dıştaki fonksiyonun türevini alıp içtekinin türeviyle çarpıyorsun. Halkalar gibi birbirine bağlı.",
+    "ai2": "Tamam, halkalar güzel. Peki neden çarpıyoruz da toplamıyoruz? Bir örnekle gösterebilir misin?",
+    "gap": "boşluk: çarpımın nedeni açıklanmadı",
+    "placeholder": "Anlatmaya devam et…",
+    "tools": {
+      "write": "Yaz",
+      "talk": "Konuş",
+      "board": "Tahta",
+      "photo": "Fotoğraf",
+      "send": "⏎ gönder"
+    },
+    "map": "anlayış haritası",
+    "c1": "Tanım",
+    "c2": "Bileşke fonksiyon",
+    "c3": "Neden çarpım?",
+    "c4": "Örnek: sin(x²)",
+    "c5": "Sık yapılan hatalar",
+    "asked": "soru soruldu",
+    "settled": "kavram oturdu",
+    "noteLabel": "not —",
+    "note": "Öğrencin “neden” sorularına takılıyor. Sebep-sonuçla anlatmayı dene."
+  },
+  "ters": {
+    "eyebrow": "roller ters",
+    "title": "Bütün eğitim uygulamaları sana öğretir. Tutorla öğrenmek ister.",
+    "classicTitle": "Klasik",
+    "classic1": "Soru sor",
+    "classic2": "Cevabı oku",
+    "classic3": "“Anladım” san",
+    "tutorlaTitle": "Tutorla",
+    "t1": "Konuyu anlat",
+    "t2": "Öğrencin “neden” der",
+    "t3": "Tıkandığın yer görünür",
+    "quote": "Öğrenciler bir konuyu “anladım” sanır. Gerçek anlama, konuyu başkasına anlatmaya çalışınca ortaya çıkar — o an hangi adımın ezberlendiği belli olur.",
+    "gapNote": "Test çözmek boşluğu yakalar ama nedenini göstermez."
+  },
+  "marquee": {
+    "text": "anlatmaya devam et"
+  },
+  "nasil": {
+    "eyebrow": "nasıl çalışır",
+    "title": "Dört adımda bir seans",
+    "s1t": "Bağlamı seç",
+    "s1d": "Sınav modu, ders ve konu. YKS → matematik → türev → zincir kuralı.",
+    "s2t": "Öğrencini seç",
+    "s2d": "Meraklı, şüpheci ya da aceleci. Her biri seni farklı bir yerden zorlar.",
+    "s3t": "Anlat",
+    "s3d": "Yaz, konuş, tahtaya çiz ya da defterinin fotoğrafını yükle. Öğrencin dinler ve sorar.",
+    "s4t": "Boşluklarını gör",
+    "s4d": "Anlayış haritası her kavramı işaretler. Seans notu sana nasıl anlattığını söyler.",
+    "examLabel": "sınav",
+    "subjectLabel": "ders",
+    "topicLabel": "konu",
+    "subjects": "Matematik · Fizik · Kimya",
+    "topic": "Zincir kuralı"
+  },
+  "personalar": {
+    "eyebrow": "üç öğrenci",
+    "title": "Öğrencini seç.",
+    "note": "Maskotlar çiziliyor — şimdilik yer tutucu.",
+    "placeholder": "maskot",
+    "p1n": "meraklı",
+    "p1t": "Çok soru sorar, “neden” der, derinleşmek ister.",
+    "p1q": "Hmm, çarpma kısmını anladım sanırım. Bir de neden işe yaradığını söylesen tam oturur.",
+    "p2n": "şüpheci",
+    "p2t": "İkna olmaz, karşı örnek arar, gerekçe ister.",
+    "p2q": "Bu her zaman geçerli mi? Bir karşı örnek bulsam ne olur?",
+    "p3n": "aceleci",
+    "p3t": "Hızlı geçmek ister, özet bekler; seni sadeleştirmeye zorlar.",
+    "p3q": "Tamam tamam, en kısa hâli ne? Üç cümlede anlat."
+  },
+  "neden": {
+    "eyebrow": "neden işe yarıyor",
+    "title": "Öğreterek öğreniriz.",
+    "c1t": "Feynman tekniği",
+    "c1d": "Bir şeyi basitçe anlatamıyorsan, henüz anlamamışsındır. Tutorla bunu her seansta test eder.",
+    "c2t": "Protégé etkisi",
+    "c2d": "Öğretmeye hazırlanan öğrenci, sınava hazırlanandan daha derin öğrenir. Araştırmalar bunu tekrar tekrar gösteriyor.",
+    "c3t": "Docendo discimus",
+    "c3d": "Seneca, iki bin yıl önce: öğreterek öğreniriz. Markanın çıkış noktası bu söz.",
+    "examsTitle": "Yerel müfredat, gerçek sınavlar",
+    "examsText": "Türkçe konuşan, YKS müfredatını bilen ve sana öğretmek yerine senden öğrenmek isteyen bir uygulama daha yok. Üçünün kesişimi boş — Tutorla oraya kuruluyor.",
+    "e1": "YKS",
+    "e1d": "ana kitle",
+    "e2": "TÜBİTAK",
+    "e2d": "olimpiyat",
+    "e3": "SAT",
+    "e3d": "yurt dışı"
+  },
+  "erken": {
+    "eyebrow": "erken erişim",
+    "title": "İlk öğrencilerden biri ol.",
+    "text": "Web sürümünü kapalı bir grupla test edeceğiz. Sınava hazırlanıyorsan ve ezberden rahatsızsan, seni arıyoruz.",
+    "email": "e-posta adresin",
+    "examLabel": "hangi sınav?",
+    "submit": "Listeye katıl",
+    "successTitle": "Kaydını aldık.",
+    "successText": "Kapalı test başlayınca haber vereceğiz.",
+    "invalid": "Geçerli bir e-posta gir.",
+    "honest": "Yapım aşamasında — ilk kapalı test 5–10 öğrenciyle.",
+    "already": "Zaten listedesin.",
+    "failed": "Kaydedilemedi, birazdan tekrar dener misin?",
+    "sending": "Gönderiliyor…"
+  },
+  "footer": {
+    "tagline": "Roller ters: öğrenci yapay zekâ, öğretmen sen.",
+    "rights": "© 2026 Tutorla. Tüm hakları saklıdır.",
+    "made": "İstanbul'da yapılıyor",
+    "sections": "bölümler",
+    "social": "sosyal"
+  },
+  "app": {
+    "nav": {
+      "panel": "Panel",
+      "back": "Panele dön",
+      "exit": "Seanstan çık"
+    },
+    "dash": {
+      "eyebrow": "panelin",
+      "title": "Bugün neyi anlatacaksın?",
+      "subtitle": "Bir konu seç, öğrencin seni bekliyor.",
+      "subjects": "dersler",
+      "start": "Anlatmaya başla",
+      "continue": "Devam et",
+      "notStarted": "—",
+      "concepts": "kavram",
+      "settled": "oturdu",
+      "recent": "son seanslar",
+      "noSessions": "Henüz seans yok. Bir konu seçip başla.",
+      "reset": "Verileri sıfırla",
+      "resetConfirm": "Tüm seanslar ve ilerleme silinecek. Emin misin?"
+    },
+    "session": {
+      "scripted": "senaryolu öğrenci",
+      "scriptedHint": "Yapay zekâ henüz bağlı değil. Öğrenci şimdilik elle yazılmış kurallarla çalışıyor.",
+      "placeholder": "Anlatmaya devam et…",
+      "send": "gönder",
+      "thinking": "yazıyor…",
+      "map": "anlayış haritası",
+      "asked": "soru soruldu",
+      "settled": "kavram oturdu",
+      "noteLabel": "not —",
+      "finish": "Seansı bitir",
+      "finished": "Seans bitti",
+      "again": "Yeniden anlat",
+      "student": "öğrencin",
+      "exam": "sınav",
+      "tools": {
+        "write": "Yaz",
+        "talk": "Konuş",
+        "board": "Tahta",
+        "photo": "Fotoğraf"
+      },
+      "soon": "yakında",
+      "empty": "Konuyu kendi cümlelerinle anlatmaya başla."
+    }
+  }
+}

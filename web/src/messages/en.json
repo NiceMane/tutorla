@@ -1,0 +1,206 @@
+{
+  "meta": {
+    "title": "Tutorla — Teach the AI",
+    "description": "The test of knowing something is being able to explain it. In Tutorla the AI is the student and you are the teacher. Built for YKS, TÜBİTAK and SAT."
+  },
+  "nav": {
+    "ters": "Why reversed",
+    "nasil": "How it works",
+    "personalar": "Personas",
+    "neden": "Why it works",
+    "erken": "Early access",
+    "cta": "Early access",
+    "badge": "in the making",
+    "menu": "Menu",
+    "close": "Close",
+    "themeLight": "Switch to light theme",
+    "themeDark": "Switch to dark theme",
+    "lang": "Türkçe"
+  },
+  "loader": {
+    "label": "loading"
+  },
+  "hero": {
+    "eyebrow": "you're studying to understand, not to pass",
+    "title": "Teach the AI.",
+    "lead": "The test of knowing something is being able to explain it. In Tutorla the AI is the student — you are the teacher.",
+    "cta": "Join early access",
+    "secondary": "How it works",
+    "bullet1": "Asks questions, never answers",
+    "bullet2": "Makes the gap visible",
+    "scroll": "scroll",
+    "fallbackAlt": "Tutorla logo"
+  },
+  "mock": {
+    "exam": "exam",
+    "subject": "maths",
+    "topics": {
+      "limit": "Limits",
+      "turev": "Derivative",
+      "zincir": "Chain rule",
+      "kapali": "Implicit diff.",
+      "integral": "Integrals"
+    },
+    "student": "your student",
+    "persona": "curious · asks a lot",
+    "title": "Chain rule",
+    "crumbs": "yks / maths / derivatives · session 03",
+    "ai1": "I know a bit of differentiation. But where does the name “chain rule” come from? What's the chain?",
+    "me1": "Think of nested functions: f(g(x)). You take the derivative of the outer one and multiply by the derivative of the inner. Like links in a chain.",
+    "ai2": "Okay, links make sense. But why do we multiply instead of add? Can you show me with an example?",
+    "gap": "gap: why we multiply isn't explained",
+    "placeholder": "Keep explaining…",
+    "tools": {
+      "write": "Write",
+      "talk": "Talk",
+      "board": "Board",
+      "photo": "Photo",
+      "send": "⏎ send"
+    },
+    "map": "understanding map",
+    "c1": "Definition",
+    "c2": "Composite functions",
+    "c3": "Why multiply?",
+    "c4": "Example: sin(x²)",
+    "c5": "Common mistakes",
+    "asked": "questions asked",
+    "settled": "concepts settled",
+    "noteLabel": "note —",
+    "note": "Your student keeps getting stuck on “why”. Try explaining with cause and effect."
+  },
+  "ters": {
+    "eyebrow": "roles reversed",
+    "title": "Every learning app teaches you. Tutorla wants to learn.",
+    "classicTitle": "The usual",
+    "classic1": "Ask a question",
+    "classic2": "Read the answer",
+    "classic3": "Assume you got it",
+    "tutorlaTitle": "Tutorla",
+    "t1": "Explain the topic",
+    "t2": "Your student asks “why”",
+    "t3": "Where you're stuck becomes visible",
+    "quote": "Students assume they understood. Real understanding only shows up when you try to explain it to someone — that's when you find out which step you memorised.",
+    "gapNote": "Practice tests catch the gap but never show you why."
+  },
+  "marquee": {
+    "text": "keep explaining"
+  },
+  "nasil": {
+    "eyebrow": "how it works",
+    "title": "A session in four steps",
+    "s1t": "Pick the context",
+    "s1d": "Exam mode, subject, topic. YKS → maths → derivatives → chain rule.",
+    "s2t": "Pick your student",
+    "s2d": "Curious, sceptical or impatient. Each one pushes you from a different side.",
+    "s3t": "Explain",
+    "s3d": "Type, talk, draw on the board or upload a photo of your notebook. Your student listens and asks.",
+    "s4t": "See your gaps",
+    "s4d": "The understanding map marks every concept. The session note tells you how you explained.",
+    "examLabel": "exam",
+    "subjectLabel": "subject",
+    "topicLabel": "topic",
+    "subjects": "Maths · Physics · Chemistry",
+    "topic": "Chain rule"
+  },
+  "personalar": {
+    "eyebrow": "three students",
+    "title": "Pick your student.",
+    "note": "Mascots are being drawn — placeholders for now.",
+    "placeholder": "mascot",
+    "p1n": "curious",
+    "p1t": "Asks a lot, says “why”, wants to go deeper.",
+    "p1q": "Hmm, I think I got the multiplying part. If you told me why it works, it would really click.",
+    "p2n": "sceptical",
+    "p2t": "Isn't convinced, looks for counter-examples, wants reasons.",
+    "p2q": "Does this always hold? What if I find a counter-example?",
+    "p3n": "impatient",
+    "p3t": "Wants to move fast, expects a summary; forces you to simplify.",
+    "p3q": "Okay okay, what's the shortest version? Three sentences."
+  },
+  "neden": {
+    "eyebrow": "why it works",
+    "title": "We learn by teaching.",
+    "c1t": "The Feynman technique",
+    "c1d": "If you can't explain it simply, you don't understand it yet. Tutorla tests exactly that, every session.",
+    "c2t": "The protégé effect",
+    "c2d": "Students who prepare to teach learn more deeply than students who prepare for a test. The research keeps showing it.",
+    "c3t": "Docendo discimus",
+    "c3d": "Seneca, two thousand years ago: by teaching, we learn. That line is where the brand starts.",
+    "examsTitle": "Local curriculum, real exams",
+    "examsText": "There is no other app that speaks Turkish, knows the YKS curriculum, and wants to learn from you instead of teaching you. That intersection is empty — Tutorla is being built there.",
+    "e1": "YKS",
+    "e1d": "core audience",
+    "e2": "TÜBİTAK",
+    "e2d": "olympiad",
+    "e3": "SAT",
+    "e3d": "abroad"
+  },
+  "erken": {
+    "eyebrow": "early access",
+    "title": "Be one of the first students.",
+    "text": "We'll test the web version with a closed group. If you're preparing for an exam and tired of memorising, we're looking for you.",
+    "email": "your e-mail",
+    "examLabel": "which exam?",
+    "submit": "Join the list",
+    "successTitle": "Got it.",
+    "successText": "We'll let you know when the closed test starts.",
+    "invalid": "Enter a valid e-mail.",
+    "honest": "In the making — the first closed test runs with 5–10 students.",
+    "already": "You're already on the list.",
+    "failed": "Couldn't save that — try again in a moment?",
+    "sending": "Sending…"
+  },
+  "footer": {
+    "tagline": "Roles reversed: the AI is the student, you are the teacher.",
+    "rights": "© 2026 Tutorla. All rights reserved.",
+    "made": "Made in Istanbul",
+    "sections": "sections",
+    "social": "social"
+  },
+  "app": {
+    "nav": {
+      "panel": "Dashboard",
+      "back": "Back to dashboard",
+      "exit": "Leave session"
+    },
+    "dash": {
+      "eyebrow": "your dashboard",
+      "title": "What will you explain today?",
+      "subtitle": "Pick a topic — your student is waiting.",
+      "subjects": "subjects",
+      "start": "Start explaining",
+      "continue": "Continue",
+      "notStarted": "—",
+      "concepts": "concepts",
+      "settled": "settled",
+      "recent": "recent sessions",
+      "noSessions": "No sessions yet. Pick a topic and begin.",
+      "reset": "Reset data",
+      "resetConfirm": "All sessions and progress will be deleted. Are you sure?"
+    },
+    "session": {
+      "scripted": "scripted student",
+      "scriptedHint": "The AI isn't connected yet. For now the student runs on hand-written rules.",
+      "placeholder": "Keep explaining…",
+      "send": "send",
+      "thinking": "typing…",
+      "map": "understanding map",
+      "asked": "questions asked",
+      "settled": "concepts settled",
+      "noteLabel": "note —",
+      "finish": "End session",
+      "finished": "Session ended",
+      "again": "Explain again",
+      "student": "your student",
+      "exam": "exam",
+      "tools": {
+        "write": "Write",
+        "talk": "Talk",
+        "board": "Board",
+        "photo": "Photo"
+      },
+      "soon": "soon",
+      "empty": "Start explaining the topic in your own words."
+    }
+  }
+}
