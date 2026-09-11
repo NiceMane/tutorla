@@ -4,7 +4,9 @@ Kullanıcının bir konuyu yapay zekâya **anlatarak** öğrendiği eğitim uygu
 
 > Bir konuyu bilmenin testi, onu birine anlatabilmektir.
 
-**Durum:** Marka net · landing page hazır · uygulama giriş dahil çalışıyor · yapay zekâ bekliyor.
+**Durum:** Yayında — https://tutorla.vercel.app · giriş dahil çalışıyor · yapay zekâ bekliyor.
+
+**Depo:** github.com/NiceMane/tutorla → Vercel'e bağlı, `main`'e her push otomatik dağıtılıyor.
 **Ekip:** 2 kişi · Claude Code (Max) · günde ~3 saat
 **Hedef:** ~2,5–3 haftada web MVP
 
@@ -37,6 +39,15 @@ cd web
 npm install
 npm run dev
 ```
+
+Ortam değişkenleri için `web/.env.example`'ı `web/.env.local`'a kopyalayıp Supabase panelinden
+(Project Settings → API) doldurun. Değişken yoksa uygulama tarayıcı deposuna düşer ve yine çalışır.
+
+### Dağıtım
+
+Vercel projesi `tutorla`, kök dizin `web`, GitHub deposuna bağlı — `main`'e push edince otomatik
+dağıtılıyor. Elle dağıtım için **depo kökünden** `npx vercel deploy --prod` (kök dizin ayarı `web`
+olduğu için `--cwd web` ile çalışmaz).
 
 Geliştirme sunucusu `http://localhost:3000` (İngilizce: `/en`). Prod build `npm run build`, lint `npx eslint src`.
 Komutların sonuna `#` ile yorum eklemeyin — zsh onu argüman olarak geçirir.
