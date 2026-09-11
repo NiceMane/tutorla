@@ -15,7 +15,8 @@
     "close": "Close",
     "themeLight": "Switch to light theme",
     "themeDark": "Switch to dark theme",
-    "lang": "Türkçe"
+    "lang": "Türkçe",
+    "login": "Sign in"
   },
   "loader": {
     "label": "loading"

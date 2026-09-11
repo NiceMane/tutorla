@@ -9,6 +9,7 @@ import type { Concept, ConceptStatus, Gap, Message } from "@/lib/domain";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { ThemeToggle } from "@/components/nav/ThemeToggle";
 import { UnderstandingMap } from "./UnderstandingMap";
+import { Collapse } from "@/components/ui/Collapse";
 
 export function SessionScreen({ sessionId }: { sessionId: string }) {
   const t = useTranslations("app.session");
@@ -224,7 +225,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
                 <path d="M6 9l6 6 6-6" />
               </svg>
             </button>
-            {mapOpen && (
+            <Collapse open={mapOpen}>
               <div className="border-t border-line px-[clamp(12px,2.5vw,20px)] py-3">
                 <UnderstandingMap
                   topicName={topic?.name ?? ""}
@@ -238,7 +239,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
                   showHeader={false}
                 />
               </div>
-            )}
+            </Collapse>
           </div>
 
           <div ref={feed} className="flex min-h-0 flex-1 flex-col gap-2.5 overflow-y-auto px-[clamp(12px,2.5vw,20px)] py-4 text-[14px]">

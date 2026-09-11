@@ -15,7 +15,8 @@
     "close": "Kapat",
     "themeLight": "Açık temaya geç",
     "themeDark": "Koyu temaya geç",
-    "lang": "English"
+    "lang": "English",
+    "login": "Giriş yap"
   },
   "loader": {
     "label": "yükleniyor"

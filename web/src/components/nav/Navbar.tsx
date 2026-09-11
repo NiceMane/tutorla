@@ -6,6 +6,8 @@ import { Wordmark } from "@/components/ui/Wordmark";
 import { ThemeToggle } from "./ThemeToggle";
 import { scrollToSection } from "@/lib/scrollTo";
 import { useScrolled } from "@/lib/hooks";
+import { Collapse } from "@/components/ui/Collapse";
+import { MenuIcon } from "@/components/ui/MenuIcon";
 
 export const SECTIONS = ["ters", "nasil", "personalar", "neden", "erken-erisim"] as const;
 const LABEL: Record<(typeof SECTIONS)[number], "ters" | "nasil" | "personalar" | "neden" | "erken"> = {
@@ -73,6 +75,12 @@ export function Navbar() {
             {locale === "tr" ? "EN" : "TR"}
           </Link>
           <ThemeToggle />
+          <Link
+            href="/giris"
+            className="hidden h-9 items-center rounded-[var(--radius-ui)] px-3 text-[14px] font-semibold text-ink-2 transition-colors hover:text-primary sm:inline-flex"
+          >
+            {t("login")}
+          </Link>
           <a href="#erken-erisim" onClick={go("erken-erisim")} className="btn btn-primary hidden h-9 px-4 text-[14px] sm:inline-flex">
             {t("cta")}
           </a>
@@ -83,26 +91,42 @@ export function Navbar() {
             aria-label={open ? t("close") : t("menu")}
             onClick={() => setOpen((o) => !o)}
           >
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden="true">
-              {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 7h16M4 12h16M4 17h16" />}
-            </svg>
+            <MenuIcon open={open} />
           </button>
         </div>
       </div>
 
       {/* mobil panel */}
-      <div className={`lg:hidden ${open ? "block" : "hidden"} border-t border-line bg-paper`}>
-        <nav className="container-x flex flex-col py-3" aria-label="mobile">
-          {SECTIONS.map((id) => (
-            <a key={id} href={`#${id}`} onClick={go(id)} className="border-b border-line py-3.5 text-[17px] font-semibold last:border-b-0">
+      <Collapse open={open} className="lg:hidden">
+        <nav className="container-x flex flex-col border-t border-line bg-paper py-3" aria-label="mobile">
+          {SECTIONS.map((id, i) => (
+            <a
+              key={id}
+              href={`#${id}`}
+              onClick={go(id)}
+              style={{ transitionDelay: open ? `${60 + i * 45}ms` : "0ms" }}
+              className={`border-b border-line py-3.5 text-[17px] font-semibold transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+                open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
+              }`}
+            >
               {t(LABEL[id])}
             </a>
           ))}
-          <a href="#erken-erisim" onClick={go("erken-erisim")} className="btn btn-primary mt-3 justify-center sm:hidden">
-            {t("cta")}
-          </a>
+          <div
+            style={{ transitionDelay: open ? `${60 + SECTIONS.length * 45}ms` : "0ms" }}
+            className={`mt-3 flex flex-col gap-2 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+              open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
+            }`}
+          >
+            <a href="#erken-erisim" onClick={go("erken-erisim")} className="btn btn-primary justify-center">
+              {t("cta")}
+            </a>
+            <Link href="/giris" onClick={() => setOpen(false)} className="btn btn-ghost justify-center">
+              {t("login")}
+            </Link>
+          </div>
         </nav>
-      </div>
+      </Collapse>
     </header>
   );
 }
