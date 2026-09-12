@@ -329,6 +329,10 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [x] Yüzde skorunun hesaplanma mantığı — oturan kavram / toplam kavram, `topic_progress` görünümü
 - [ ] Kapalı test için 5–10 gerçek öğrenci
 - [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
+- [x] Uygulama navbar'ı, profil, sınav seçimi (7 sınav türü), akış, Sokratik mod
+- [x] Öğrencinin kendi sınavını ekleyip müfredat yükleyebilmesi
+- [ ] Yüklenen müfredatın gerçekten işlenmesi — Claude'a bağlı
+- [ ] GIF araması için Giphy/Tenor anahtarı (NEXT_PUBLIC_GIPHY_KEY); yoksa bağlantı yapıştırma
 - [x] Öğretme davranışı sinyalleri — beş tür, kanıtıyla; panelde birikmiş kanıt
 - [ ] Davranış sinyallerinin Claude ile gerçek analize taşınması (şu an kalıp eşleşmesi)
 - [ ] Veli/öğretmen raporu — istenirse; ürünün ekseni değil

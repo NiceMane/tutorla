@@ -155,3 +155,18 @@
   transform: translateY(calc((1 - var(--q)) * 55vh)) scale(calc(0.9 + var(--q) * 0.1));
 }
 .hero-hint { opacity: calc(1 - var(--p, 0) * 6); }
+
+/* açılır kutu belirişi */
+@keyframes popIn {
+  from { opacity: 0; transform: translateY(4px) scale(.98); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* giriş / doğrulama ekranı geçişleri */
+@keyframes fadeUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+.anim-fade-up { animation: fadeUp .32s ease-out both; }
+.anim-fade-in { animation: fadeIn .28s ease-out both; }
+@media (prefers-reduced-motion: reduce) {
+  .anim-fade-up, .anim-fade-in { animation: none; }
+}

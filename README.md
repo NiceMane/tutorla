@@ -63,8 +63,24 @@ politikası yok — herkes kaydolabilir, kimse listeyi istemciden okuyamaz. List
 
 ## Uygulama (`/app`)
 
-`/app` panel — dersler, konular, yüzdeler. `/app/seans/[id]` seans ekranı — üç kolon:
-solda konu listesi, ortada sohbet, sağda anlayış haritası.
+Kalıcı navbar: **Derslerim · Sokratik · Akış · Profil**.
+
+| Rota | Ne |
+|---|---|
+| `/app` | Sınav seçimi — YKS hazır, diğerleri "yakında"; kendi sınavını ekleyebilirsin |
+| `/app/sinav/[code]` | O sınavın dersleri, konuları, yüzdeleri ve iki kanıt kartı |
+| `/app/seans/[id]` | Seans ekranı — üç kolon: konu listesi, sohbet, anlayış haritası |
+| `/app/sokratik` | Sokratik mod — ana modun tersi: o sorar, sen düşünürsün |
+| `/app/akis` | Akış — gönderi (görsel/GIF/emoji), yorum, yoruma yanıt, emoji tepkileri |
+| `/app/profil` | Profil — ad, kullanıcı adı, tanıtım, simge, sınav + özet istatistik |
+
+**İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
+`socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
+`src/lib/engine/` altında, seçim `getEngine(mode)` ile.
+
+**Kendi sınavını ekleme.** Listede olmayan bir sınav eklenip müfredat bilgisi yüklenebiliyor
+(`exam_documents` + `exam-docs` depolama kovası). Yapay zekâ bağlanana kadar yüklenenler
+**saklanıyor ama işlenmiyor** — arayüzde de böyle yazıyor.
 
 **Yapay zekâ henüz bağlı değil.** AI'a dokunan her şey `src/lib/engine/` altındaki tek arayüzün
 arkasında; şu an elle yazılmış kurallarla çalışan `ScriptedEngine` devrede ve arayüzde
@@ -76,7 +92,8 @@ Eğitim gerekmiyor — Claude API'ye istek, oturum başına ~$0.008 (Haiku).
 Supabase projesi: **`tutorla`** · ref `bupgkfzkuanzysdpteiy` · eu-central-1 · Postgres 17
 
 ```
-supabase/migrations/   şema, RLS, tetikleyici sertleştirmesi
+supabase/migrations/   şema, RLS, davranış anları, akış, profil, sınavlar
+supabase/storage.sql   depolama kovaları ve politikaları (elle uygulanır)
 supabase/seed.sql      müfredat — ÜRETİLMİŞ, kaynak web/src/lib/curriculum.ts
 supabase/dev-user.sql  GEÇİCİ geliştirme hesabı (auth gelince silinecek)
 ```

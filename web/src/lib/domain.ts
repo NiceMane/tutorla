@@ -6,6 +6,58 @@ export type MessageRole = "student" | "teacher"; // student = yapay zekâ, teach
 export type SessionStatus = "active" | "finished" | "abandoned";
 export type PersonaCode = "curious" | "sceptical" | "impatient";
 
+/* teach = kullanıcı anlatır, AI öğrenci (ürünün çekirdeği)
+   socratic = AI yönlendirici soru sorar, roller klasik */
+export type SessionMode = "teach" | "socratic";
+
+export type Profile = {
+  id: string;
+  displayName: string | null;
+  handle: string | null;
+  bio: string | null;
+  avatarEmoji: string;
+  examId: string | null;
+};
+
+export type MediaKind = "image" | "gif";
+
+export type PostMedia = { id: string; url: string; kind: MediaKind; position: number };
+
+export type Post = {
+  id: string;
+  authorId: string;
+  author: Profile | null;
+  body: string;
+  examId: string | null;
+  media: PostMedia[];
+  createdAt: string;
+  reactions: Record<string, number>;
+  myReactions: string[];
+  commentCount: number;
+};
+
+export type Comment = {
+  id: string;
+  postId: string;
+  parentId: string | null;
+  authorId: string;
+  author: Profile | null;
+  body: string;
+  gifUrl: string | null;
+  createdAt: string;
+  reactions: Record<string, number>;
+  myReactions: string[];
+};
+
+export type ExamDocument = {
+  id: string;
+  examId: string;
+  title: string;
+  notes: string | null;
+  fileUrl: string | null;
+  createdAt: string;
+};
+
 /* Öğretme davranışı sinyalleri — ürünün "not değil, davranış kanıtı" tarafı. */
 export type MomentKind = "persistence" | "causal" | "concrete" | "simplify" | "curiosity";
 export const MOMENT_KINDS: MomentKind[] = ["persistence", "causal", "concrete", "simplify", "curiosity"];
@@ -13,7 +65,17 @@ export const MOMENT_KINDS: MomentKind[] = ["persistence", "causal", "concrete", 
 export type Concept = { id: string; topicId: string; slug: string; name: string; position: number };
 export type Topic = { id: string; subjectId: string; slug: string; name: string; position: number };
 export type Subject = { id: string; examId: string; slug: string; name: string; position: number };
-export type Exam = { id: string; code: string; name: string; position: number };
+export type Exam = {
+  id: string;
+  code: string;
+  name: string;
+  description: string | null;
+  position: number;
+  /* İçeriği hazır mı. false ise arayüzde "yakında". */
+  active: boolean;
+  /* Öğrencinin kendi eklediği sınavlarda dolu, resmî sınavlarda null. */
+  createdBy: string | null;
+};
 
 export type Persona = {
   id: PersonaCode;
@@ -62,6 +124,7 @@ export type TeachingProfile = { kind: MomentKind; total: number; lastAt: string 
 
 export type Session = {
   id: string;
+  mode: SessionMode;
   topicId: string;
   personaId: PersonaCode;
   status: SessionStatus;

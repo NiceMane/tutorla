@@ -18,9 +18,10 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
   const tn = useTranslations("app.nav");
   const { ready, curriculum, personas, refresh } = useApp();
   const repo = useMemo(() => getRepo(), []);
-  const engine = useMemo(() => getEngine(), []);
-
   const [detail, setDetail] = useState<SessionDetail | null>(null);
+  const mode = detail?.session.mode ?? "teach";
+  const engine = useMemo(() => getEngine(mode), [mode]);
+
   const [missing, setMissing] = useState(false);
   const [draft, setDraft] = useState("");
   const [thinking, setThinking] = useState(false);
@@ -355,14 +356,16 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             asked={asked}
             note={detail?.session.note ?? null}
           />
+          {mode === "teach" && (
           <div className="flex flex-col gap-2 border-t border-line pt-4">
             <span className="meta text-[13.5px]">{t("moments")}</span>
             <TeachingEvidence counts={momentCounts} />
             <p className="meta mt-1 text-[12.5px] leading-[1.45]">{t("momentsHint")}</p>
           </div>
+          )}
           {/* İki katmanın ilişkisini bir cümleyle söyle: üstte ne öğrendiğin,
               altta nasıl öğrettiğin. Biri diğerinin yerine geçmiyor. */}
-          <p className="meta border-t border-line pt-3 text-[12.5px] leading-[1.45]">{t("twoLayers")}</p>
+          {mode === "teach" && <p className="meta border-t border-line pt-3 text-[12.5px] leading-[1.45]">{t("twoLayers")}</p>}
         </aside>
       </div>
     </div>

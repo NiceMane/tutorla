@@ -85,9 +85,9 @@ export function AuthScreen() {
       </header>
 
       <main className="grid place-items-center px-5 pb-16">
-        <div className="w-full max-w-[380px]">
+        <div className="w-full max-w-[380px] anim-fade-up">
           {confirm ? (
-            <div className="card p-7" role="status">
+            <div key="confirm" className="card p-7 anim-fade-up" role="status">
               <h1 className="text-[1.5rem]">{t("checkMail")}</h1>
               <p className="mt-3 text-[15px] leading-[1.55] text-ink-2">{t("checkMailText")}</p>
               <button type="button" onClick={() => { setConfirm(false); setMode("signin"); setPassword(""); setPassword2(""); }} className="btn btn-ghost mt-5">
@@ -95,7 +95,7 @@ export function AuthScreen() {
               </button>
             </div>
           ) : (
-            <>
+            <div key={mode} className="anim-fade-in">
               <p className="eyebrow">{signup ? t("subtitleSignup") : t("subtitle")}</p>
               <h1 className="mt-2 text-[clamp(1.7rem,4vw,2.2rem)]">
                 {signup ? t("titleSignup") : t("title")}
@@ -139,12 +139,12 @@ export function AuthScreen() {
                         disabled={busy}
                         invalid={mismatch || err === "mismatch"}
                       />
-                      {mismatch && <p className="-mt-2 text-[13.5px] text-accent">{t("errMismatch")}</p>}
+                      {mismatch && <p className="anim-fade-in -mt-2 text-[13.5px] text-accent">{t("errMismatch")}</p>}
                       <PasswordRules password={password} />
                     </>
                   )}
 
-                  {err && <p className="text-[14px] text-accent" role="alert">{errText[err]}</p>}
+                  {err && <p className="anim-fade-in text-[14px] text-accent" role="alert">{errText[err]}</p>}
 
                   <button
                     type="submit"
@@ -185,7 +185,7 @@ export function AuthScreen() {
               )}
 
               <Link href="/" className="meta mt-8 block text-[13.5px] hover:text-ink">← {t("backHome")}</Link>
-            </>
+            </div>
           )}
         </div>
       </main>

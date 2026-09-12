@@ -1,8 +1,10 @@
 /* Veri katmanı sınırı. Metotlar Supabase sorgularıyla birebir eşleşecek şekilde
    tasarlandı; bugünkü uygulaması tarayıcı deposu (local.ts), yarınki Supabase. */
+import type { SocialRepo } from "./social";
 import type {
   Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
-  LearningEvidence, Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
+  LearningEvidence, Persona, PersonaCode, Session, SessionMode, Subject,
+  TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 
 export type Curriculum = { subjects: Subject[]; topics: Topic[]; concepts: Concept[] };
@@ -15,7 +17,7 @@ export type SessionDetail = {
   states: ConceptState[];
 };
 
-export interface Repo {
+export interface Repo extends SocialRepo {
   readonly kind: "local" | "supabase";
 
   getCurriculum(): Promise<Curriculum>;
@@ -27,7 +29,7 @@ export interface Repo {
 
   listSessions(): Promise<Session[]>;
   getSession(id: string): Promise<SessionDetail | null>;
-  createSession(topicId: string, personaId: PersonaCode): Promise<Session>;
+  createSession(topicId: string, personaId: PersonaCode, mode?: SessionMode): Promise<Session>;
   finishSession(sessionId: string, note: string): Promise<void>;
 
   appendMessage(sessionId: string, role: MessageRole, content: string): Promise<Message>;

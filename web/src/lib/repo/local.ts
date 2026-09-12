@@ -4,10 +4,13 @@
    böylece Supabase'e geçiş satır satır eşleşir. */
 import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
-  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
-  LearningEvidence, Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
+  Comment, Concept, ConceptState, ConceptStatus, Exam, ExamDocument, Gap,
+  LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
+  Persona, PersonaCode, Post, Profile, Session, SessionMode,
+  Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
+import type { NewPost } from "./social";
 
 const KEY = "tutorla-app-v1";
 const EXAM_ID = EXAM.code;
@@ -37,6 +40,11 @@ function buildCurriculum(): Curriculum {
 const CUR = buildCurriculum();
 
 type Store = {
+  profile?: Profile;
+  exams: Exam[];
+  docs: ExamDocument[];
+  posts: Post[];
+  comments: Comment[];
   sessions: Session[];
   messages: Message[];
   gaps: Gap[];
@@ -44,7 +52,7 @@ type Store = {
   states: (ConceptState & { conceptId: string })[];
 };
 
-const empty: Store = { sessions: [], messages: [], gaps: [], moments: [], states: [] };
+const empty: Store = { exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [] };
 
 function read(): Store {
   if (typeof window === "undefined") return { ...empty };
@@ -53,6 +61,11 @@ function read(): Store {
     if (!raw) return { ...empty };
     const p = JSON.parse(raw) as Partial<Store>;
     return {
+      profile: p.profile,
+      exams: p.exams ?? [],
+      docs: p.docs ?? [],
+      posts: p.posts ?? [],
+      comments: p.comments ?? [],
       sessions: p.sessions ?? [],
       messages: p.messages ?? [],
       gaps: p.gaps ?? [],
@@ -135,10 +148,11 @@ export class LocalRepo implements Repo {
     };
   }
 
-  async createSession(topicId_: string, personaId: PersonaCode): Promise<Session> {
+  async createSession(topicId_: string, personaId: PersonaCode, mode: SessionMode = "teach"): Promise<Session> {
     const st = read();
     const session: Session = {
       id: uid(),
+      mode,
       topicId: topicId_,
       personaId,
       status: "active",
@@ -234,7 +248,124 @@ export class LocalRepo implements Repo {
     write(st);
   }
 
+  /* ---------------------------------------------------------- sosyal taraf
+     Tarayıcı deposunda akış tek kişiliktir; paylaşım ancak Supabase ile anlam
+     kazanır. Yine de çökmesin diye burada da çalışıyor. */
+
+  async getMyProfile(): Promise<Profile | null> {
+    const st = read();
+    return st.profile ?? { id: "local", displayName: "Sen", handle: null, bio: null, avatarEmoji: "🦉", examId: null };
+  }
+
+  async updateProfile(patch: Partial<Profile>): Promise<Profile> {
+    const st = read();
+    const next = { ...(await this.getMyProfile())!, ...patch } as Profile;
+    st.profile = next;
+    write(st);
+    return next;
+  }
+
+  async listExams(): Promise<Exam[]> {
+    const st = read();
+    return [
+      { id: EXAM_ID, code: EXAM.code, name: EXAM.name, description: null, position: 1, active: true, createdBy: null },
+      ...st.exams,
+    ];
+  }
+
+  async createExam(input: { code: string; name: string; description: string | null }): Promise<Exam> {
+    const st = read();
+    const exam: Exam = { id: uid(), ...input, position: 99, active: false, createdBy: "local" };
+    st.exams.push(exam);
+    write(st);
+    return exam;
+  }
+
+  async listExamDocuments(examId: string): Promise<ExamDocument[]> {
+    return read().docs.filter((d) => d.examId === examId);
+  }
+
+  async addExamDocument(input: { examId: string; title: string; notes: string | null }): Promise<ExamDocument> {
+    const st = read();
+    const doc: ExamDocument = { id: uid(), examId: input.examId, title: input.title, notes: input.notes, fileUrl: null, createdAt: new Date().toISOString() };
+    st.docs.push(doc);
+    write(st);
+    return doc;
+  }
+
+  async listPosts(): Promise<Post[]> {
+    return read().posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  }
+
+  async createPost(input: NewPost): Promise<Post> {
+    const st = read();
+    const me = (await this.getMyProfile())!;
+    const post: Post = {
+      id: uid(), authorId: me.id, author: me, body: input.body, examId: input.examId,
+      media: input.media.map((m, i) => ({ id: uid(), url: m.url, kind: m.kind, position: i })),
+      createdAt: new Date().toISOString(), reactions: {}, myReactions: [], commentCount: 0,
+    };
+    st.posts.push(post);
+    write(st);
+    return post;
+  }
+
+  async deletePost(id: string): Promise<void> {
+    const st = read();
+    st.posts = st.posts.filter((p) => p.id !== id);
+    st.comments = st.comments.filter((c) => c.postId !== id);
+    write(st);
+  }
+
+  async listComments(postId: string): Promise<Comment[]> {
+    return read().comments.filter((c) => c.postId === postId).sort((a, b) => a.createdAt.localeCompare(b.createdAt));
+  }
+
+  async addComment(input: { postId: string; parentId: string | null; body: string; gifUrl: string | null }): Promise<Comment> {
+    const st = read();
+    const me = (await this.getMyProfile())!;
+    const c: Comment = {
+      id: uid(), postId: input.postId, parentId: input.parentId, authorId: me.id, author: me,
+      body: input.body, gifUrl: input.gifUrl, createdAt: new Date().toISOString(), reactions: {}, myReactions: [],
+    };
+    st.comments.push(c);
+    const p = st.posts.find((x) => x.id === input.postId);
+    if (p) p.commentCount += 1;
+    write(st);
+    return c;
+  }
+
+  async deleteComment(id: string): Promise<void> {
+    const st = read();
+    st.comments = st.comments.filter((c) => c.id !== id);
+    write(st);
+  }
+
+  async toggleReaction(target: { postId?: string; commentId?: string }, emoji: string): Promise<void> {
+    const st = read();
+    const item = target.postId
+      ? st.posts.find((p) => p.id === target.postId)
+      : st.comments.find((c) => c.id === target.commentId);
+    if (!item) return;
+    const on = item.myReactions.includes(emoji);
+    item.myReactions = on ? item.myReactions.filter((e) => e !== emoji) : [...item.myReactions, emoji];
+    item.reactions = { ...item.reactions, [emoji]: Math.max(0, (item.reactions[emoji] ?? 0) + (on ? -1 : 1)) };
+    if (item.reactions[emoji] === 0) delete item.reactions[emoji];
+    write(st);
+  }
+
+  async uploadImage(file: File): Promise<{ url: string; kind: MediaKind }> {
+    /* Sunucu yok: dosyayı data URI olarak gömüyoruz. Yalnızca yerel geliştirme için. */
+    const url = await new Promise<string>((res, rej) => {
+      const r = new FileReader();
+      r.onload = () => res(String(r.result));
+      r.onerror = () => rej(r.error);
+      r.readAsDataURL(file);
+    });
+    return { url, kind: file.type === "image/gif" ? "gif" : "image" };
+  }
+
   async reset(): Promise<void> {
-    write({ sessions: [], messages: [], gaps: [], moments: [], states: [] });
+    write({ exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [] });
   }
 }
