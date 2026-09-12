@@ -8,6 +8,8 @@ export type MapProps = {
   topicName: string;
   concepts: Concept[];
   states: Record<string, ConceptStatus>;
+  /* Bir kez boşluk olup sonra oturan kavramlar — anlatarak kapatılanlar */
+  closed: Set<string>;
   targetId: string | null;
   percent: number;
   settled: number;
@@ -18,8 +20,9 @@ export type MapProps = {
 };
 
 /* Hem masaüstü sağ panelinde hem mobil açılır panelinde kullanılır. */
-export function UnderstandingMap({ topicName, concepts, states, targetId, percent, settled, asked, note, showHeader = true }: MapProps) {
+export function UnderstandingMap({ topicName, concepts, states, closed, targetId, percent, settled, asked, note, showHeader = true }: MapProps) {
   const t = useTranslations("app.session");
+  const closedCount = concepts.filter((c) => states[c.id] === "settled" && closed.has(c.id)).length;
   return (
     <div className="flex flex-col gap-3.5">
       {showHeader && (
@@ -35,6 +38,7 @@ export function UnderstandingMap({ topicName, concepts, states, targetId, percen
       <ul className="flex flex-col gap-1.5 text-[13.5px]">
         {concepts.map((c) => {
           const st = states[c.id] ?? "untouched";
+          const viaTeaching = st === "settled" && closed.has(c.id);
           return (
             <li
               key={c.id}
@@ -44,10 +48,23 @@ export function UnderstandingMap({ topicName, concepts, states, targetId, percen
             >
               <ConceptIcon status={st} />
               <span className="truncate">{c.name}</span>
+              {viaTeaching && (
+                <span
+                  className="meta ml-auto shrink-0 text-[11.5px] !text-primary"
+                  title={t("closedHint")}
+                >
+                  {t("closedByTeaching")}
+                </span>
+              )}
             </li>
           );
         })}
       </ul>
+      {closedCount > 0 && (
+        <p className="rounded-[var(--radius-ui)] border border-primary/40 bg-[color-mix(in_oklab,var(--primary)_7%,transparent)] px-2.5 py-2 text-[12.5px] leading-[1.45] text-primary">
+          <b className="font-semibold">{closedCount}</b> {t("closedByTeaching")} — {t("closedHint")}
+        </p>
+      )}
       <div className="flex gap-5">
         <div>
           <b className="block text-[22px] font-bold tracking-[-0.03em] tabular-nums">{asked}</b>

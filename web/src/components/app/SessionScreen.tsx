@@ -37,6 +37,13 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
     [curriculum.concepts, topic],
   );
 
+  /* Anlatarak kapatılan kavramlar: bir kez boşluk olup sonra oturanlar.
+     Protégé effect'in üründeki izi — davranış anlarının ikizi, ikamesi değil. */
+  const closedByTeaching = useMemo(
+    () => new Set((detail?.states ?? []).filter((s) => s.status === "settled" && s.wasGap).map((s) => s.conceptId)),
+    [detail?.states],
+  );
+
   const stateMap = useMemo(() => {
     const m: Record<string, ConceptStatus> = {};
     for (const c of concepts) m[c.id] = "untouched";
@@ -251,6 +258,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
                   topicName={topic?.name ?? ""}
                   concepts={concepts}
                   states={stateMap}
+                  closed={closedByTeaching}
                   targetId={targetId}
                   percent={percent}
                   settled={settled}
@@ -277,9 +285,18 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
                   </div>
                   {moment && <MomentChip kind={moment.kind} label={moment.label} />}
                   {gap && (
-                    <div className="meta self-start rounded-[var(--radius-ui)] border border-dashed border-accent px-2.5 py-1 text-[13px] !text-accent">
-                      {gap.label}
-                    </div>
+                    <>
+                      <div className="meta self-start rounded-[var(--radius-ui)] border border-dashed border-accent px-2.5 py-1 text-[13px] !text-accent">
+                        {gap.label}
+                      </div>
+                      {/* Mekanizmayı yalnızca ilk boşlukta, tam görüldüğü anda söyle.
+                          Her boşlukta tekrarlamak öğretici olmaktan çıkıp gürültü olur. */}
+                      {gap.id === (detail?.gaps ?? [])[0]?.id && (
+                        <p className="meta self-start max-w-[46ch] text-[12.5px] leading-[1.45]">
+                          {t("mechanism")}
+                        </p>
+                      )}
+                    </>
                   )}
                 </div>
               );
@@ -331,6 +348,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             topicName={topic?.name ?? ""}
             concepts={concepts}
             states={stateMap}
+            closed={closedByTeaching}
             targetId={targetId}
             percent={percent}
             settled={settled}
@@ -342,6 +360,9 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             <TeachingEvidence counts={momentCounts} />
             <p className="meta mt-1 text-[12.5px] leading-[1.45]">{t("momentsHint")}</p>
           </div>
+          {/* İki katmanın ilişkisini bir cümleyle söyle: üstte ne öğrendiğin,
+              altta nasıl öğrettiğin. Biri diğerinin yerine geçmiyor. */}
+          <p className="meta border-t border-line pt-3 text-[12.5px] leading-[1.45]">{t("twoLayers")}</p>
         </aside>
       </div>
     </div>

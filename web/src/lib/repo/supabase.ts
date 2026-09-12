@@ -4,7 +4,7 @@
 import { getSupabase } from "@/lib/supabase";
 import type {
   Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
-  Persona, PersonaCode, Session, SessionStatus, Subject, TeachingProfile, Topic, TopicProgress,
+  LearningEvidence, Persona, PersonaCode, Session, SessionStatus, Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
 
@@ -85,10 +85,11 @@ export class SupabaseRepo implements Repo {
     const cur = await this.getCurriculum();
     const ids = cur.concepts.filter((c) => c.topicId === topicId).map((c) => c.id);
     if (ids.length === 0) return [];
-    const { data, error } = await sb.from("concept_states").select("concept_id,status,session_id,updated_at").in("concept_id", ids);
+    const { data, error } = await sb.from("concept_states").select("concept_id,status,was_gap,session_id,updated_at").in("concept_id", ids);
     if (error) throw error;
     return (data as Row[]).map((r) => ({
       conceptId: str(r.concept_id), status: str(r.status) as ConceptStatus,
+      wasGap: Boolean(r.was_gap),
       sessionId: r.session_id ? str(r.session_id) : null, updatedAt: str(r.updated_at),
     }));
   }
@@ -232,6 +233,16 @@ export class SupabaseRepo implements Repo {
     };
   }
 
+  /* Anlatarak kapatılan kavramlar — protégé effect'in izi, veritabanında toplanıyor */
+  async getLearningEvidence(): Promise<LearningEvidence[]> {
+    const sb = await this.sb();
+    const { data, error } = await sb.from("learning_evidence").select("topic_id,closed_by_teaching,settled");
+    if (error) throw error;
+    return (data as Row[]).map((r) => ({
+      topicId: str(r.topic_id), closedByTeaching: num(r.closed_by_teaching), settled: num(r.settled),
+    }));
+  }
+
   /* Toplama veritabanında yapılıyor — istemci satır saymıyor */
   async getTeachingProfile(): Promise<TeachingProfile[]> {
     const sb = await this.sb();
@@ -246,14 +257,19 @@ export class SupabaseRepo implements Repo {
     const sb = await this.sb();
     const userId = await this.userId();
     /* Bir kez oturmuş kavram, sonraki bir boşlukla geri düşmesin (local.ts ile aynı kural) */
+    let wasGap = status === "gap";
     if (status === "gap") {
       const { data } = await sb.from("concept_states").select("status").eq("concept_id", conceptId).maybeSingle();
       if (data && str((data as Row).status) === "settled") return;
+    } else {
+      /* Oturturken önceki boşluk izini koru — "anlatarak kapattın" bilgisi ondan geliyor */
+      const { data } = await sb.from("concept_states").select("was_gap").eq("concept_id", conceptId).maybeSingle();
+      wasGap = Boolean(data && (data as Row).was_gap);
     }
     const { error } = await sb
       .from("concept_states")
       .upsert(
-        { user_id: userId, concept_id: conceptId, status, session_id: sessionId, updated_at: new Date().toISOString() },
+        { user_id: userId, concept_id: conceptId, status, was_gap: wasGap, session_id: sessionId, updated_at: new Date().toISOString() },
         { onConflict: "user_id,concept_id" },
       );
     if (error) throw error;

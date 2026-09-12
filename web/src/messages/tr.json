@@ -179,7 +179,10 @@
       "reset": "Verileri sıfırla",
       "resetConfirm": "Tüm seanslar ve ilerleme silinecek. Emin misin?",
       "evidence": "davranış kanıtın",
-      "evidenceHint": "Bunlar not değil, anlatırken yaptıklarının kaydı."
+      "evidenceHint": "Bunlar not değil, anlatırken yaptıklarının kaydı.",
+      "learning": "öğrenme kanıtın",
+      "learningHint": "Anlatarak kapattığın kavramlar. Protégé etkisinin ölçülebilir izi.",
+      "closedConcepts": "anlatarak kapatılan kavram"
     },
     "session": {
       "scripted": "senaryolu öğrenci",
@@ -206,7 +209,11 @@
       "empty": "Konuyu kendi cümlelerinle anlatmaya başla.",
       "moments": "öğretme davranışın",
       "momentsHint": "Bunlar not değil, anlatırken yaptıklarının kaydı.",
-      "noMoments": "Henüz kayda geçen bir an yok. Anlatmaya devam et."
+      "noMoments": "Henüz kayda geçen bir an yok. Anlatmaya devam et.",
+      "closedByTeaching": "anlatarak kapattın",
+      "closedHint": "Bu kavramlar önce boşluktu. Anlatmaya çalışırken ortaya çıktılar, yine anlatarak kapandılar.",
+      "twoLayers": "Solda ne öğrendiğin, altta nasıl öğrettiğin.",
+      "mechanism": "Öğrencinin takıldığı yer, senin boşluğun."
     },
     "moment": {
       "kind": {

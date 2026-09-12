@@ -52,6 +52,11 @@ export type Moment = {
   createdAt: string;
 };
 
+/* İki kanıt katmanı birbirini ikame etmiyor:
+   TeachingProfile → NASIL öğrettiğin (davranış)
+   LearningEvidence → NE öğrendiğin  (anlatarak kapatılan kavramlar) */
+export type LearningEvidence = { topicId: string; closedByTeaching: number; settled: number };
+
 /* teaching_profile görünümünün karşılığı — birikmiş kanıt */
 export type TeachingProfile = { kind: MomentKind; total: number; lastAt: string | null };
 
@@ -68,6 +73,10 @@ export type Session = {
 export type ConceptState = {
   conceptId: string;
   status: ConceptStatus;
+  /* Bir kez boşluk olarak işaretlendi mi. settled + wasGap = anlatarak kapatılmış.
+     Protégé effect'in ölçülebilir izi: boşluk anlatma sırasında ortaya çıktı ve
+     yine anlatarak kapandı. */
+  wasGap: boolean;
   sessionId: string | null;
   updatedAt: string;
 };

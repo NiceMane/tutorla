@@ -5,7 +5,7 @@
 import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
   Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
-  Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
+  LearningEvidence, Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
 
@@ -186,6 +186,24 @@ export class LocalRepo implements Repo {
     return moment;
   }
 
+  /* Anlatarak kapatılan kavramlar — protégé effect'in izi */
+  async getLearningEvidence(): Promise<LearningEvidence[]> {
+    const st = read();
+    const by = new Map(st.states.map((x) => [x.conceptId, x]));
+    return CUR.topics.map((t) => {
+      const cs = CUR.concepts.filter((c) => c.topicId === t.id);
+      let closed = 0, settled = 0;
+      for (const c of cs) {
+        const x = by.get(c.id);
+        if (x?.status === "settled") {
+          settled++;
+          if (x.wasGap) closed++;
+        }
+      }
+      return { topicId: t.id, closedByTeaching: closed, settled };
+    }).filter((x) => x.settled > 0);
+  }
+
   async getTeachingProfile(): Promise<TeachingProfile[]> {
     const st = read();
     const by = new Map<MomentKind, TeachingProfile>();
@@ -204,12 +222,14 @@ export class LocalRepo implements Repo {
     const found = st.states.find((s) => s.conceptId === conceptId_);
     if (found) {
       /* Bir kez oturmuş kavram, sonraki bir boşlukla geri düşmesin */
+      if (status === "gap") found.wasGap = true;
+      /* Bir kez oturmuş kavram, sonraki bir boşlukla geri düşmesin */
       if (found.status === "settled" && status === "gap") return;
       found.status = status;
       found.sessionId = sessionId;
       found.updatedAt = now;
     } else {
-      st.states.push({ conceptId: conceptId_, status, sessionId, updatedAt: now });
+      st.states.push({ conceptId: conceptId_, status, wasGap: status === "gap", sessionId, updatedAt: now });
     }
     write(st);
   }

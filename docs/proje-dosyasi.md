@@ -70,8 +70,18 @@ Zincir kuralı · %40
 
 Metrikler: *4 soru soruldu · 2/5 kavram oturdu*.
 
-**6. Öğretme davranışı — davranış kanıtı**
-Boşluk yakalamanın olumlu ikizi. Sistem anlatım örüntüsünden beş sinyal çıkarır ve her birini **kanıtıyla**, yani o mesajın kendisiyle işaretler:
+**6. İki kanıt katmanı — birbirinin ikamesi değil**
+
+Ürün iki farklı şeyi ölçüyor ve ikisi de görünür:
+
+| Katman | Neyi gösterir | Kaynağı |
+|---|---|---|
+| **Öğrenme kanıtı** | **Ne** öğrendin — anlatarak kapattığın kavramlar | Protégé effect / Feynman |
+| **Davranış kanıtı** | **Nasıl** öğrettin — sebat, nedensellik, somutlama… | Wild Zebra hattı |
+
+**Öğrenme kanıtı (protégé effect).** Ürünün temel iddiası: anlatmaya çalışınca boşluğun ortaya çıkar ve yine anlatarak kapanır. Bu yüzden kavramın son durumu yetmez — yolculuğu tutuyoruz. Bir kavram önce `boşluk` olarak işaretlenip sonra `oturdu`ya geçtiyse, arayüzde **"anlatarak kapattın"** diye işaretleniyor. Seansta ilk boşluk çıktığında mekanizma tek cümleyle söyleniyor: *"Öğrencinin takıldığı yer, senin boşluğun."* Panelde birikmiş sayı **öğrenme kanıtın** olarak duruyor. Şemadaki karşılığı `concept_states.was_gap` ve `learning_evidence` görünümü.
+
+**Davranış kanıtı.** Boşluk yakalamanın olumlu ikizi. Sistem anlatım örüntüsünden beş sinyal çıkarır ve her birini **kanıtıyla**, yani o mesajın kendisiyle işaretler:
 
 | Sinyal | Ne zaman |
 |---|---|
@@ -82,6 +92,8 @@ Boşluk yakalamanın olumlu ikizi. Sistem anlatım örüntüsünden beş sinyal 
 | **Merak** | Sorulmadan bir sonraki kavrama geçti |
 
 Aynı kavram için aynı sinyal iki kez verilmez — her tura madalya dağıtmak anlamı öldürür. Birikmiş sinyaller panelde "davranış kanıtın" olarak toplanır.
+
+**İkisi neden birlikte.** Protégé effect ürünün *neden işe yaradığını* açıklar — öğrenme mekanizması odur, ürünün temelidir. Davranış kanıtı ise o mekanizmanın *çalıştığını görünür kılar* ve devam etme motivasyonu verir. Biri temel, diğeri üstüne binen katman; biri diğerinin yerine geçmez. Arayüzde de yan yana duruyorlar: seans ekranında üstte anlayış haritası, altta öğretme davranışı; panelde iki kanıt kartı yan yana.
 
 **Neden bu var.** Fikrin kökeni Wild Zebra (ABD, 2024): 2–9. sınıf için Sokratik AI öğretmen; asıl farklılaştırıcısı değerlendirme tarafında — konuşma örüntüsünden azim/merak sinyali çıkarıp veliye "olumlu an" bildiriyor, yani ürünü satan şey not değil davranış kanıtı.
 

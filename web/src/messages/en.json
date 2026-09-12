@@ -179,7 +179,10 @@
       "reset": "Reset data",
       "resetConfirm": "All sessions and progress will be deleted. Are you sure?",
       "evidence": "your behavioural evidence",
-      "evidenceHint": "Not a grade — a record of what you did while explaining."
+      "evidenceHint": "Not a grade — a record of what you did while explaining.",
+      "learning": "your learning evidence",
+      "learningHint": "Concepts you closed by explaining — the measurable trace of the protégé effect.",
+      "closedConcepts": "concepts closed by explaining"
     },
     "session": {
       "scripted": "scripted student",
@@ -206,7 +209,11 @@
       "empty": "Start explaining the topic in your own words.",
       "moments": "your teaching behaviour",
       "momentsHint": "Not a grade — a record of what you did while explaining.",
-      "noMoments": "Nothing recorded yet. Keep explaining."
+      "noMoments": "Nothing recorded yet. Keep explaining.",
+      "closedByTeaching": "closed by explaining",
+      "closedHint": "These were gaps first. Explaining surfaced them, and explaining closed them.",
+      "twoLayers": "What you learned above, how you taught below.",
+      "mechanism": "Where your student gets stuck is where your gap is."
     },
     "moment": {
       "kind": {

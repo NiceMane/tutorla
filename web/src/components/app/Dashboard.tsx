@@ -4,7 +4,7 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
-import type { MomentKind, Session, TeachingProfile, Topic } from "@/lib/domain";
+import type { LearningEvidence, MomentKind, Session, TeachingProfile, Topic } from "@/lib/domain";
 import { TeachingEvidence } from "./TeachingEvidence";
 import { AppHeader } from "./AppHeader";
 import { ProgressBar } from "./ProgressBar";
@@ -15,6 +15,7 @@ export function Dashboard() {
   const router = useRouter();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [evidence, setEvidence] = useState<TeachingProfile[]>([]);
+  const [learning, setLearning] = useState<LearningEvidence[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
 
   useEffect(() => {
@@ -22,6 +23,7 @@ export function Dashboard() {
     const repo = getRepo();
     repo.listSessions().then(setSessions);
     repo.getTeachingProfile().then(setEvidence);
+    repo.getLearningEvidence().then(setLearning);
   }, [ready]);
 
   const momentCounts = evidence.reduce<Partial<Record<MomentKind, number>>>(
@@ -29,6 +31,7 @@ export function Dashboard() {
     {},
   );
   const momentTotal = evidence.reduce((n, e) => n + e.total, 0);
+  const closedTotal = learning.reduce((n, e) => n + e.closedByTeaching, 0);
 
   const persona = personas.find((p) => p.active) ?? personas[0];
 
@@ -99,17 +102,33 @@ export function Dashboard() {
               })}
             </div>
 
-            {momentTotal > 0 && (
-              <section className="card mt-12 p-5">
-                <div className="flex items-baseline justify-between gap-4">
-                  <h2 className="meta text-[15px]">{t("evidence")}</h2>
-                  <span className="meta text-[13px] tabular-nums">{momentTotal}</span>
-                </div>
-                <p className="meta mt-1 text-[13px]">{t("evidenceHint")}</p>
-                <div className="mt-4 max-w-[420px]">
-                  <TeachingEvidence counts={momentCounts} />
-                </div>
-              </section>
+            {(closedTotal > 0 || momentTotal > 0) && (
+              <div className="mt-12 grid gap-5 md:grid-cols-2">
+                {/* NE öğrendin — protégé effect */}
+                <section className="card p-5">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h2 className="meta text-[15px]">{t("learning")}</h2>
+                    <span className="meta text-[13px] tabular-nums">{closedTotal}</span>
+                  </div>
+                  <p className="meta mt-1 text-[13px]">{t("learningHint")}</p>
+                  <p className="mt-4 text-[2.4rem] font-extrabold leading-none tracking-[-0.03em] text-primary tabular-nums">
+                    {closedTotal}
+                  </p>
+                  <p className="meta mt-1 text-[13px]">{t("closedConcepts")}</p>
+                </section>
+
+                {/* NASIL öğrettin — davranış kanıtı */}
+                <section className="card p-5">
+                  <div className="flex items-baseline justify-between gap-4">
+                    <h2 className="meta text-[15px]">{t("evidence")}</h2>
+                    <span className="meta text-[13px] tabular-nums">{momentTotal}</span>
+                  </div>
+                  <p className="meta mt-1 text-[13px]">{t("evidenceHint")}</p>
+                  <div className="mt-4">
+                    <TeachingEvidence counts={momentCounts} />
+                  </div>
+                </section>
+              </div>
             )}
 
             <section className="mt-12">
@@ -124,6 +143,7 @@ export function Dashboard() {
                       await reset();
                       setSessions([]);
                       setEvidence([]);
+                      setLearning([]);
                       await refresh();
                     }}
                   >

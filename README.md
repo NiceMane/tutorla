@@ -88,10 +88,17 @@ Türkçe, edebiyat, tarih, coğrafya, felsefe, din kültürü, İngilizce.
 İlerleme yüzdesi saklanmaz, `topic_progress` görünümünde `concept_states`'ten türetilir —
 denormalize sayaç yok, sayaç kayması da yok.
 
-**Öğretme davranışı:** `moments` tablosu anlatım örüntüsünden çıkan beş sinyali (sebat,
-nedensellik, somutlama, sadeleştirme, merak) kanıt mesajına bağlı tutar; `teaching_profile`
-görünümü birikmiş kanıtı toplar. Gerekçesi ve Wild Zebra karşılaştırması
-`docs/proje-dosyasi.md` §4'te.
+**İki kanıt katmanı, birbirinin ikamesi değil:**
+
+- **Öğrenme kanıtı — ne öğrendin.** Protégé effect'in üründeki izi: bir kavram önce boşluk olup
+  sonra oturduysa "anlatarak kapattın" diye işaretlenir. `concept_states.was_gap` +
+  `learning_evidence` görünümü.
+- **Davranış kanıtı — nasıl öğrettin.** `moments` tablosu anlatım örüntüsünden çıkan beş sinyali
+  (sebat, nedensellik, somutlama, sadeleştirme, merak) kanıt mesajına bağlı tutar;
+  `teaching_profile` görünümü toplar.
+
+Protégé effect temel (neden işe yarıyor), davranış kanıtı üstüne binen katman (çalıştığını
+görünür kılıyor). Gerekçe ve Wild Zebra karşılaştırması `docs/proje-dosyasi.md` §4'te.
 
 ### Ortam değişkenleri
 
