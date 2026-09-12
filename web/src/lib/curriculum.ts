@@ -267,6 +267,125 @@ export const CURRICULUM: SeedSubject[] = [
       },
     ],
   },
+  {
+    slug: "turkce",
+    name: "Türkçe",
+    topics: [
+      {
+        slug: "paragrafta-anlam",
+        name: "Paragrafta anlam",
+        concepts: [
+          { slug: "ana-dusunce", name: "Ana düşünce", keywords: ["ana düşünce", "yazarın amacı", "temel"] },
+          { slug: "yardimci-dusunce", name: "Yardımcı düşünceler", keywords: ["yardımcı", "destekleyici", "ayrıntı"] },
+          { slug: "anlatim-bicimleri", name: "Anlatım biçimleri", keywords: ["açıklama", "tartışma", "öyküleme", "betimleme"] },
+          { slug: "akis", name: "Paragrafın akışı", keywords: ["giriş", "gelişme", "sonuç", "akış"] },
+          { slug: "hatalar", name: "Sık yapılan hatalar", keywords: ["hata", "tuzak", "yanılgı"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "edebiyat",
+    name: "Türk Dili ve Edebiyatı",
+    topics: [
+      {
+        slug: "edebi-sanatlar",
+        name: "Edebî sanatlar",
+        concepts: [
+          { slug: "benzetme", name: "Teşbih (benzetme)", keywords: ["benzetme", "teşbih", "gibi"] },
+          { slug: "istiare", name: "İstiare", keywords: ["istiare", "eğretileme", "benzeyen"] },
+          { slug: "mecaz-i-mursel", name: "Mecaz-ı mürsel", keywords: ["mecaz", "ad aktarması", "parça"] },
+          { slug: "kisilestirme", name: "Teşhis (kişileştirme)", keywords: ["kişileştirme", "teşhis", "insan gibi"] },
+          { slug: "ayirt-etme", name: "Birbirinden ayırt etme", keywords: ["fark", "ayırt", "karıştır"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "tarih",
+    name: "Tarih",
+    topics: [
+      {
+        slug: "kurtulus-savasi",
+        name: "Kurtuluş Savaşı",
+        concepts: [
+          { slug: "kongreler", name: "Kongreler", keywords: ["erzurum", "sivas", "kongre"] },
+          { slug: "tbmm", name: "TBMM'nin açılışı", keywords: ["tbmm", "meclis", "1920"] },
+          { slug: "cepheler", name: "Cepheler", keywords: ["doğu", "güney", "batı", "cephe"] },
+          { slug: "antlasmalar", name: "Antlaşmalar", keywords: ["mudanya", "lozan", "antlaşma"] },
+          { slug: "sonuclar", name: "Sonuçları", keywords: ["sonuç", "bağımsızlık", "cumhuriyet"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "cografya",
+    name: "Coğrafya",
+    topics: [
+      {
+        slug: "iklim-tipleri",
+        name: "İklim tipleri",
+        concepts: [
+          { slug: "iklim-hava", name: "İklim ve hava durumu farkı", keywords: ["iklim", "hava durumu", "uzun süre"] },
+          { slug: "etkenler", name: "İklimi etkileyen faktörler", keywords: ["enlem", "yükselti", "karasallık", "deniz"] },
+          { slug: "akdeniz", name: "Akdeniz iklimi", keywords: ["akdeniz", "yaz", "kurak", "maki"] },
+          { slug: "karasal", name: "Karasal iklim", keywords: ["karasal", "sıcaklık farkı", "bozkır"] },
+          { slug: "turkiye", name: "Türkiye'deki dağılış", keywords: ["türkiye", "bölge", "dağılış"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "felsefe",
+    name: "Felsefe",
+    topics: [
+      {
+        slug: "bilgi-felsefesi",
+        name: "Bilgi felsefesi",
+        concepts: [
+          { slug: "bilgi-nedir", name: "Bilgi nedir?", keywords: ["bilgi", "doğru", "gerekçe", "inanç"] },
+          { slug: "rasyonalizm", name: "Rasyonalizm", keywords: ["akıl", "rasyonal", "descartes"] },
+          { slug: "empirizm", name: "Empirizm", keywords: ["deney", "duyu", "empir", "locke"] },
+          { slug: "septisizm", name: "Septisizm", keywords: ["şüphe", "septik", "kuşku"] },
+          { slug: "karsilastirma", name: "Akımları karşılaştırma", keywords: ["fark", "karşılaştır", "ayrım"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "din-kulturu",
+    name: "Din Kültürü ve Ahlak Bilgisi",
+    topics: [
+      {
+        slug: "bilgi-ve-inanc",
+        name: "Bilgi ve inanç",
+        concepts: [
+          { slug: "bilgi-turleri", name: "Bilgi türleri", keywords: ["bilgi", "tür", "gündelik", "bilimsel"] },
+          { slug: "akil-vahiy", name: "Akıl ve vahiy ilişkisi", keywords: ["akıl", "vahiy", "ilişki"] },
+          { slug: "inanc-ozgurlugu", name: "İnanç özgürlüğü", keywords: ["özgürlük", "inanç", "hak"] },
+          { slug: "hosgoru", name: "Hoşgörü ve birlikte yaşama", keywords: ["hoşgörü", "birlikte", "saygı"] },
+          { slug: "kavramlar", name: "Temel kavramlar", keywords: ["kavram", "tanım", "terim"] },
+        ],
+      },
+    ],
+  },
+  {
+    slug: "ingilizce",
+    name: "İngilizce",
+    topics: [
+      {
+        slug: "tenses",
+        name: "Zamanlar (tenses)",
+        concepts: [
+          { slug: "present-simple", name: "Present simple", keywords: ["present simple", "geniş zaman", "her gün"] },
+          { slug: "present-continuous", name: "Present continuous", keywords: ["continuous", "şimdi", "ing"] },
+          { slug: "past-simple", name: "Past simple", keywords: ["past", "geçmiş", "ed"] },
+          { slug: "present-perfect", name: "Present perfect", keywords: ["perfect", "have", "has", "henüz"] },
+          { slug: "ayirt-etme", name: "Birbirinden ayırt etme", keywords: ["fark", "ne zaman", "karıştır"] },
+        ],
+      },
+    ],
+  },
 ];
 
 export const CONCEPT_COUNT = CURRICULUM.reduce(

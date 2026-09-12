@@ -6,6 +6,10 @@ export type MessageRole = "student" | "teacher"; // student = yapay zekâ, teach
 export type SessionStatus = "active" | "finished" | "abandoned";
 export type PersonaCode = "curious" | "sceptical" | "impatient";
 
+/* Öğretme davranışı sinyalleri — ürünün "not değil, davranış kanıtı" tarafı. */
+export type MomentKind = "persistence" | "causal" | "concrete" | "simplify" | "curiosity";
+export const MOMENT_KINDS: MomentKind[] = ["persistence", "causal", "concrete", "simplify", "curiosity"];
+
 export type Concept = { id: string; topicId: string; slug: string; name: string; position: number };
 export type Topic = { id: string; subjectId: string; slug: string; name: string; position: number };
 export type Subject = { id: string; examId: string; slug: string; name: string; position: number };
@@ -37,6 +41,19 @@ export type Gap = {
   label: string;
   createdAt: string;
 };
+
+export type Moment = {
+  id: string;
+  sessionId: string;
+  messageId: string | null;
+  conceptId: string | null;
+  kind: MomentKind;
+  label: string;
+  createdAt: string;
+};
+
+/* teaching_profile görünümünün karşılığı — birikmiş kanıt */
+export type TeachingProfile = { kind: MomentKind; total: number; lastAt: string | null };
 
 export type Session = {
   id: string;

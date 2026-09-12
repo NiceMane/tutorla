@@ -177,7 +177,9 @@
       "recent": "recent sessions",
       "noSessions": "No sessions yet. Pick a topic and begin.",
       "reset": "Reset data",
-      "resetConfirm": "All sessions and progress will be deleted. Are you sure?"
+      "resetConfirm": "All sessions and progress will be deleted. Are you sure?",
+      "evidence": "your behavioural evidence",
+      "evidenceHint": "Not a grade — a record of what you did while explaining."
     },
     "session": {
       "scripted": "scripted student",
@@ -201,7 +203,26 @@
         "photo": "Photo"
       },
       "soon": "soon",
-      "empty": "Start explaining the topic in your own words."
+      "empty": "Start explaining the topic in your own words.",
+      "moments": "your teaching behaviour",
+      "momentsHint": "Not a grade — a record of what you did while explaining.",
+      "noMoments": "Nothing recorded yet. Keep explaining."
+    },
+    "moment": {
+      "kind": {
+        "persistence": "Persistence",
+        "causal": "Causal reasoning",
+        "concrete": "Concreteness",
+        "simplify": "Simplifying",
+        "curiosity": "Curiosity"
+      },
+      "desc": {
+        "persistence": "You didn't give up where you got stuck — you explained again",
+        "causal": "You explained the “why”, not just the “what”",
+        "concrete": "You made it concrete with an example",
+        "simplify": "You simplified when it wasn't landing",
+        "curiosity": "You went a step further without being asked"
+      }
     }
   },
   "auth": {

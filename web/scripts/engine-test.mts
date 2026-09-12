@@ -16,7 +16,8 @@ let pos = 0;
 const push = (role: "student" | "teacher", content: string) => {
   messages.push({ id: String(pos), sessionId: "s", role, content, position: pos++, createdAt: "" });
 };
-const ctx = (): EngineContext => ({ topic, concepts, persona: "curious", messages, states });
+const givenMoments: { conceptId: string | null; kind: any }[] = [];
+const ctx = (): EngineContext => ({ topic, concepts, persona: "curious", messages, states, moments: givenMoments });
 
 const e = new ScriptedEngine();
 let fails = 0;
@@ -65,6 +66,55 @@ concepts.forEach((c) => (states[c.id] = "gap"));
 states[concepts[0].id] = "settled";
 const note2 = await e.note(ctx());
 check("boşluk ağırlıklı seansın notu uyarıcı", note2.includes("neden"), note2);
+
+// ---- davranış anları ----
+console.log("\n— öğretme davranışı anları —");
+const fresh = (): EngineContext => {
+  for (const k of Object.keys(states)) delete states[k];
+  messages.length = 0; pos = 0; givenMoments.length = 0;
+  return ctx();
+};
+
+// nedensellik
+fresh();
+const m1 = await e.respond(ctx(), "Zincir kuralı iç içe fonksiyonlarda işler çünkü değişim hızları birbirine zincirleme bağlıdır, bu yüzden çarpıyoruz.");
+check("nedensellik yakalandı", m1.moment?.kind === "causal", m1.moment?.label);
+
+// somutlama
+fresh();
+const m2 = await e.respond(ctx(), "Mesela sin(x kare) diye bir ifade olsun, dıştaki sinüsün türevi kosinüs olur sonra içtekiyle çarpılır.");
+check("somutlama yakalandı", m2.moment?.kind === "concrete", m2.moment?.label);
+
+// sebat: kavram 'gap' durumundayken yeniden anlatmak
+fresh();
+states[concepts[0].id] = "gap";
+const m3 = await e.respond(ctx(), "Tamam baştan alayım: dıştaki fonksiyonun türevini alıyorsun, sonra içtekinin türeviyle çarpıyorsun, halkalar gibi.");
+check("sebat yakalandı", m3.moment?.kind === "persistence", m3.moment?.label);
+
+// merak: ileri kavramın anahtar kelimesini kendiliğinden getirmek
+fresh();
+const m4 = await e.respond(ctx(), "Zincir kuralını anlatayım ama şunu da ekleyeyim, bu konuda herkes sürekli karıştırıyor ve o yüzden dikkat lazım.");
+check("merak yakalandı (ileri kavram)", m4.moment?.kind === "curiosity", m4.moment?.label ?? String(m4.moment));
+
+// tek kelimeye madalya yok
+fresh();
+const m5 = await e.respond(ctx(), "bilmiyorum");
+check("kısa cevaba an verilmiyor", m5.moment === null);
+
+// en fazla bir an
+fresh();
+const m6 = await e.respond(ctx(), "Mesela sin(x kare) için düşün, çünkü içteki fonksiyonun da değişim hızı var, bu yüzden çarpıyoruz.");
+check("turda en fazla bir an", m6.moment !== null && typeof m6.moment.kind === "string", m6.moment?.kind);
+
+// aynı kavramda sebat iki kez verilmemeli
+fresh();
+states[concepts[0].id] = "gap";
+const r1 = await e.respond(ctx(), "Tamam baştan alayım: dıştaki fonksiyonun türevini alıp içtekinin türeviyle çarpıyorsun, halkalar gibi bağlı.");
+check("ilk sebat verildi", r1.moment?.kind === "persistence");
+givenMoments.push({ conceptId: r1.moment!.conceptId, kind: r1.moment!.kind });
+const r2 = await e.respond(ctx(), "Mesela sin(x kare) olsun, dıştaki sinüsün türevi kosinüstür sonra içteki ile çarparsın.");
+check("ikinci mesajda sebat tekrarlanmadı", r2.moment?.kind !== "persistence", String(r2.moment?.kind));
+check("yerine somutlama geldi", r2.moment?.kind === "concrete", String(r2.moment?.kind));
 
 console.log(fails ? `\n${fails} BAŞARISIZ` : "\nhepsi geçti");
 process.exit(fails ? 1 : 0);

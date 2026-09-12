@@ -3,8 +3,8 @@
    fark yalnızca verinin nereden geldiği. */
 import { getSupabase } from "@/lib/supabase";
 import type {
-  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole,
-  Persona, PersonaCode, Session, SessionStatus, Subject, Topic, TopicProgress,
+  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
+  Persona, PersonaCode, Session, SessionStatus, Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
 
@@ -128,13 +128,15 @@ export class SupabaseRepo implements Repo {
     const p = (data as Row).personas as { code?: string } | null;
     const session = this.toSession({ ...(data as Row), persona_code: p?.code });
 
-    const [m, g, states] = await Promise.all([
+    const [m, g, mo, states] = await Promise.all([
       sb.from("messages").select("id,session_id,role,content,position,created_at").eq("session_id", id).order("position"),
       sb.from("gaps").select("id,session_id,message_id,concept_id,label,created_at").eq("session_id", id),
+      sb.from("moments").select("id,session_id,message_id,concept_id,kind,label,created_at").eq("session_id", id),
       this.getConceptStates(session.topicId),
     ]);
     if (m.error) throw m.error;
     if (g.error) throw g.error;
+    if (mo.error) throw mo.error;
 
     const messages: Message[] = (m.data as Row[]).map((r) => ({
       id: str(r.id), sessionId: str(r.session_id), role: str(r.role) as MessageRole,
@@ -146,7 +148,13 @@ export class SupabaseRepo implements Repo {
       conceptId: r.concept_id ? str(r.concept_id) : null,
       label: str(r.label), createdAt: str(r.created_at),
     }));
-    return { session, messages, gaps, states };
+    const moments: Moment[] = (mo.data as Row[]).map((r) => ({
+      id: str(r.id), sessionId: str(r.session_id),
+      messageId: r.message_id ? str(r.message_id) : null,
+      conceptId: r.concept_id ? str(r.concept_id) : null,
+      kind: str(r.kind) as MomentKind, label: str(r.label), createdAt: str(r.created_at),
+    }));
+    return { session, messages, gaps, moments, states };
   }
 
   async createSession(topicId: string, personaId: PersonaCode): Promise<Session> {
@@ -205,6 +213,33 @@ export class SupabaseRepo implements Repo {
       conceptId: r.concept_id ? str(r.concept_id) : null,
       label: str(r.label), createdAt: str(r.created_at),
     };
+  }
+
+  async addMoment(sessionId: string, messageId: string | null, conceptId: string | null, kind: MomentKind, label: string): Promise<Moment> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("moments")
+      .insert({ session_id: sessionId, message_id: messageId, concept_id: conceptId, kind, label })
+      .select("id,session_id,message_id,concept_id,kind,label,created_at")
+      .single();
+    if (error) throw error;
+    const r = data as Row;
+    return {
+      id: str(r.id), sessionId: str(r.session_id),
+      messageId: r.message_id ? str(r.message_id) : null,
+      conceptId: r.concept_id ? str(r.concept_id) : null,
+      kind: str(r.kind) as MomentKind, label: str(r.label), createdAt: str(r.created_at),
+    };
+  }
+
+  /* Toplama veritabanında yapılıyor — istemci satır saymıyor */
+  async getTeachingProfile(): Promise<TeachingProfile[]> {
+    const sb = await this.sb();
+    const { data, error } = await sb.from("teaching_profile").select("kind,total,last_at");
+    if (error) throw error;
+    return (data as Row[])
+      .map((r) => ({ kind: str(r.kind) as MomentKind, total: num(r.total), lastAt: r.last_at ? str(r.last_at) : null }))
+      .sort((a, b) => b.total - a.total);
   }
 
   async setConceptStatus(conceptId: string, status: ConceptStatus, sessionId: string | null): Promise<void> {

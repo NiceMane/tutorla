@@ -2,7 +2,7 @@
    Bugün: ScriptedEngine (senaryolu, elle yazılmış kurallar).
    Sonra: ClaudeEngine (Claude API) — sadece bu dosyanın uygulaması değişir,
    şema, veri katmanı ve arayüz aynı kalır. */
-import type { Concept, ConceptStatus, Message, PersonaCode, Topic } from "@/lib/domain";
+import type { Concept, ConceptStatus, Message, MomentKind, PersonaCode, Topic } from "@/lib/domain";
 
 export type EngineContext = {
   topic: Topic;
@@ -11,6 +11,8 @@ export type EngineContext = {
   messages: Message[];
   /* kavram id → durum; motor neyin oturduğunu bilmeli */
   states: Record<string, ConceptStatus>;
+  /* Bu seansta şimdiye kadar verilmiş anlar — aynısı tekrar verilmesin */
+  moments: { conceptId: string | null; kind: MomentKind }[];
 };
 
 export type EngineTurn = {
@@ -20,6 +22,9 @@ export type EngineTurn = {
   targetConceptId: string | null;
   /* Anlatımda eksik kalan yer. Ürünün ayırt edici mekanizması. */
   gap: { conceptId: string | null; label: string } | null;
+  /* Öğretme davranışı anı — boşluğun olumlu ikizi. Kanıtı kullanıcının o mesajı.
+     En fazla bir tane: her turda madalya dağıtmak anlamını öldürür. */
+  moment: { conceptId: string | null; kind: MomentKind; label: string } | null;
   /* Bu turda değişen kavram durumları */
   conceptUpdates: { conceptId: string; status: ConceptStatus }[];
   /* Konunun tüm kavramları bittiyse seans kapanabilir */
@@ -32,6 +37,6 @@ export interface StudentEngine {
   open(ctx: EngineContext): Promise<EngineTurn>;
   /* Kullanıcının anlatımına yanıt */
   respond(ctx: EngineContext, teacherMessage: string): Promise<EngineTurn>;
-  /* Oturum sonu davranışsal geri bildirim */
-  note(ctx: EngineContext): Promise<string>;
+  /* Oturum sonu davranışsal geri bildirim; seansta yakalanan anlar da geçilir */
+  note(ctx: EngineContext, moments?: MomentKind[]): Promise<string>;
 }

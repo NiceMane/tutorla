@@ -4,7 +4,8 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
-import type { Session, Topic } from "@/lib/domain";
+import type { MomentKind, Session, TeachingProfile, Topic } from "@/lib/domain";
+import { TeachingEvidence } from "./TeachingEvidence";
 import { AppHeader } from "./AppHeader";
 import { ProgressBar } from "./ProgressBar";
 
@@ -13,11 +14,21 @@ export function Dashboard() {
   const { ready, curriculum, personas, progress, reset, refresh } = useApp();
   const router = useRouter();
   const [sessions, setSessions] = useState<Session[]>([]);
+  const [evidence, setEvidence] = useState<TeachingProfile[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
 
   useEffect(() => {
-    if (ready) getRepo().listSessions().then(setSessions);
+    if (!ready) return;
+    const repo = getRepo();
+    repo.listSessions().then(setSessions);
+    repo.getTeachingProfile().then(setEvidence);
   }, [ready]);
+
+  const momentCounts = evidence.reduce<Partial<Record<MomentKind, number>>>(
+    (acc, e) => ({ ...acc, [e.kind]: e.total }),
+    {},
+  );
+  const momentTotal = evidence.reduce((n, e) => n + e.total, 0);
 
   const persona = personas.find((p) => p.active) ?? personas[0];
 
@@ -88,6 +99,19 @@ export function Dashboard() {
               })}
             </div>
 
+            {momentTotal > 0 && (
+              <section className="card mt-12 p-5">
+                <div className="flex items-baseline justify-between gap-4">
+                  <h2 className="meta text-[15px]">{t("evidence")}</h2>
+                  <span className="meta text-[13px] tabular-nums">{momentTotal}</span>
+                </div>
+                <p className="meta mt-1 text-[13px]">{t("evidenceHint")}</p>
+                <div className="mt-4 max-w-[420px]">
+                  <TeachingEvidence counts={momentCounts} />
+                </div>
+              </section>
+            )}
+
             <section className="mt-12">
               <div className="flex items-baseline justify-between gap-4">
                 <h2 className="meta text-[15px]">{t("recent")}</h2>
@@ -99,6 +123,7 @@ export function Dashboard() {
                       if (!window.confirm(t("resetConfirm"))) return;
                       await reset();
                       setSessions([]);
+                      setEvidence([]);
                       await refresh();
                     }}
                   >

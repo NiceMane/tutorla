@@ -17,7 +17,14 @@ from exams e join (values
   ('matematik', 'Matematik', 1),
   ('fizik', 'Fizik', 2),
   ('kimya', 'Kimya', 3),
-  ('biyoloji', 'Biyoloji', 4)
+  ('biyoloji', 'Biyoloji', 4),
+  ('turkce', 'Türkçe', 5),
+  ('edebiyat', 'Türk Dili ve Edebiyatı', 6),
+  ('tarih', 'Tarih', 7),
+  ('cografya', 'Coğrafya', 8),
+  ('felsefe', 'Felsefe', 9),
+  ('din-kulturu', 'Din Kültürü ve Ahlak Bilgisi', 10),
+  ('ingilizce', 'İngilizce', 11)
 ) as v(slug, name, position) on true
 where e.code = 'YKS'
 on conflict (exam_id, slug) do nothing;
@@ -41,7 +48,14 @@ from subjects s join (values
   ('biyoloji', 'hucre', 'Hücre', 1),
   ('biyoloji', 'mitoz-mayoz', 'Mitoz ve mayoz', 2),
   ('biyoloji', 'kalitim', 'Kalıtım', 3),
-  ('biyoloji', 'ekosistem', 'Ekosistem', 4)
+  ('biyoloji', 'ekosistem', 'Ekosistem', 4),
+  ('turkce', 'paragrafta-anlam', 'Paragrafta anlam', 1),
+  ('edebiyat', 'edebi-sanatlar', 'Edebî sanatlar', 1),
+  ('tarih', 'kurtulus-savasi', 'Kurtuluş Savaşı', 1),
+  ('cografya', 'iklim-tipleri', 'İklim tipleri', 1),
+  ('felsefe', 'bilgi-felsefesi', 'Bilgi felsefesi', 1),
+  ('din-kulturu', 'bilgi-ve-inanc', 'Bilgi ve inanç', 1),
+  ('ingilizce', 'tenses', 'Zamanlar (tenses)', 1)
 ) as v(subject_slug, topic_slug, name, position) on v.subject_slug = s.slug
 join exams e on e.id = s.exam_id and e.code = 'YKS'
 on conflict (subject_id, slug) do nothing;
@@ -135,7 +149,42 @@ join (values
   ('biyoloji', 'ekosistem', 'enerji-akisi', 'Enerji akışı', 2),
   ('biyoloji', 'ekosistem', 'madde-dongusu', 'Madde döngüleri', 3),
   ('biyoloji', 'ekosistem', 'populasyon', 'Popülasyon dinamiği', 4),
-  ('biyoloji', 'ekosistem', 'surdurulebilirlik', 'Sürdürülebilirlik', 5)
+  ('biyoloji', 'ekosistem', 'surdurulebilirlik', 'Sürdürülebilirlik', 5),
+  ('turkce', 'paragrafta-anlam', 'ana-dusunce', 'Ana düşünce', 1),
+  ('turkce', 'paragrafta-anlam', 'yardimci-dusunce', 'Yardımcı düşünceler', 2),
+  ('turkce', 'paragrafta-anlam', 'anlatim-bicimleri', 'Anlatım biçimleri', 3),
+  ('turkce', 'paragrafta-anlam', 'akis', 'Paragrafın akışı', 4),
+  ('turkce', 'paragrafta-anlam', 'hatalar', 'Sık yapılan hatalar', 5),
+  ('edebiyat', 'edebi-sanatlar', 'benzetme', 'Teşbih (benzetme)', 1),
+  ('edebiyat', 'edebi-sanatlar', 'istiare', 'İstiare', 2),
+  ('edebiyat', 'edebi-sanatlar', 'mecaz-i-mursel', 'Mecaz-ı mürsel', 3),
+  ('edebiyat', 'edebi-sanatlar', 'kisilestirme', 'Teşhis (kişileştirme)', 4),
+  ('edebiyat', 'edebi-sanatlar', 'ayirt-etme', 'Birbirinden ayırt etme', 5),
+  ('tarih', 'kurtulus-savasi', 'kongreler', 'Kongreler', 1),
+  ('tarih', 'kurtulus-savasi', 'tbmm', 'TBMM''nin açılışı', 2),
+  ('tarih', 'kurtulus-savasi', 'cepheler', 'Cepheler', 3),
+  ('tarih', 'kurtulus-savasi', 'antlasmalar', 'Antlaşmalar', 4),
+  ('tarih', 'kurtulus-savasi', 'sonuclar', 'Sonuçları', 5),
+  ('cografya', 'iklim-tipleri', 'iklim-hava', 'İklim ve hava durumu farkı', 1),
+  ('cografya', 'iklim-tipleri', 'etkenler', 'İklimi etkileyen faktörler', 2),
+  ('cografya', 'iklim-tipleri', 'akdeniz', 'Akdeniz iklimi', 3),
+  ('cografya', 'iklim-tipleri', 'karasal', 'Karasal iklim', 4),
+  ('cografya', 'iklim-tipleri', 'turkiye', 'Türkiye''deki dağılış', 5),
+  ('felsefe', 'bilgi-felsefesi', 'bilgi-nedir', 'Bilgi nedir?', 1),
+  ('felsefe', 'bilgi-felsefesi', 'rasyonalizm', 'Rasyonalizm', 2),
+  ('felsefe', 'bilgi-felsefesi', 'empirizm', 'Empirizm', 3),
+  ('felsefe', 'bilgi-felsefesi', 'septisizm', 'Septisizm', 4),
+  ('felsefe', 'bilgi-felsefesi', 'karsilastirma', 'Akımları karşılaştırma', 5),
+  ('din-kulturu', 'bilgi-ve-inanc', 'bilgi-turleri', 'Bilgi türleri', 1),
+  ('din-kulturu', 'bilgi-ve-inanc', 'akil-vahiy', 'Akıl ve vahiy ilişkisi', 2),
+  ('din-kulturu', 'bilgi-ve-inanc', 'inanc-ozgurlugu', 'İnanç özgürlüğü', 3),
+  ('din-kulturu', 'bilgi-ve-inanc', 'hosgoru', 'Hoşgörü ve birlikte yaşama', 4),
+  ('din-kulturu', 'bilgi-ve-inanc', 'kavramlar', 'Temel kavramlar', 5),
+  ('ingilizce', 'tenses', 'present-simple', 'Present simple', 1),
+  ('ingilizce', 'tenses', 'present-continuous', 'Present continuous', 2),
+  ('ingilizce', 'tenses', 'past-simple', 'Past simple', 3),
+  ('ingilizce', 'tenses', 'present-perfect', 'Present perfect', 4),
+  ('ingilizce', 'tenses', 'ayirt-etme', 'Birbirinden ayırt etme', 5)
 ) as v(subject_slug, topic_slug, concept_slug, name, position)
   on v.topic_slug = t.slug and v.subject_slug = s.slug
 join exams e on e.id = s.exam_id and e.code = 'YKS'

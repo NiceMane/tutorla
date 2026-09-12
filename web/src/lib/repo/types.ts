@@ -1,8 +1,8 @@
 /* Veri katmanı sınırı. Metotlar Supabase sorgularıyla birebir eşleşecek şekilde
    tasarlandı; bugünkü uygulaması tarayıcı deposu (local.ts), yarınki Supabase. */
 import type {
-  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole,
-  Persona, PersonaCode, Session, Subject, Topic, TopicProgress,
+  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
+  Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 
 export type Curriculum = { subjects: Subject[]; topics: Topic[]; concepts: Concept[] };
@@ -11,6 +11,7 @@ export type SessionDetail = {
   session: Session;
   messages: Message[];
   gaps: Gap[];
+  moments: Moment[];
   states: ConceptState[];
 };
 
@@ -31,6 +32,9 @@ export interface Repo {
 
   appendMessage(sessionId: string, role: MessageRole, content: string): Promise<Message>;
   addGap(sessionId: string, messageId: string | null, conceptId: string | null, label: string): Promise<Gap>;
+  addMoment(sessionId: string, messageId: string | null, conceptId: string | null, kind: MomentKind, label: string): Promise<Moment>;
+  /* teaching_profile görünümü — birikmiş davranış kanıtı */
+  getTeachingProfile(): Promise<TeachingProfile[]>;
   setConceptStatus(conceptId: string, status: ConceptStatus, sessionId: string | null): Promise<void>;
 
   /* Yalnızca yerel geliştirme için — Supabase uygulamasında yok sayılır */

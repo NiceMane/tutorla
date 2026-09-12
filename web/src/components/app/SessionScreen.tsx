@@ -5,11 +5,13 @@ import { Link } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo, type SessionDetail } from "@/lib/repo";
 import { getEngine } from "@/lib/engine";
-import type { Concept, ConceptStatus, Gap, Message } from "@/lib/domain";
+import type { Concept, ConceptStatus, Gap, Message, Moment, MomentKind } from "@/lib/domain";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { ThemeToggle } from "@/components/nav/ThemeToggle";
 import { UnderstandingMap } from "./UnderstandingMap";
 import { Collapse } from "@/components/ui/Collapse";
+import { MomentChip } from "./MomentChip";
+import { TeachingEvidence } from "./TeachingEvidence";
 
 export function SessionScreen({ sessionId }: { sessionId: string }) {
   const t = useTranslations("app.session");
@@ -45,6 +47,11 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
   const settled = concepts.filter((c) => stateMap[c.id] === "settled").length;
   const percent = concepts.length ? Math.round((settled / concepts.length) * 100) : 0;
   const asked = (detail?.messages ?? []).filter((m) => m.role === "student").length;
+  const momentCounts = useMemo(() => {
+    const c: Partial<Record<MomentKind, number>> = {};
+    for (const m of detail?.moments ?? []) c[m.kind] = (c[m.kind] ?? 0) + 1;
+    return c;
+  }, [detail?.moments]);
   const finished = detail?.session.status === "finished";
 
   /* Olay işleyicilerinden çağrılır (gönder / bitir) */
@@ -79,7 +86,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
     opened.current = true;
     (async () => {
       const turn = await engine.open({
-        topic, concepts, persona: detail.session.personaId, messages: [], states: stateMap,
+        topic, concepts, persona: detail.session.personaId, messages: [], states: stateMap, moments: [],
       });
       await repo.appendMessage(sessionId, "student", turn.reply);
       setTargetId(turn.targetConceptId);
@@ -97,13 +104,20 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
     setDraft("");
     setThinking(true);
     try {
-      await repo.appendMessage(sessionId, "teacher", text);
+      const teacherMsg = await repo.appendMessage(sessionId, "teacher", text);
       const afterTeacher = await load();
       const turn = await engine.respond(
-        { topic, concepts, persona: detail.session.personaId, messages: afterTeacher?.messages ?? [], states: stateMap },
+        {
+          topic, concepts, persona: detail.session.personaId,
+          messages: afterTeacher?.messages ?? [], states: stateMap,
+          moments: (afterTeacher?.moments ?? []).map((m) => ({ conceptId: m.conceptId, kind: m.kind })),
+        },
         text,
       );
       for (const u of turn.conceptUpdates) await repo.setConceptStatus(u.conceptId, u.status, sessionId);
+      if (turn.moment) {
+        await repo.addMoment(sessionId, teacherMsg.id, turn.moment.conceptId, turn.moment.kind, turn.moment.label);
+      }
       const reply = await repo.appendMessage(sessionId, "student", turn.reply);
       if (turn.gap) await repo.addGap(sessionId, reply.id, turn.gap.conceptId, turn.gap.label);
       setTargetId(turn.targetConceptId);
@@ -116,9 +130,13 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
 
   async function finish() {
     if (!topic || !detail) return;
-    const note = await engine.note({
-      topic, concepts, persona: detail.session.personaId, messages: detail.messages, states: stateMap,
-    });
+    const note = await engine.note(
+      {
+        topic, concepts, persona: detail.session.personaId, messages: detail.messages, states: stateMap,
+        moments: (detail.moments ?? []).map((m) => ({ conceptId: m.conceptId, kind: m.kind })),
+      },
+      (detail.moments ?? []).map((m) => m.kind),
+    );
     await repo.finishSession(sessionId, note);
     await load();
     await refresh();
@@ -137,6 +155,8 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
 
   const gapForMessage = (m: Message): Gap | undefined =>
     (detail?.gaps ?? []).find((g) => g.messageId === m.id);
+  const momentForMessage = (m: Message): Moment | undefined =>
+    (detail?.moments ?? []).find((x) => x.messageId === m.id);
 
   return (
     <div className="flex h-dvh flex-col bg-paper">
@@ -248,12 +268,14 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             )}
             {(detail?.messages ?? []).map((m) => {
               const gap = gapForMessage(m);
+              const moment = momentForMessage(m);
               return (
                 <div key={m.id} className="flex flex-col gap-2">
                   <div className={`max-w-[85%] rounded-[9px] px-3.5 py-2.5 leading-[1.5] ${m.role === "teacher" ? "self-end bg-primary text-on-primary" : "border border-line bg-surface-2"}`}>
                     {/* curriculum'daki tek <strong> vurgusu için */}
                     <span dangerouslySetInnerHTML={{ __html: m.content.replace(/<(?!\/?strong>)/g, "&lt;") }} />
                   </div>
+                  {moment && <MomentChip kind={moment.kind} label={moment.label} />}
                   {gap && (
                     <div className="meta self-start rounded-[var(--radius-ui)] border border-dashed border-accent px-2.5 py-1 text-[13px] !text-accent">
                       {gap.label}
@@ -304,7 +326,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
         </div>
 
         {/* sağ: anlayış haritası (masaüstü) */}
-        <aside className="hidden min-h-0 flex-col overflow-y-auto border-l border-line p-4 lg:flex">
+        <aside className="hidden min-h-0 flex-col gap-5 overflow-y-auto border-l border-line p-4 lg:flex">
           <UnderstandingMap
             topicName={topic?.name ?? ""}
             concepts={concepts}
@@ -315,6 +337,11 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             asked={asked}
             note={detail?.session.note ?? null}
           />
+          <div className="flex flex-col gap-2 border-t border-line pt-4">
+            <span className="meta text-[13.5px]">{t("moments")}</span>
+            <TeachingEvidence counts={momentCounts} />
+            <p className="meta mt-1 text-[12.5px] leading-[1.45]">{t("momentsHint")}</p>
+          </div>
         </aside>
       </div>
     </div>

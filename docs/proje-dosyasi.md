@@ -70,10 +70,27 @@ Zincir kuralı · %40
 
 Metrikler: *4 soru soruldu · 2/5 kavram oturdu*.
 
-**6. Seans notu**
-Oturum sonunda davranışsal geri bildirim: *"Öğrencin 'neden' sorularına takılıyor. Sebep-sonuçla anlatmayı dene."*
+**6. Öğretme davranışı — davranış kanıtı**
+Boşluk yakalamanın olumlu ikizi. Sistem anlatım örüntüsünden beş sinyal çıkarır ve her birini **kanıtıyla**, yani o mesajın kendisiyle işaretler:
 
-**7. İlerleme**
+| Sinyal | Ne zaman |
+|---|---|
+| **Sebat** | Boşluk çıktıktan sonra pes etmeyip yeniden anlattı |
+| **Nedensellik** | Sadece "ne"yi değil "neden"i de anlattı |
+| **Somutlama** | Örnek vererek somutladı |
+| **Sadeleştirme** | Anlaşılmayınca kısaltıp sadeleştirdi |
+| **Merak** | Sorulmadan bir sonraki kavrama geçti |
+
+Aynı kavram için aynı sinyal iki kez verilmez — her tura madalya dağıtmak anlamı öldürür. Birikmiş sinyaller panelde "davranış kanıtın" olarak toplanır.
+
+**Neden bu var.** Fikrin kökeni Wild Zebra (ABD, 2024): 2–9. sınıf için Sokratik AI öğretmen; asıl farklılaştırıcısı değerlendirme tarafında — konuşma örüntüsünden azim/merak sinyali çıkarıp veliye "olumlu an" bildiriyor, yani ürünü satan şey not değil davranış kanıtı.
+
+**Nasıl uyarladık.** Birebir kopyalamadık, çünkü iki fark var. (1) Onlarda AI sorar, öğrenci çözer; bizde öğrenci anlatır — dolayısıyla ölçülen davranış "soruya nasıl yaklaştı" değil **"nasıl öğretti"**. (2) Onların müşterisi veli (2–9. sınıf); bizim kitlemiz YKS'ye hazırlanan lise/üniversite öğrencisi, kararı çoğunlukla kendisi veriyor. Bu yüzden sinyaller **önce öğrencinin kendisine** gösteriliyor: *"Takıldığın yerde pes etmedin"* cümlesi, yüzdeden daha motive edici bir kanıt. Veliye/öğretmene rapor ileride eklenebilir ama ürünün ekseni değil.
+
+**7. Seans notu**
+Oturum sonunda davranışsal geri bildirim, varsa davranış kanıtıyla açılır: *"Takıldığın yerde pes etmeyip yeniden anlattın. Öğrencin 'neden' sorularına takılıyor — sebep-sonuçla anlatmayı dene."*
+
+**8. İlerleme**
 Sol panelde konu listesi ve her konunun yüzdesi tutulur (Limit 100 · Türev tanımı 92 · Zincir kuralı 40 · Kapalı türev — · İntegral —). Bu, uygulamanın uzun vadeli tutundurma (retention) motoru.
 
 ---
@@ -82,7 +99,11 @@ Sol panelde konu listesi ve her konunun yüzdesi tutulur (Limit 100 · Türev ta
 
 **Kategori farkı.** Türkiye'deki eğitim–AI uygulamalarının neredeyse tamamı ters yönde çalışıyor: AI öğretir, öğrenci öğrenir (soru çözüm, özel ders, akıllı öğretici sistemler). Tutorla bunun tersini yapıyor. Yapılan araştırmada Türkiye pazarında "AI'ya öğreterek öğrenme" konseptine odaklanmış yerli bir uygulamaya rastlanmadı.
 
-**Küresel emsaller.** Teach Bob, StudyWizardry — aynı konsept, Türkçe/Türkiye'ye uyarlanmış karşılıkları yok.
+**Küresel emsaller.** Teach Bob, StudyWizardry — aynı konsept (AI'ya öğretme), Türkçe/Türkiye'ye uyarlanmış karşılıkları yok.
+
+**Kısmen örtüşen:** Wild Zebra (ABD, 2024 · Seed $6M, toplam $8M) — 2–9. sınıf matematik ve okuma için Sokratik AI öğretmen. Cevabı vermiyor, yönlendirici soru soruyor; asıl farklılaştırıcısı değerlendirme tarafında: konuşma örüntüsünden azim ve merak sinyali çıkarıp veliye "olumlu an" bildiriyor. Ürünü veliye satan şey not değil, davranış kanıtı.
+
+Roller hâlâ ters: onlarda AI öğretir. Ama **davranış kanıtı fikri doğru** ve bizde daha güçlü karşılık buluyor — anlatan taraf kullanıcı olduğu için ölçülecek davranış zaten öğretme davranışı. §4'te uyarlanmış hâli var.
 
 **Boşluk.** Türkçe dil desteği + yerel müfredat (YKS, LGS, TÜBİTAK) + ters rol. Üçünün kesişimi şu an boş.
 
@@ -296,12 +317,17 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [x] Yüzde skorunun hesaplanma mantığı — oturan kavram / toplam kavram, `topic_progress` görünümü
 - [ ] Kapalı test için 5–10 gerçek öğrenci
 - [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
+- [x] Öğretme davranışı sinyalleri — beş tür, kanıtıyla; panelde birikmiş kanıt
+- [ ] Davranış sinyallerinin Claude ile gerçek analize taşınması (şu an kalıp eşleşmesi)
+- [ ] Veli/öğretmen raporu — istenirse; ürünün ekseni değil
 
 **Teknik**
 - [x] **Giriş ekranları** — `/giris`, e-posta + şifre çalışıyor, `/app` korumalı, çıkış var. Tarayıcıda şifre kalmadı.
 - [ ] Google girişi — Google Cloud'da OAuth istemcisi + Supabase'de sağlayıcı ayarı (kod hazır)
 - [ ] E-posta onayı / SMTP — yeni kayıtlar doğrulama bekliyor; yayında kendi SMTP'niz gerekli
-- [ ] Vercel'e deploy ve domain bağlama
+- [x] Vercel'e deploy — https://tutorla.vercel.app, GitHub'a bağlı
+- [ ] Alan adı bağlama (tutorla.com / .app / .co)
+- [ ] Supabase panelinde "Leaked password protection" açılması (HaveIBeenPwned kontrolü)
 - [ ] Mobilde sol konu listesi (anlayış haritası mobilde açılır panel olarak çözüldü)
 
 **İş modeli**

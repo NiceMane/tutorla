@@ -4,8 +4,8 @@
    böylece Supabase'e geçiş satır satır eşleşir. */
 import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
-  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole,
-  Persona, PersonaCode, Session, Subject, Topic, TopicProgress,
+  Concept, ConceptState, ConceptStatus, Gap, Message, MessageRole, Moment, MomentKind,
+  Persona, PersonaCode, Session, Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
 
@@ -40,10 +40,11 @@ type Store = {
   sessions: Session[];
   messages: Message[];
   gaps: Gap[];
+  moments: Moment[];
   states: (ConceptState & { conceptId: string })[];
 };
 
-const empty: Store = { sessions: [], messages: [], gaps: [], states: [] };
+const empty: Store = { sessions: [], messages: [], gaps: [], moments: [], states: [] };
 
 function read(): Store {
   if (typeof window === "undefined") return { ...empty };
@@ -55,6 +56,7 @@ function read(): Store {
       sessions: p.sessions ?? [],
       messages: p.messages ?? [],
       gaps: p.gaps ?? [],
+      moments: p.moments ?? [],
       states: p.states ?? [],
     };
   } catch {
@@ -128,6 +130,7 @@ export class LocalRepo implements Repo {
       session,
       messages: st.messages.filter((m) => m.sessionId === id).sort((a, b) => a.position - b.position),
       gaps: st.gaps.filter((g) => g.sessionId === id),
+      moments: st.moments.filter((m) => m.sessionId === id),
       states: st.states.filter((s) => ids.has(s.conceptId)),
     };
   }
@@ -175,6 +178,26 @@ export class LocalRepo implements Repo {
     return gap;
   }
 
+  async addMoment(sessionId: string, messageId: string | null, conceptId_: string | null, kind: MomentKind, label: string): Promise<Moment> {
+    const st = read();
+    const moment: Moment = { id: uid(), sessionId, messageId, conceptId: conceptId_, kind, label, createdAt: new Date().toISOString() };
+    st.moments.push(moment);
+    write(st);
+    return moment;
+  }
+
+  async getTeachingProfile(): Promise<TeachingProfile[]> {
+    const st = read();
+    const by = new Map<MomentKind, TeachingProfile>();
+    for (const m of st.moments) {
+      const cur = by.get(m.kind) ?? { kind: m.kind, total: 0, lastAt: null };
+      cur.total += 1;
+      if (!cur.lastAt || m.createdAt > cur.lastAt) cur.lastAt = m.createdAt;
+      by.set(m.kind, cur);
+    }
+    return [...by.values()].sort((a, b) => b.total - a.total);
+  }
+
   async setConceptStatus(conceptId_: string, status: ConceptStatus, sessionId: string | null): Promise<void> {
     const st = read();
     const now = new Date().toISOString();
@@ -192,6 +215,6 @@ export class LocalRepo implements Repo {
   }
 
   async reset(): Promise<void> {
-    write({ ...empty, sessions: [], messages: [], gaps: [], states: [] });
+    write({ sessions: [], messages: [], gaps: [], moments: [], states: [] });
   }
 }

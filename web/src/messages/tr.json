@@ -177,7 +177,9 @@
       "recent": "son seanslar",
       "noSessions": "Henüz seans yok. Bir konu seçip başla.",
       "reset": "Verileri sıfırla",
-      "resetConfirm": "Tüm seanslar ve ilerleme silinecek. Emin misin?"
+      "resetConfirm": "Tüm seanslar ve ilerleme silinecek. Emin misin?",
+      "evidence": "davranış kanıtın",
+      "evidenceHint": "Bunlar not değil, anlatırken yaptıklarının kaydı."
     },
     "session": {
       "scripted": "senaryolu öğrenci",
@@ -201,7 +203,26 @@
         "photo": "Fotoğraf"
       },
       "soon": "yakında",
-      "empty": "Konuyu kendi cümlelerinle anlatmaya başla."
+      "empty": "Konuyu kendi cümlelerinle anlatmaya başla.",
+      "moments": "öğretme davranışın",
+      "momentsHint": "Bunlar not değil, anlatırken yaptıklarının kaydı.",
+      "noMoments": "Henüz kayda geçen bir an yok. Anlatmaya devam et."
+    },
+    "moment": {
+      "kind": {
+        "persistence": "Sebat",
+        "causal": "Nedensellik",
+        "concrete": "Somutlama",
+        "simplify": "Sadeleştirme",
+        "curiosity": "Merak"
+      },
+      "desc": {
+        "persistence": "Takıldığın yerde pes etmeyip yeniden anlattın",
+        "causal": "Sadece “ne”yi değil “neden”i de anlattın",
+        "concrete": "Örnek vererek somutladın",
+        "simplify": "Anlaşılmayınca sadeleştirdin",
+        "curiosity": "Sorulmadan bir adım ileri gittin"
+      }
     }
   },
   "auth": {
