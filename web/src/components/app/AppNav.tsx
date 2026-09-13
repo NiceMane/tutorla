@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname, useRouter } from "@/i18n/navigation";
 import { Wordmark } from "@/components/ui/Wordmark";
@@ -8,11 +8,14 @@ import { Collapse } from "@/components/ui/Collapse";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 import { useAuth } from "@/lib/auth";
 import { useApp } from "@/lib/store";
+import { getRepo } from "@/lib/repo";
+import { Avatar } from "./Avatar";
 
 const LINKS = [
   { href: "/app", key: "lessons" },
   { href: "/app/sokratik", key: "socratic" },
   { href: "/app/akis", key: "feed" },
+  { href: "/app/bildirimler", key: "notifications" },
   { href: "/app/profil", key: "profile" },
 ] as const;
 
@@ -26,6 +29,23 @@ export function AppNav() {
   const { user, signOut, enabled } = useAuth();
   const { profile } = useApp();
   const [open, setOpen] = useState(false);
+  const [unread, setUnread] = useState(0);
+
+  /* Okunmamış bildirim rozeti. 60 sn'de bir tazeleniyor — anlık akış
+     (realtime) yerine basit yoklama; bu ölçekte yeterli. */
+  useEffect(() => {
+    if (!enabled || !user) return;
+    let alive = true;
+    const tick = async () => {
+      try {
+        const n = await getRepo().unreadCount();
+        if (alive) setUnread(n);
+      } catch { /* sessizce geç: rozet kritik değil */ }
+    };
+    tick();
+    const id = setInterval(tick, 60_000);
+    return () => { alive = false; clearInterval(id); };
+  }, [enabled, user, pathname]);
 
   /* Seans ekranı odaklanmış bir çalışma alanı: kendi başlığı var ve tam ekran.
      Navbar orada görünmez. */
@@ -51,6 +71,11 @@ export function AppNav() {
               }`}
             >
               {t(l.key)}
+              {l.key === "notifications" && unread > 0 && (
+                <span className="ml-1.5 inline-grid min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-white tabular-nums">
+                  {unread > 9 ? "9+" : unread}
+                </span>
+              )}
             </Link>
           ))}
         </nav>
@@ -61,7 +86,7 @@ export function AppNav() {
               href="/app/profil"
               className="hidden items-center gap-2 rounded-[var(--radius-ui)] border border-line-2 px-2.5 py-1.5 text-[13px] text-ink-2 transition-colors hover:border-primary hover:text-primary sm:flex"
             >
-              <span aria-hidden="true">{profile?.avatarEmoji ?? "🦉"}</span>
+              <Avatar profile={profile} size="sm" className="!size-6" />
               <span className="max-w-[140px] truncate">{profile?.displayName || profile?.handle || user.email}</span>
             </Link>
           )}

@@ -6,11 +6,12 @@ import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
   Comment, Concept, ConceptState, ConceptStatus, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
-  Persona, PersonaCode, Post, Profile, Session, SessionMode,
+  AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
+  Session, SessionMode,
   Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
-import type { NewPost } from "./social";
+import type { FeedPage, FeedScope, NewPost } from "./social";
 
 const KEY = "tutorla-app-v1";
 const EXAM_ID = EXAM.code;
@@ -254,7 +255,15 @@ export class LocalRepo implements Repo {
 
   async getMyProfile(): Promise<Profile | null> {
     const st = read();
-    return st.profile ?? { id: "local", displayName: "Sen", handle: null, bio: null, avatarEmoji: "🦉", examId: null };
+    return st.profile ?? {
+      id: "local", displayName: "Sen", handle: null, bio: null,
+      avatarEmoji: "🦉", avatarUrl: null, examId: null,
+      grade: null, school: null, city: null, examYear: null,
+      targetUniversity: null, targetDepartment: null, targetRank: null,
+      weeklyHours: null, studyStyle: null, strongSubjects: [], weakSubjects: [],
+      goals: null, isPublic: true, streakDays: 0, longestStreak: 0,
+      createdAt: null, onboardedAt: null,
+    };
   }
 
   async updateProfile(patch: Partial<Profile>): Promise<Profile> {
@@ -303,7 +312,8 @@ export class LocalRepo implements Repo {
     const post: Post = {
       id: uid(), authorId: me.id, author: me, body: input.body, examId: input.examId,
       media: input.media.map((m, i) => ({ id: uid(), url: m.url, kind: m.kind, position: i })),
-      createdAt: new Date().toISOString(), reactions: {}, myReactions: [], commentCount: 0,
+      createdAt: new Date().toISOString(), editedAt: null, reactions: {}, myReactions: [],
+      commentCount: 0, bookmarked: false,
     };
     st.posts.push(post);
     write(st);
@@ -367,5 +377,75 @@ export class LocalRepo implements Repo {
 
   async reset(): Promise<void> {
     write({ exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [] });
+  }
+
+  /* --------------------------------------------------- profil / sosyal
+     Tarayıcı deposunda sosyal grafik tek kişilik; yine de çökmesin diye
+     sözleşmenin tamamı burada da karşılanıyor. */
+
+  async getProfileByHandle(handle: string): Promise<Profile | null> {
+    const me = await this.getMyProfile();
+    return me && me.handle?.toLowerCase() === handle.toLowerCase() ? me : null;
+  }
+
+  async getProfileStats(): Promise<ProfileStats> {
+    const st = read();
+    const closed = st.states.filter((x) => x.status === "settled" && x.wasGap).length;
+    return {
+      sessions: st.sessions.length,
+      finishedSessions: st.sessions.filter((x) => x.status === "finished").length,
+      closedByTeaching: closed,
+      moments: st.moments.length,
+      posts: st.posts.length,
+      followers: 0,
+      following: 0,
+    };
+  }
+
+  async uploadAvatar(file: File): Promise<string> {
+    const { url } = await this.uploadImage(file);
+    await this.updateProfile({ avatarUrl: url });
+    return url;
+  }
+
+  async removeAvatar(): Promise<void> {
+    await this.updateProfile({ avatarUrl: null });
+  }
+
+  async getFollowState(): Promise<FollowState> {
+    return { following: false, followers: 0, followingCount: 0 };
+  }
+  async toggleFollow(): Promise<boolean> { return false; }
+
+  async listNotifications(): Promise<AppNotification[]> { return []; }
+  async unreadCount(): Promise<number> { return 0; }
+  async markNotificationsRead(): Promise<void> {}
+
+  async report(): Promise<void> {}
+  async toggleBlock(): Promise<boolean> { return false; }
+  async listBlocked(): Promise<string[]> { return []; }
+
+  async listFeed(scope: FeedScope, cursor: string | null, limit = 15): Promise<FeedPage> {
+    const st = read();
+    let rows = st.posts.slice().sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+    if (scope === "bookmarks") rows = rows.filter((p) => p.bookmarked);
+    if (cursor) rows = rows.filter((p) => p.createdAt < cursor);
+    const slice = rows.slice(0, limit);
+    return { posts: slice, nextCursor: rows.length > limit ? slice[slice.length - 1].createdAt : null };
+  }
+
+  async updatePost(id: string, body: string): Promise<void> {
+    const st = read();
+    const p = st.posts.find((x) => x.id === id);
+    if (p) { p.body = body; p.editedAt = new Date().toISOString(); write(st); }
+  }
+
+  async toggleBookmark(postId: string): Promise<boolean> {
+    const st = read();
+    const p = st.posts.find((x) => x.id === postId);
+    if (!p) return false;
+    p.bookmarked = !p.bookmarked;
+    write(st);
+    return p.bookmarked;
   }
 }

@@ -3,7 +3,7 @@ import { useTranslations } from "next-intl";
 import { MOMENT_KINDS, type MomentKind } from "@/lib/domain";
 import { MomentIcon } from "./MomentChip";
 
-/* Birikmiş davranış kanıtı. Ürünün "not değil, davranış" tarafı —
+/* Birikmiş davranış kanıtı. Ürünün "not degil, davranis" tarafı —
    sıfır olanları da gösteriyoruz ki neyin ölçüldüğü görünsün. */
 export function TeachingEvidence({
   counts,

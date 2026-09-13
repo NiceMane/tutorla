@@ -168,7 +168,8 @@
       "back": "Panele dön",
       "exit": "Seanstan çık",
       "menu": "Menü",
-      "close": "Kapat"
+      "close": "Kapat",
+      "notifications": "Bildirimler"
     },
     "dash": {
       "eyebrow": "panelin",
@@ -267,19 +268,76 @@
     "profile": {
       "eyebrow": "profilin",
       "title": "Profil",
+      "edit": "Profili düzenle",
+      "view": "Profili gör",
+      "photo": "fotoğraf",
+      "upload": "Fotoğraf yükle",
+      "remove": "Kaldır",
+      "useEmoji": "Simge kullan",
+      "photoHint": "PNG/JPG/WebP · en fazla 2 MB",
+      "cropping": "hazırlanıyor…",
+      "identity": "kimlik",
       "name": "görünen ad",
       "handle": "kullanıcı adı",
       "bio": "kısa tanıtım",
       "avatar": "simge",
+      "handleRule": "3–20 karakter: harf, rakam, alt tire.",
+      "handleTaken": "Bu kullanıcı adı alınmış.",
+      "study": "öğrencilik",
       "exam": "sınavın",
+      "grade": "sınıf",
+      "school": "okul",
+      "city": "şehir",
+      "examYear": "sınav yılı",
+      "grades": {
+        "9": "9. sınıf",
+        "10": "10. sınıf",
+        "11": "11. sınıf",
+        "12": "12. sınıf",
+        "mezun": "Mezun"
+      },
+      "target": "hedefin",
+      "targetUniversity": "hedef üniversite",
+      "targetDepartment": "hedef bölüm",
+      "targetRank": "hedef sıralama",
+      "goals": "kendi hedeflerin",
+      "habits": "çalışma alışkanlığın",
+      "weeklyHours": "haftalık çalışma (saat)",
+      "studyStyle": "ne zaman çalışırsın",
+      "styles": {
+        "sabah": "Sabahçı",
+        "gece": "Gececi",
+        "karma": "Karma"
+      },
+      "strong": "güçlü derslerin",
+      "weak": "geliştirmek istediklerin",
+      "pickSubjects": "Derslere tıklayarak seç",
+      "privacy": "gizlilik",
+      "isPublic": "Profilim herkese açık olsun",
+      "privacyHint": "Kapatırsan profilini yalnızca sen görürsün.",
       "save": "Kaydet",
       "saved": "Kaydedildi",
-      "handleTaken": "Bu kullanıcı adı alınmış.",
-      "handleRule": "3–20 karakter, harf, rakam ve alt tire.",
+      "saving": "kaydediliyor…",
       "stats": "özetin",
       "sessions": "seans",
+      "finished": "biten seans",
       "closed": "anlatarak kapatılan kavram",
-      "moments": "davranış anı"
+      "moments": "davranış anı",
+      "posts": "paylaşım",
+      "followers": "takipçi",
+      "following": "takip",
+      "streak": "gün üst üste",
+      "longest": "en uzun seri",
+      "member": "katılım",
+      "follow": "Takip et",
+      "unfollow": "Takibi bırak",
+      "block": "Engelle",
+      "unblock": "Engeli kaldır",
+      "report": "Şikâyet et",
+      "notFound": "Böyle bir profil yok.",
+      "private": "Bu profil gizli.",
+      "empty": "Henüz doldurulmamış.",
+      "completeness": "profil doluluğu"
     },
     "feed": {
       "eyebrow": "akış",
@@ -303,7 +361,13 @@
       "gifUrl": "GIF bağlantısı yapıştır",
       "uploading": "yükleniyor…",
       "tooBig": "Dosya 5 MB'tan büyük.",
-      "loginFirst": "Paylaşmak için giriş yap."
+      "loginFirst": "Paylaşmak için giriş yap.",
+      "bookmark": "Kaydet",
+      "report": "Şikâyet",
+      "all": "Tümü",
+      "following": "Takip",
+      "bookmarks": "Kayıtlılar",
+      "editHint": "düzenlendi"
     },
     "socratic": {
       "eyebrow": "sokratik mod",
@@ -316,6 +380,52 @@
       "thinking": "düşünüyor…",
       "hint": "ipucu ister misin?",
       "hintLabel": "ipucu"
+    },
+    "onboarding": {
+      "skip": "Şimdilik geç",
+      "next": "Devam",
+      "back": "Geri",
+      "finish": "Başla",
+      "step": "adım",
+      "of": "/",
+      "s1title": "Merhaba! Seni tanıyalım.",
+      "s1sub": "Bunlar profilinde görünecek, sonradan değiştirebilirsin.",
+      "s2title": "Hangi sınava hazırlanıyorsun?",
+      "s2sub": "Dersler ve konular buna göre açılıyor.",
+      "s3title": "Hedefin ne?",
+      "s3sub": "Hedefini yazmak, ona çalışmayı kolaylaştırır.",
+      "s4title": "Nasıl çalışıyorsun?",
+      "s4sub": "Öğrencin seni buna göre tanıyacak."
+    },
+    "notif": {
+      "title": "Bildirimler",
+      "empty": "Henüz bildirim yok.",
+      "markRead": "Tümünü okundu işaretle",
+      "yorum": "gönderine yorum yaptı",
+      "yanit": "yorumuna yanıt verdi",
+      "tepki": "gönderine tepki verdi",
+      "takip": "seni takip etmeye başladı"
+    },
+    "report": {
+      "title": "Şikâyet et",
+      "reason": "sebep",
+      "note": "açıklama (isteğe bağlı)",
+      "send": "Gönder",
+      "sent": "Şikâyetin alındı. Teşekkürler.",
+      "cancel": "Vazgeç",
+      "reasons": {
+        "spam": "Spam",
+        "taciz": "Taciz veya hakaret",
+        "uygunsuz": "Uygunsuz içerik",
+        "yanlis_bilgi": "Yanlış bilgi",
+        "diger": "Diğer"
+      }
+    },
+    "emoji": {
+      "face": "yüz",
+      "hand": "el",
+      "school": "okul",
+      "mood": "duygu"
     }
   },
   "auth": {
@@ -352,5 +462,20 @@
     "errWeak": "Şifre koşullarını sağlamıyor.",
     "errRate": "Çok fazla deneme oldu. Birkaç dakika bekleyip tekrar dene.",
     "errTaken": "Bu e-posta zaten kayıtlı. Giriş yapmayı dene."
+  },
+  "common": {
+    "retry": "Tekrar dene",
+    "loadMore": "Daha fazla",
+    "loading": "yükleniyor…",
+    "errorTitle": "Bir şeyler ters gitti",
+    "errorBody": "Beklenmedik bir hata oldu. Tekrar denemek ister misin?",
+    "notFoundTitle": "Sayfa bulunamadı",
+    "notFoundBody": "Aradığın sayfa taşınmış ya da hiç var olmamış olabilir.",
+    "home": "Ana sayfa",
+    "toApp": "Panele git",
+    "cancel": "Vazgeç",
+    "save": "Kaydet",
+    "delete": "Sil",
+    "edit": "Düzenle"
   }
 }

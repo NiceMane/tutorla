@@ -5,13 +5,23 @@ import { getSupabase } from "@/lib/supabase";
 import type {
   Comment, Concept, ConceptState, ConceptStatus, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
-  Persona, PersonaCode, Post, Profile, Session, SessionMode, SessionStatus,
+  AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
+  ReportReason, Session, SessionMode, SessionStatus,
   Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
 import type { Curriculum, Repo, SessionDetail } from "./types";
-import type { NewPost } from "./social";
+import type { FeedPage, FeedScope, NewPost } from "./social";
 
 type Row = Record<string, unknown>;
+
+/* Supabase hataları düz nesne; new Error değil. Olduğu gibi fırlatınca
+   arayüzde mesaj kayboluyor ("—" görünüyordu). Gerçek Error'a çeviriyoruz. */
+type SbError = { message?: string; code?: string; details?: string; hint?: string };
+function fail(e: SbError, where: string): never {
+  const parts = [e?.message, e?.details, e?.hint].filter(Boolean).join(" · ");
+  const err = new Error(`${where}: ${parts || "bilinmeyen hata"}${e?.code ? ` [${e.code}]` : ""}`);
+  throw err;
+}
 const str = (v: unknown) => String(v ?? "");
 const num = (v: unknown) => Number(v ?? 0);
 
@@ -41,9 +51,9 @@ export class SupabaseRepo implements Repo {
       sb.from("topics").select("id,subject_id,slug,name,position").order("position"),
       sb.from("concepts").select("id,topic_id,slug,name,position").order("position"),
     ]);
-    if (s.error) throw s.error;
-    if (t.error) throw t.error;
-    if (c.error) throw c.error;
+    if (s.error) fail(s.error, "s");
+    if (t.error) fail(t.error, "t");
+    if (c.error) fail(c.error, "c");
 
     const subjects: Subject[] = (s.data as Row[]).map((r) => ({
       id: str(r.id), examId: str(r.exam_id), slug: str(r.slug), name: str(r.name), position: num(r.position),
@@ -60,7 +70,7 @@ export class SupabaseRepo implements Repo {
   async getPersonas(): Promise<Persona[]> {
     const sb = await this.sb();
     const { data, error } = await sb.from("personas").select("id,code,name,trait,active,position").order("position");
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const rows = data as Row[];
     this.personaByCode = new Map(rows.map((r) => [str(r.code) as PersonaCode, str(r.id)]));
     return rows.map((r) => ({
@@ -77,7 +87,7 @@ export class SupabaseRepo implements Repo {
   async getProgress(): Promise<TopicProgress[]> {
     const sb = await this.sb();
     const { data, error } = await sb.from("topic_progress").select("topic_id,settled,gaps,total,percent");
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => ({
       topicId: str(r.topic_id), settled: num(r.settled), gaps: num(r.gaps), total: num(r.total), percent: num(r.percent),
     }));
@@ -89,7 +99,7 @@ export class SupabaseRepo implements Repo {
     const ids = cur.concepts.filter((c) => c.topicId === topicId).map((c) => c.id);
     if (ids.length === 0) return [];
     const { data, error } = await sb.from("concept_states").select("concept_id,status,was_gap,session_id,updated_at").in("concept_id", ids);
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => ({
       conceptId: str(r.concept_id), status: str(r.status) as ConceptStatus,
       wasGap: Boolean(r.was_gap),
@@ -113,7 +123,7 @@ export class SupabaseRepo implements Repo {
       .from("sessions")
       .select("id,mode,topic_id,status,started_at,ended_at,note,personas(code)")
       .order("started_at", { ascending: false });
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => {
       const p = r.personas as { code?: string } | null;
       return this.toSession({ ...r, persona_code: p?.code });
@@ -127,7 +137,7 @@ export class SupabaseRepo implements Repo {
       .select("id,mode,topic_id,status,started_at,ended_at,note,personas(code)")
       .eq("id", id)
       .maybeSingle();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     if (!data) return null;
     const p = (data as Row).personas as { code?: string } | null;
     const session = this.toSession({ ...(data as Row), persona_code: p?.code });
@@ -138,9 +148,9 @@ export class SupabaseRepo implements Repo {
       sb.from("moments").select("id,session_id,message_id,concept_id,kind,label,created_at").eq("session_id", id),
       this.getConceptStates(session.topicId),
     ]);
-    if (m.error) throw m.error;
-    if (g.error) throw g.error;
-    if (mo.error) throw mo.error;
+    if (m.error) fail(m.error, "m");
+    if (g.error) fail(g.error, "g");
+    if (mo.error) fail(mo.error, "mo");
 
     const messages: Message[] = (m.data as Row[]).map((r) => ({
       id: str(r.id), sessionId: str(r.session_id), role: str(r.role) as MessageRole,
@@ -171,7 +181,7 @@ export class SupabaseRepo implements Repo {
       .insert({ user_id: await this.userId(), topic_id: topicId, persona_id: personaUuid, mode })
       .select("id,mode,topic_id,status,started_at,ended_at,note")
       .single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return this.toSession({ ...(data as Row), persona_code: personaId });
   }
 
@@ -181,7 +191,7 @@ export class SupabaseRepo implements Repo {
       .from("sessions")
       .update({ status: "finished", ended_at: new Date().toISOString(), note })
       .eq("id", sessionId);
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
   }
 
   async appendMessage(sessionId: string, role: MessageRole, content: string): Promise<Message> {
@@ -194,7 +204,7 @@ export class SupabaseRepo implements Repo {
       .insert({ session_id: sessionId, role, content, position: count ?? 0 })
       .select("id,session_id,role,content,position,created_at")
       .single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const r = data as Row;
     return {
       id: str(r.id), sessionId: str(r.session_id), role: str(r.role) as MessageRole,
@@ -209,7 +219,7 @@ export class SupabaseRepo implements Repo {
       .insert({ session_id: sessionId, message_id: messageId, concept_id: conceptId, label })
       .select("id,session_id,message_id,concept_id,label,created_at")
       .single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const r = data as Row;
     return {
       id: str(r.id), sessionId: str(r.session_id),
@@ -226,7 +236,7 @@ export class SupabaseRepo implements Repo {
       .insert({ session_id: sessionId, message_id: messageId, concept_id: conceptId, kind, label })
       .select("id,session_id,message_id,concept_id,kind,label,created_at")
       .single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const r = data as Row;
     return {
       id: str(r.id), sessionId: str(r.session_id),
@@ -240,7 +250,7 @@ export class SupabaseRepo implements Repo {
   async getLearningEvidence(): Promise<LearningEvidence[]> {
     const sb = await this.sb();
     const { data, error } = await sb.from("learning_evidence").select("topic_id,closed_by_teaching,settled");
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => ({
       topicId: str(r.topic_id), closedByTeaching: num(r.closed_by_teaching), settled: num(r.settled),
     }));
@@ -250,7 +260,7 @@ export class SupabaseRepo implements Repo {
   async getTeachingProfile(): Promise<TeachingProfile[]> {
     const sb = await this.sb();
     const { data, error } = await sb.from("teaching_profile").select("kind,total,last_at");
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[])
       .map((r) => ({ kind: str(r.kind) as MomentKind, total: num(r.total), lastAt: r.last_at ? str(r.last_at) : null }))
       .sort((a, b) => b.total - a.total);
@@ -275,44 +285,74 @@ export class SupabaseRepo implements Repo {
         { user_id: userId, concept_id: conceptId, status, was_gap: wasGap, session_id: sessionId, updated_at: new Date().toISOString() },
         { onConflict: "user_id,concept_id" },
       );
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
   }
 
   /* ---------------------------------------------------------- sosyal taraf */
 
   private toProfile(r: Row | null | undefined): Profile | null {
     if (!r) return null;
+    const t = (k: string) => (r[k] ? str(r[k]) : null);
+    const n = (k: string) => (r[k] === null || r[k] === undefined ? null : num(r[k]));
     return {
       id: str(r.id),
-      displayName: r.display_name ? str(r.display_name) : null,
-      handle: r.handle ? str(r.handle) : null,
-      bio: r.bio ? str(r.bio) : null,
+      displayName: t("display_name"),
+      handle: t("handle"),
+      bio: t("bio"),
       avatarEmoji: str(r.avatar_emoji) || "🦉",
-      examId: r.exam_id ? str(r.exam_id) : null,
+      avatarUrl: t("avatar_url"),
+      examId: t("exam_id"),
+      grade: t("grade") as Profile["grade"],
+      school: t("school"),
+      city: t("city"),
+      examYear: n("exam_year"),
+      targetUniversity: t("target_university"),
+      targetDepartment: t("target_department"),
+      targetRank: n("target_rank"),
+      weeklyHours: n("weekly_hours"),
+      studyStyle: t("study_style") as Profile["studyStyle"],
+      strongSubjects: (r.strong_subjects as string[] | null) ?? [],
+      weakSubjects: (r.weak_subjects as string[] | null) ?? [],
+      goals: t("goals"),
+      isPublic: r.is_public === undefined ? true : Boolean(r.is_public),
+      streakDays: num(r.streak_days),
+      longestStreak: num(r.longest_streak),
+      createdAt: t("created_at"),
+      onboardedAt: t("onboarded_at"),
     };
   }
+
+  /* Profil sütunları tek yerde: sorgular arasında kayma olmasın. */
+  private static readonly PROFILE_COLS = "id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at";
 
   async getMyProfile(): Promise<Profile | null> {
     const sb = await this.sb();
     const { data, error } = await sb
-      .from("profiles").select("id,display_name,handle,bio,avatar_emoji,exam_id")
+      .from("profiles").select(SupabaseRepo.PROFILE_COLS)
       .eq("id", await this.userId()).maybeSingle();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return this.toProfile(data as Row | null);
   }
 
   async updateProfile(patch: Partial<Profile>): Promise<Profile> {
     const sb = await this.sb();
+    const MAP: Record<string, string> = {
+      displayName: "display_name", handle: "handle", bio: "bio",
+      avatarEmoji: "avatar_emoji", avatarUrl: "avatar_url", examId: "exam_id",
+      grade: "grade", school: "school", city: "city", examYear: "exam_year",
+      targetUniversity: "target_university", targetDepartment: "target_department",
+      targetRank: "target_rank", weeklyHours: "weekly_hours", studyStyle: "study_style",
+      strongSubjects: "strong_subjects", weakSubjects: "weak_subjects", goals: "goals",
+      isPublic: "is_public", onboardedAt: "onboarded_at",
+    };
     const row: Row = {};
-    if ("displayName" in patch) row.display_name = patch.displayName;
-    if ("handle" in patch) row.handle = patch.handle;
-    if ("bio" in patch) row.bio = patch.bio;
-    if ("avatarEmoji" in patch) row.avatar_emoji = patch.avatarEmoji;
-    if ("examId" in patch) row.exam_id = patch.examId;
+    for (const [k, col] of Object.entries(MAP)) {
+      if (k in patch) row[col] = (patch as Record<string, unknown>)[k];
+    }
     const { data, error } = await sb
       .from("profiles").update(row).eq("id", await this.userId())
-      .select("id,display_name,handle,bio,avatar_emoji,exam_id").single();
-    if (error) throw error;
+      .select(SupabaseRepo.PROFILE_COLS).single();
+    if (error) fail(error, "sorgu");
     return this.toProfile(data as Row)!;
   }
 
@@ -320,7 +360,7 @@ export class SupabaseRepo implements Repo {
     const sb = await this.sb();
     const { data, error } = await sb
       .from("exams").select("id,code,name,description,position,active,created_by").order("position");
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => ({
       id: str(r.id), code: str(r.code), name: str(r.name),
       description: r.description ? str(r.description) : null,
@@ -335,7 +375,7 @@ export class SupabaseRepo implements Repo {
       .from("exams")
       .insert({ ...input, created_by: await this.userId(), active: false, position: 99 })
       .select("id,code,name,description,position,active,created_by").single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const r = data as Row;
     return {
       id: str(r.id), code: str(r.code), name: str(r.name),
@@ -350,7 +390,7 @@ export class SupabaseRepo implements Repo {
     const { data, error } = await sb
       .from("exam_documents").select("id,exam_id,title,notes,file_url,created_at")
       .eq("exam_id", examId).order("created_at", { ascending: false });
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return (data as Row[]).map((r) => ({
       id: str(r.id), examId: str(r.exam_id), title: str(r.title),
       notes: r.notes ? str(r.notes) : null, fileUrl: r.file_url ? str(r.file_url) : null,
@@ -365,14 +405,14 @@ export class SupabaseRepo implements Repo {
     if (input.file) {
       const path = `${uid}/${Date.now()}-${input.file.name.replace(/[^\w.-]+/g, "_")}`;
       const up = await sb.storage.from("exam-docs").upload(path, input.file, { upsert: false });
-      if (up.error) throw up.error;
+      if (up.error) fail(up.error, "up");
       fileUrl = path; // özel kova: yol saklanıyor, gerektiğinde imzalı URL üretilir
     }
     const { data, error } = await sb
       .from("exam_documents")
       .insert({ exam_id: input.examId, uploaded_by: uid, title: input.title, notes: input.notes, file_url: fileUrl })
       .select("id,exam_id,title,notes,file_url,created_at").single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const r = data as Row;
     return {
       id: str(r.id), examId: str(r.exam_id), title: str(r.title),
@@ -387,14 +427,17 @@ export class SupabaseRepo implements Repo {
     const sb = await this.sb();
     const ids = posts.map((p) => str(p.id));
     if (ids.length === 0) return [];
-    const [media, reacts, comms] = await Promise.all([
+    const [media, reacts, comms, marks] = await Promise.all([
       sb.from("post_media").select("id,post_id,url,kind,position").in("post_id", ids).order("position"),
       sb.from("reactions").select("post_id,emoji,user_id").in("post_id", ids),
       sb.from("comments").select("id,post_id").in("post_id", ids),
+      sb.from("bookmarks").select("post_id").eq("user_id", me).in("post_id", ids),
     ]);
-    if (media.error) throw media.error;
-    if (reacts.error) throw reacts.error;
-    if (comms.error) throw comms.error;
+    if (media.error) fail(media.error, "media");
+    if (reacts.error) fail(reacts.error, "reacts");
+    if (comms.error) fail(comms.error, "comms");
+    if (marks.error) fail(marks.error, "marks");
+    const marked = new Set((marks.data as Row[]).map((m) => str(m.post_id)));
 
     return posts.map((p) => {
       const id = str(p.id);
@@ -411,6 +454,8 @@ export class SupabaseRepo implements Repo {
           id: str(m.id), url: str(m.url), kind: str(m.kind) as MediaKind, position: num(m.position),
         })),
         createdAt: str(p.created_at),
+        editedAt: p.edited_at ? str(p.edited_at) : null,
+        bookmarked: marked.has(id),
         reactions: counts,
         myReactions: rs.filter((r) => str(r.user_id) === me).map((r) => str(r.emoji)),
         commentCount: (comms.data as Row[]).filter((c) => str(c.post_id) === id).length,
@@ -422,9 +467,9 @@ export class SupabaseRepo implements Repo {
     const sb = await this.sb();
     const { data, error } = await sb
       .from("posts")
-      .select("id,author_id,body,exam_id,created_at,profiles(id,display_name,handle,bio,avatar_emoji,exam_id)")
+      .select("id,author_id,body,exam_id,created_at,edited_at,profiles!posts_author_id_fkey(id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at)")
       .order("created_at", { ascending: false }).limit(limit);
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     return this.decorate(data as Row[], await this.userId());
   }
 
@@ -434,13 +479,13 @@ export class SupabaseRepo implements Repo {
       .from("posts")
       .insert({ author_id: await this.userId(), body: input.body, exam_id: input.examId })
       .select("id").single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const postId = str((data as Row).id);
     if (input.media.length) {
       const { error: mErr } = await sb.from("post_media").insert(
         input.media.map((m, i) => ({ post_id: postId, url: m.url, kind: m.kind, position: i })),
       );
-      if (mErr) throw mErr;
+      if (mErr) fail(mErr, "post_media");
     }
     const all = await this.listPosts(1);
     return all[0];
@@ -449,7 +494,7 @@ export class SupabaseRepo implements Repo {
   async deletePost(id: string): Promise<void> {
     const sb = await this.sb();
     const { error } = await sb.from("posts").delete().eq("id", id);
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
   }
 
   async listComments(postId: string): Promise<Comment[]> {
@@ -457,12 +502,12 @@ export class SupabaseRepo implements Repo {
     const me = await this.userId();
     const [c, r] = await Promise.all([
       sb.from("comments")
-        .select("id,post_id,parent_id,author_id,body,gif_url,created_at,profiles(id,display_name,handle,bio,avatar_emoji,exam_id)")
+        .select("id,post_id,parent_id,author_id,body,gif_url,created_at,profiles!comments_author_id_fkey(id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at)")
         .eq("post_id", postId).order("created_at"),
       sb.from("reactions").select("comment_id,emoji,user_id").not("comment_id", "is", null),
     ]);
-    if (c.error) throw c.error;
-    if (r.error) throw r.error;
+    if (c.error) fail(c.error, "c");
+    if (r.error) fail(r.error, "r");
     return (c.data as Row[]).map((row) => {
       const id = str(row.id);
       const rs = (r.data as Row[]).filter((x) => str(x.comment_id) === id);
@@ -488,7 +533,7 @@ export class SupabaseRepo implements Repo {
       .from("comments")
       .insert({ post_id: input.postId, parent_id: input.parentId, author_id: await this.userId(), body: input.body, gif_url: input.gifUrl })
       .select("id").single();
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const id = str((data as Row).id);
     const all = await this.listComments(input.postId);
     return all.find((c) => c.id === id)!;
@@ -497,7 +542,7 @@ export class SupabaseRepo implements Repo {
   async deleteComment(id: string): Promise<void> {
     const sb = await this.sb();
     const { error } = await sb.from("comments").delete().eq("id", id);
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
   }
 
   async toggleReaction(target: { postId?: string; commentId?: string }, emoji: string): Promise<void> {
@@ -508,10 +553,10 @@ export class SupabaseRepo implements Repo {
     const { data } = await sb.from("reactions").select("emoji").eq("user_id", uid).eq(col, val).eq("emoji", emoji).maybeSingle();
     if (data) {
       const { error } = await sb.from("reactions").delete().eq("user_id", uid).eq(col, val).eq("emoji", emoji);
-      if (error) throw error;
+      if (error) fail(error, "sorgu");
     } else {
       const { error } = await sb.from("reactions").insert({ user_id: uid, [col]: val, emoji });
-      if (error) throw error;
+      if (error) fail(error, "sorgu");
     }
   }
 
@@ -520,8 +565,213 @@ export class SupabaseRepo implements Repo {
     const uid = await this.userId();
     const path = `${uid}/${Date.now()}-${file.name.replace(/[^\w.-]+/g, "_")}`;
     const { error } = await sb.storage.from("feed").upload(path, file, { upsert: false, contentType: file.type });
-    if (error) throw error;
+    if (error) fail(error, "sorgu");
     const { data } = sb.storage.from("feed").getPublicUrl(path);
     return { url: data.publicUrl, kind: file.type === "image/gif" ? "gif" : "image" };
+  }
+
+  /* --------------------------------------------------- profil / sosyal */
+
+  async getProfileByHandle(handle: string): Promise<Profile | null> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("profiles").select(SupabaseRepo.PROFILE_COLS).ilike("handle", handle).maybeSingle();
+    if (error) fail(error, "sorgu");
+    return this.toProfile(data as Row | null);
+  }
+
+  /* Sayımlar veritabanında: istemciye satır indirip saymıyoruz. */
+  async getProfileStats(userId: string): Promise<ProfileStats> {
+    const sb = await this.sb();
+    const c = (q: PromiseLike<{ count: number | null }>) => q;
+    const [ss, fin, le, tp, po, fr, fg] = await Promise.all([
+      c(sb.from("sessions").select("id", { count: "exact", head: true }).eq("user_id", userId)),
+      c(sb.from("sessions").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "finished")),
+      sb.from("learning_evidence").select("closed_by_teaching").eq("user_id", userId),
+      sb.from("teaching_profile").select("total").eq("user_id", userId),
+      c(sb.from("posts").select("id", { count: "exact", head: true }).eq("author_id", userId)),
+      c(sb.from("follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId)),
+      c(sb.from("follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId)),
+    ]);
+    return {
+      sessions: ss.count ?? 0,
+      finishedSessions: fin.count ?? 0,
+      closedByTeaching: ((le.data ?? []) as Row[]).reduce((n, r) => n + num(r.closed_by_teaching), 0),
+      moments: ((tp.data ?? []) as Row[]).reduce((n, r) => n + num(r.total), 0),
+      posts: po.count ?? 0,
+      followers: fr.count ?? 0,
+      following: fg.count ?? 0,
+    };
+  }
+
+  async uploadAvatar(file: File): Promise<string> {
+    const sb = await this.sb();
+    const uid = await this.userId();
+    const ext = (file.name.split(".").pop() || "png").toLowerCase().replace(/[^a-z0-9]/g, "");
+    const path = `${uid}/avatar-${Date.now()}.${ext}`;
+    const { error } = await sb.storage.from("avatars").upload(path, file, { upsert: true, contentType: file.type });
+    if (error) fail(error, "sorgu");
+    const { data } = sb.storage.from("avatars").getPublicUrl(path);
+    await this.updateProfile({ avatarUrl: data.publicUrl });
+    return data.publicUrl;
+  }
+
+  async removeAvatar(): Promise<void> {
+    await this.updateProfile({ avatarUrl: null });
+  }
+
+  async getFollowState(userId: string): Promise<FollowState> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    const [mine, fr, fg] = await Promise.all([
+      sb.from("follows").select("follower_id").eq("follower_id", me).eq("following_id", userId).maybeSingle(),
+      sb.from("follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId),
+      sb.from("follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId),
+    ]);
+    return { following: Boolean(mine.data), followers: fr.count ?? 0, followingCount: fg.count ?? 0 };
+  }
+
+  async toggleFollow(userId: string): Promise<boolean> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    const { data } = await sb.from("follows").select("follower_id").eq("follower_id", me).eq("following_id", userId).maybeSingle();
+    if (data) {
+      const { error } = await sb.from("follows").delete().eq("follower_id", me).eq("following_id", userId);
+      if (error) fail(error, "sorgu");
+      return false;
+    }
+    const { error } = await sb.from("follows").insert({ follower_id: me, following_id: userId });
+    if (error) fail(error, "sorgu");
+    return true;
+  }
+
+  async listNotifications(limit = 30): Promise<AppNotification[]> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("notifications")
+      .select(`id,kind,post_id,comment_id,read_at,created_at,actor:profiles!notifications_actor_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+      .order("created_at", { ascending: false }).limit(limit);
+    if (error) fail(error, "sorgu");
+    return (data as Row[]).map((r) => ({
+      id: str(r.id),
+      kind: str(r.kind) as AppNotification["kind"],
+      actor: this.toProfile(r.actor as Row | null),
+      postId: r.post_id ? str(r.post_id) : null,
+      commentId: r.comment_id ? str(r.comment_id) : null,
+      readAt: r.read_at ? str(r.read_at) : null,
+      createdAt: str(r.created_at),
+    }));
+  }
+
+  async unreadCount(): Promise<number> {
+    const sb = await this.sb();
+    const { count, error } = await sb
+      .from("notifications").select("id", { count: "exact", head: true }).is("read_at", null);
+    if (error) fail(error, "sorgu");
+    return count ?? 0;
+  }
+
+  async markNotificationsRead(): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb
+      .from("notifications").update({ read_at: new Date().toISOString() })
+      .is("read_at", null).eq("user_id", await this.userId());
+    if (error) fail(error, "sorgu");
+  }
+
+  async report(
+    target: { postId?: string; commentId?: string; profileId?: string },
+    reason: ReportReason, note: string | null,
+  ): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("reports").insert({
+      reporter_id: await this.userId(),
+      post_id: target.postId ?? null,
+      comment_id: target.commentId ?? null,
+      profile_id: target.profileId ?? null,
+      reason, note,
+    });
+    if (error) fail(error, "sorgu");
+  }
+
+  async toggleBlock(userId: string): Promise<boolean> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    const { data } = await sb.from("blocks").select("blocker_id").eq("blocker_id", me).eq("blocked_id", userId).maybeSingle();
+    if (data) {
+      const { error } = await sb.from("blocks").delete().eq("blocker_id", me).eq("blocked_id", userId);
+      if (error) fail(error, "sorgu");
+      return false;
+    }
+    const { error } = await sb.from("blocks").insert({ blocker_id: me, blocked_id: userId });
+    if (error) fail(error, "sorgu");
+    return true;
+  }
+
+  async listBlocked(): Promise<string[]> {
+    const sb = await this.sb();
+    const { data, error } = await sb.from("blocks").select("blocked_id").eq("blocker_id", await this.userId());
+    if (error) fail(error, "sorgu");
+    return (data as Row[]).map((r) => str(r.blocked_id));
+  }
+
+  /* İmleç = son gönderinin created_at'i. Sayfa numarası yerine imleç:
+     araya yeni gönderi girince kayma olmuyor. */
+  async listFeed(scope: FeedScope, cursor: string | null, limit = 15): Promise<FeedPage> {
+    const sb = await this.sb();
+    const me = await this.userId();
+
+    let ids: string[] | null = null;
+    if (scope === "following") {
+      const { data } = await sb.from("follows").select("following_id").eq("follower_id", me);
+      ids = [...(data as Row[] ?? []).map((r) => str(r.following_id)), me];
+    } else if (scope === "bookmarks") {
+      const { data } = await sb.from("bookmarks").select("post_id").eq("user_id", me);
+      const postIds = (data as Row[] ?? []).map((r) => str(r.post_id));
+      if (postIds.length === 0) return { posts: [], nextCursor: null };
+      let q = sb.from("posts")
+        .select(`id,author_id,body,exam_id,created_at,edited_at,profiles!posts_author_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+        .in("id", postIds).order("created_at", { ascending: false }).limit(limit + 1);
+      if (cursor) q = q.lt("created_at", cursor);
+      const { data: rows, error } = await q;
+      if (error) fail(error, "sorgu");
+      return this.page(rows as Row[], me, limit);
+    }
+
+    let q = sb.from("posts")
+      .select(`id,author_id,body,exam_id,created_at,edited_at,profiles!posts_author_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+      .order("created_at", { ascending: false }).limit(limit + 1);
+    if (ids) q = q.in("author_id", ids);
+    if (cursor) q = q.lt("created_at", cursor);
+    const { data, error } = await q;
+    if (error) fail(error, "sorgu");
+    return this.page(data as Row[], me, limit);
+  }
+
+  private async page(rows: Row[], me: string, limit: number): Promise<FeedPage> {
+    const more = rows.length > limit;
+    const slice = more ? rows.slice(0, limit) : rows;
+    const posts = await this.decorate(slice, me);
+    return { posts, nextCursor: more ? str(slice[slice.length - 1].created_at) : null };
+  }
+
+  async updatePost(id: string, body: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("posts").update({ body, edited_at: new Date().toISOString() }).eq("id", id);
+    if (error) fail(error, "sorgu");
+  }
+
+  async toggleBookmark(postId: string): Promise<boolean> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    const { data } = await sb.from("bookmarks").select("post_id").eq("user_id", me).eq("post_id", postId).maybeSingle();
+    if (data) {
+      const { error } = await sb.from("bookmarks").delete().eq("user_id", me).eq("post_id", postId);
+      if (error) fail(error, "sorgu");
+      return false;
+    }
+    const { error } = await sb.from("bookmarks").insert({ user_id: me, post_id: postId });
+    if (error) fail(error, "sorgu");
+    return true;
   }
 }

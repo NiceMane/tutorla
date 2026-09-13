@@ -168,7 +168,8 @@
       "back": "Back to dashboard",
       "exit": "Leave session",
       "menu": "Menu",
-      "close": "Close"
+      "close": "Close",
+      "notifications": "Notifications"
     },
     "dash": {
       "eyebrow": "your dashboard",
@@ -267,19 +268,76 @@
     "profile": {
       "eyebrow": "your profile",
       "title": "Profile",
+      "edit": "Edit profile",
+      "view": "View profile",
+      "photo": "photo",
+      "upload": "Upload photo",
+      "remove": "Remove",
+      "useEmoji": "Use an icon",
+      "photoHint": "PNG/JPG/WebP · max 2 MB",
+      "cropping": "preparing…",
+      "identity": "identity",
       "name": "display name",
       "handle": "username",
       "bio": "short bio",
       "avatar": "icon",
+      "handleRule": "3–20 characters: letters, digits, underscore.",
+      "handleTaken": "That username is taken.",
+      "study": "studies",
       "exam": "your exam",
+      "grade": "grade",
+      "school": "school",
+      "city": "city",
+      "examYear": "exam year",
+      "grades": {
+        "9": "Grade 9",
+        "10": "Grade 10",
+        "11": "Grade 11",
+        "12": "Grade 12",
+        "mezun": "Graduate"
+      },
+      "target": "your goal",
+      "targetUniversity": "target university",
+      "targetDepartment": "target department",
+      "targetRank": "target rank",
+      "goals": "your own goals",
+      "habits": "study habits",
+      "weeklyHours": "weekly study (hours)",
+      "studyStyle": "when do you study",
+      "styles": {
+        "sabah": "Morning",
+        "gece": "Night",
+        "karma": "Mixed"
+      },
+      "strong": "your strong subjects",
+      "weak": "what you want to improve",
+      "pickSubjects": "Tap subjects to select",
+      "privacy": "privacy",
+      "isPublic": "Make my profile public",
+      "privacyHint": "If you turn this off, only you can see your profile.",
       "save": "Save",
       "saved": "Saved",
-      "handleTaken": "That username is taken.",
-      "handleRule": "3–20 characters: letters, digits, underscore.",
+      "saving": "saving…",
       "stats": "your summary",
       "sessions": "sessions",
+      "finished": "finished sessions",
       "closed": "concepts closed by explaining",
-      "moments": "behaviour moments"
+      "moments": "behaviour moments",
+      "posts": "posts",
+      "followers": "followers",
+      "following": "following",
+      "streak": "day streak",
+      "longest": "longest streak",
+      "member": "joined",
+      "follow": "Follow",
+      "unfollow": "Unfollow",
+      "block": "Block",
+      "unblock": "Unblock",
+      "report": "Report",
+      "notFound": "No such profile.",
+      "private": "This profile is private.",
+      "empty": "Not filled in yet.",
+      "completeness": "profile completeness"
     },
     "feed": {
       "eyebrow": "feed",
@@ -303,7 +361,13 @@
       "gifUrl": "Paste a GIF link",
       "uploading": "uploading…",
       "tooBig": "File is larger than 5 MB.",
-      "loginFirst": "Sign in to post."
+      "loginFirst": "Sign in to post.",
+      "bookmark": "Save",
+      "report": "Report",
+      "all": "All",
+      "following": "Following",
+      "bookmarks": "Saved",
+      "editHint": "edited"
     },
     "socratic": {
       "eyebrow": "socratic mode",
@@ -316,6 +380,52 @@
       "thinking": "thinking…",
       "hint": "want a hint?",
       "hintLabel": "hint"
+    },
+    "onboarding": {
+      "skip": "Skip for now",
+      "next": "Continue",
+      "back": "Back",
+      "finish": "Start",
+      "step": "step",
+      "of": "of",
+      "s1title": "Hi! Let's get to know you.",
+      "s1sub": "This shows on your profile — you can change it later.",
+      "s2title": "Which exam are you preparing for?",
+      "s2sub": "Subjects and topics open up based on this.",
+      "s3title": "What's your goal?",
+      "s3sub": "Writing your goal down makes it easier to work towards.",
+      "s4title": "How do you study?",
+      "s4sub": "Your student will get to know you this way."
+    },
+    "notif": {
+      "title": "Notifications",
+      "empty": "No notifications yet.",
+      "markRead": "Mark all as read",
+      "yorum": "commented on your post",
+      "yanit": "replied to your comment",
+      "tepki": "reacted to your post",
+      "takip": "started following you"
+    },
+    "report": {
+      "title": "Report",
+      "reason": "reason",
+      "note": "note (optional)",
+      "send": "Send",
+      "sent": "Report received. Thank you.",
+      "cancel": "Cancel",
+      "reasons": {
+        "spam": "Spam",
+        "taciz": "Harassment",
+        "uygunsuz": "Inappropriate",
+        "yanlis_bilgi": "Misinformation",
+        "diger": "Other"
+      }
+    },
+    "emoji": {
+      "face": "faces",
+      "hand": "hands",
+      "school": "school",
+      "mood": "mood"
     }
   },
   "auth": {
@@ -352,5 +462,20 @@
     "errWeak": "Password doesn't meet the requirements.",
     "errRate": "Too many attempts. Wait a few minutes and try again.",
     "errTaken": "That e-mail is already registered. Try signing in."
+  },
+  "common": {
+    "retry": "Try again",
+    "loadMore": "Load more",
+    "loading": "loading…",
+    "errorTitle": "Something went wrong",
+    "errorBody": "An unexpected error occurred. Want to try again?",
+    "notFoundTitle": "Page not found",
+    "notFoundBody": "This page may have moved, or never existed.",
+    "home": "Home",
+    "toApp": "Go to dashboard",
+    "cancel": "Cancel",
+    "save": "Save",
+    "delete": "Delete",
+    "edit": "Edit"
   }
 }

@@ -16,6 +16,7 @@ import { TeachingEvidence } from "./TeachingEvidence";
 export function SessionScreen({ sessionId }: { sessionId: string }) {
   const t = useTranslations("app.session");
   const tn = useTranslations("app.nav");
+  const tc = useTranslations("common");
   const { ready, curriculum, personas, refresh } = useApp();
   const repo = useMemo(() => getRepo(), []);
   const [detail, setDetail] = useState<SessionDetail | null>(null);
@@ -23,10 +24,18 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
   const engine = useMemo(() => getEngine(mode), [mode]);
 
   const [missing, setMissing] = useState(false);
-  const [draft, setDraft] = useState("");
+  /* Taslağı ilk durumda oku: etkide setState yapmak cascading render'a yol açıyor. */
+  const [draft, setDraft] = useState(() => {
+    try {
+      return window.localStorage.getItem(`tutorla-draft-${sessionId}`) ?? "";
+    } catch {
+      return "";
+    }
+  });
   const [thinking, setThinking] = useState(false);
   const [targetId, setTargetId] = useState<string | null>(null);
   const [mapOpen, setMapOpen] = useState(false);
+  const [sendErr, setSendErr] = useState<string | null>(null);
   const opened = useRef(false);
   const feed = useRef<HTMLDivElement>(null);
 
@@ -106,10 +115,20 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
     feed.current?.scrollTo({ top: feed.current.scrollHeight, behavior: "smooth" });
   }, [detail?.messages.length, thinking]);
 
-  async function send() {
-    const text = draft.trim();
+  /* Yazılan metin kaybolmasın: sekme kapanır ya da sayfa yenilenirse geri gelsin. */
+  const draftKey = `tutorla-draft-${sessionId}`;
+  useEffect(() => {
+    try {
+      if (draft.trim()) window.localStorage.setItem(draftKey, draft);
+      else window.localStorage.removeItem(draftKey);
+    } catch { /* yoksay */ }
+  }, [draft, draftKey]);
+
+  async function send(retryText?: string) {
+    const text = (retryText ?? draft).trim();
     if (!text || thinking || finished || !topic || !detail) return;
-    setDraft("");
+    setSendErr(null);
+    if (!retryText) setDraft("");
     setThinking(true);
     try {
       const teacherMsg = await repo.appendMessage(sessionId, "teacher", text);
@@ -131,6 +150,12 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
       setTargetId(turn.targetConceptId);
       await load();
       await refresh();
+      try { window.localStorage.removeItem(draftKey); } catch { /* yoksay */ }
+    } catch (e) {
+      /* Mesaj gidemedi: metni geri ver ve tekrar deneme sun.
+         Eskiden sessizce kayboluyordu. */
+      setSendErr(e instanceof Error ? e.message : "—");
+      setDraft(text);
     } finally {
       setThinking(false);
     }
@@ -312,6 +337,14 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
             </div>
           ) : (
             <div className="shrink-0 border-t border-line px-[clamp(12px,2.5vw,20px)] py-3">
+              {sendErr && (
+                <div className="anim-fade-in mb-2 flex flex-wrap items-center gap-3 rounded-[var(--radius-ui)] border border-accent bg-[color-mix(in_oklab,var(--accent)_8%,transparent)] px-3 py-2 text-[13px] text-accent" role="alert">
+                  <span className="min-w-0 flex-1">{sendErr}</span>
+                  <button type="button" onClick={() => send(draft)} className="font-semibold underline underline-offset-2">
+                    {tc("retry")}
+                  </button>
+                </div>
+              )}
               <div className="flex flex-col gap-2 rounded-[8px] border border-line-2 bg-paper px-3 py-2.5">
                 <textarea
                   value={draft}
@@ -334,7 +367,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
                       {t(`tools.${k}`)}
                     </b>
                   ))}
-                  <button type="button" onClick={send} disabled={!draft.trim() || thinking} className="btn btn-primary ml-auto h-8 px-3 text-[13px] disabled:opacity-40">
+                  <button type="button" onClick={() => send()} disabled={!draft.trim() || thinking} className="btn btn-primary ml-auto h-8 px-3 text-[13px] disabled:opacity-40">
                     ⏎ {t("send")}
                   </button>
                 </div>

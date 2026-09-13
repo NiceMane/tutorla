@@ -71,12 +71,20 @@ Kalıcı navbar: **Derslerim · Sokratik · Akış · Profil**.
 | `/app/sinav/[code]` | O sınavın dersleri, konuları, yüzdeleri ve iki kanıt kartı |
 | `/app/seans/[id]` | Seans ekranı — üç kolon: konu listesi, sohbet, anlayış haritası |
 | `/app/sokratik` | Sokratik mod — ana modun tersi: o sorar, sen düşünürsün |
-| `/app/akis` | Akış — gönderi (görsel/GIF/emoji), yorum, yoruma yanıt, emoji tepkileri |
-| `/app/profil` | Profil — ad, kullanıcı adı, tanıtım, simge, sınav + özet istatistik |
+| `/app/akis` | Akış — Tümü/Takip/Kayıtlılar sekmeleri, sayfalama, iyimser tepkiler, düzenleme, yer imi, şikâyet |
+| `/app/profil` | Profil — fotoğraf, kimlik, öğrencilik, hedef, çalışma alışkanlığı, gizlilik + özet |
+| `/app/profil/[handle]` | Herkese açık profil — takip et, engelle, şikâyet et |
+| `/app/bildirimler` | Bildirimler — yorum, yanıt, tepki, takip |
 
 **İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
 `src/lib/engine/` altında, seçim `getEngine(mode)` ile.
+
+**Güvenlik ağı.** Şikâyet (gönderi/yorum/profil), engelleme (engellenen içerik RLS düzeyinde
+akıştan düşer), kota sınırı (dakikada 3 gönderi / 8 yorum — veritabanı tetikleyicisiyle, istemciye
+güvenilmiyor). `error.tsx`, kök ve dil içi `not-found.tsx`, ortak iskelet/boş/hata bileşenleri.
+
+**SEO.** `sitemap.xml`, `robots.txt` (uygulama ve giriş dizine girmez), Open Graph paylaşım görseli.
 
 **Kendi sınavını ekleme.** Listede olmayan bir sınav eklenip müfredat bilgisi yüklenebiliyor
 (`exam_documents` + `exam-docs` depolama kovası). Yapay zekâ bağlanana kadar yüklenenler

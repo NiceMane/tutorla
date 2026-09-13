@@ -10,14 +10,65 @@ export type PersonaCode = "curious" | "sceptical" | "impatient";
    socratic = AI yönlendirici soru sorar, roller klasik */
 export type SessionMode = "teach" | "socratic";
 
+export type Grade = "9" | "10" | "11" | "12" | "mezun";
+export type StudyStyle = "sabah" | "gece" | "karma";
+
 export type Profile = {
   id: string;
   displayName: string | null;
   handle: string | null;
   bio: string | null;
   avatarEmoji: string;
+  /* Yüklenmiş fotoğraf; yoksa avatarEmoji kullanılır. */
+  avatarUrl: string | null;
   examId: string | null;
+
+  /* Öğrenciyi tanıtan alanlar */
+  grade: Grade | null;
+  school: string | null;
+  city: string | null;
+  examYear: number | null;
+  targetUniversity: string | null;
+  targetDepartment: string | null;
+  targetRank: number | null;
+  weeklyHours: number | null;
+  studyStyle: StudyStyle | null;
+  strongSubjects: string[];
+  weakSubjects: string[];
+  goals: string | null;
+
+  isPublic: boolean;
+  streakDays: number;
+  longestStreak: number;
+  createdAt: string | null;
+  onboardedAt: string | null;
 };
+
+export type ProfileStats = {
+  sessions: number;
+  finishedSessions: number;
+  closedByTeaching: number;
+  moments: number;
+  posts: number;
+  followers: number;
+  following: number;
+};
+
+export type FollowState = { following: boolean; followers: number; followingCount: number };
+
+export type NotificationKind = "yorum" | "yanit" | "tepki" | "takip";
+
+export type AppNotification = {
+  id: string;
+  kind: NotificationKind;
+  actor: Profile | null;
+  postId: string | null;
+  commentId: string | null;
+  readAt: string | null;
+  createdAt: string;
+};
+
+export type ReportReason = "spam" | "taciz" | "uygunsuz" | "yanlis_bilgi" | "diger";
 
 export type MediaKind = "image" | "gif";
 
@@ -31,9 +82,11 @@ export type Post = {
   examId: string | null;
   media: PostMedia[];
   createdAt: string;
+  editedAt: string | null;
   reactions: Record<string, number>;
   myReactions: string[];
   commentCount: number;
+  bookmarked: boolean;
 };
 
 export type Comment = {

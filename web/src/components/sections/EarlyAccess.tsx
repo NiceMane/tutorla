@@ -30,7 +30,7 @@ export function EarlyAccess() {
     if (!error) return setState("done");
     /* 23505 = unique ihlali; zaten kayıtlı olmak hata değil */
     if (error.code === "23505") return setState("already");
-    console.error("Bekleme listesi kaydı başarısız:", error.message);
+    console.error("waitlist insert failed:", error.message);
     setState("failed");
   };
 

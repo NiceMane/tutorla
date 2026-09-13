@@ -32,9 +32,15 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   return {
     title: t("title"),
     description: t("description"),
-    metadataBase: new URL("https://tutorla.app"),
+    metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL ?? "https://tutorla.vercel.app"),
     alternates: { languages: { tr: "/", en: "/en" } },
-    openGraph: { title: t("title"), description: t("description"), locale: locale === "tr" ? "tr_TR" : "en_US", type: "website" },
+    openGraph: {
+      title: t("title"), description: t("description"),
+      locale: locale === "tr" ? "tr_TR" : "en_US", type: "website",
+      siteName: "Tutorla",
+    },
+    twitter: { card: "summary_large_image", title: t("title"), description: t("description") },
+    robots: { index: true, follow: true },
   };
 }
 

@@ -1,16 +1,18 @@
 "use client";
 import { useState } from "react";
+import { useTranslations } from "next-intl";
 
 /* Küçük ve bağımlılıksız. Tam emoji kütüphanesi ~1 MB; burada ihtiyaç
    duyulan kadarı elde tutuluyor. */
 const GROUPS: [string, string[]][] = [
-  ["yüz", ["😀","😅","😂","🙂","😉","😍","🤔","😐","😴","😭","😤","😮","🙃","😬","🥲","🤯"]],
-  ["el", ["👍","👎","👏","🙌","🤝","💪","✌️","🤞","👀","🫡","🙏","🤲"]],
-  ["okul", ["📚","✏️","📝","📐","📏","🧮","🔬","🧪","🧠","💡","🎯","⏳","📈","🏆","✅","❌"]],
-  ["duygu", ["❤️","🔥","✨","🎉","💯","😎","🥳","😇","🫶","💤","🌱","☕"]],
+  ["face", ["😀","😅","😂","🙂","😉","😍","🤔","😐","😴","😭","😤","😮","🙃","😬","🥲","🤯"]],
+  ["hand", ["👍","👎","👏","🙌","🤝","💪","✌️","🤞","👀","🫡","🙏","🤲"]],
+  ["school", ["📚","✏️","📝","📐","📏","🧮","🔬","🧪","🧠","💡","🎯","⏳","📈","🏆","✅","❌"]],
+  ["mood", ["❤️","🔥","✨","🎉","💯","😎","🥳","😇","🫶","💤","🌱","☕"]],
 ];
 
 export function EmojiPicker({ onPick, onClose }: { onPick: (e: string) => void; onClose?: () => void }) {
+  const t = useTranslations("app.emoji");
   const [group, setGroup] = useState(0);
   return (
     <div className="w-[min(320px,88vw)] rounded-[var(--radius-card)] border border-line bg-paper p-3 shadow-[0_18px_40px_-24px_rgba(34,39,26,.5)]">
@@ -24,7 +26,7 @@ export function EmojiPicker({ onPick, onClose }: { onPick: (e: string) => void; 
               i === group ? "bg-primary text-on-primary" : "text-ink-2 hover:bg-surface"
             }`}
           >
-            {name}
+            {t(name)}
           </button>
         ))}
       </div>
