@@ -222,7 +222,8 @@
       "closedByTeaching": "anlatarak kapattın",
       "closedHint": "Bu kavramlar önce boşluktu. Anlatmaya çalışırken ortaya çıktılar, yine anlatarak kapandılar.",
       "twoLayers": "Solda ne öğrendiğin, altta nasıl öğrettiğin.",
-      "mechanism": "Öğrencinin takıldığı yer, senin boşluğun."
+      "mechanism": "Öğrencinin takıldığı yer, senin boşluğun.",
+      "missing": "Seans bulunamadı."
     },
     "moment": {
       "kind": {

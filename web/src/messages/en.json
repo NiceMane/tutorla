@@ -222,7 +222,8 @@
       "closedByTeaching": "closed by explaining",
       "closedHint": "These were gaps first. Explaining surfaced them, and explaining closed them.",
       "twoLayers": "What you learned above, how you taught below.",
-      "mechanism": "Where your student gets stuck is where your gap is."
+      "mechanism": "Where your student gets stuck is where your gap is.",
+      "missing": "Session not found."
     },
     "moment": {
       "kind": {
