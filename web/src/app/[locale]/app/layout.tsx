@@ -2,6 +2,7 @@ import { setRequestLocale } from "next-intl/server";
 import { AppProvider } from "@/lib/store";
 import { RequireAuth } from "@/components/auth/RequireAuth";
 import { AppNav } from "@/components/app/AppNav";
+import { OnboardingGate } from "@/components/app/OnboardingGate";
 
 /* Uygulama kabuğu: pazarlama sayfasının navbar/footer'ı burada yok. */
 export default async function AppLayout({
@@ -16,10 +17,12 @@ export default async function AppLayout({
   return (
     <RequireAuth>
       <AppProvider>
-        <div className="flex min-h-dvh flex-col bg-paper">
-          <AppNav />
-          {children}
-        </div>
+        <OnboardingGate>
+          <div className="flex min-h-dvh flex-col bg-paper">
+            <AppNav />
+            {children}
+          </div>
+        </OnboardingGate>
       </AppProvider>
     </RequireAuth>
   );

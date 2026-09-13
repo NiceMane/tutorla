@@ -9,6 +9,7 @@ import { Collapse } from "@/components/ui/Collapse";
 import { Reactions } from "./Reactions";
 import { CommentThread } from "./CommentThread";
 import { ReportDialog } from "@/components/app/ReportDialog";
+import { TimeAgo } from "@/components/ui/Time";
 
 export function PostCard({
   post, meId, examName, comments, onToggleComments, onReact, onBookmark,
@@ -55,7 +56,7 @@ export function PostCard({
               <span className="font-semibold">{post.author?.displayName || "—"}</span>
             )}
             {examName && <span className="chip text-[11.5px]">{examName}</span>}
-            <span className="meta text-[12.5px]">{new Date(post.createdAt).toLocaleString()}</span>
+            <TimeAgo iso={post.createdAt} className="meta text-[12.5px]" />
             {post.editedAt && <span className="meta text-[12px]">· {tc("edit").toLowerCase()}</span>}
           </div>
 

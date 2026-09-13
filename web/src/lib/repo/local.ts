@@ -448,4 +448,24 @@ export class LocalRepo implements Repo {
     write(st);
     return p.bookmarked;
   }
+
+  async updateExam(id: string, patch: { name?: string; description?: string | null }): Promise<void> {
+    const st = read();
+    const e = st.exams.find((x) => x.id === id);
+    if (e) { Object.assign(e, patch); write(st); }
+  }
+  async deleteExam(id: string): Promise<void> {
+    const st = read();
+    st.exams = st.exams.filter((x) => x.id !== id);
+    write(st);
+  }
+  async addSubject(): Promise<void> {}
+  async addTopic(): Promise<void> {}
+  async deleteTopic(): Promise<void> {}
+  async deleteExamDocument(id: string): Promise<void> {
+    const st = read();
+    st.docs = st.docs.filter((d) => d.id !== id);
+    write(st);
+  }
+  async documentUrl(): Promise<string | null> { return null; }
 }

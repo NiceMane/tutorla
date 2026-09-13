@@ -16,7 +16,8 @@
     "themeLight": "Switch to light theme",
     "themeDark": "Switch to dark theme",
     "lang": "Türkçe",
-    "login": "Sign in"
+    "login": "Sign in",
+    "sss": "FAQ"
   },
   "loader": {
     "label": "loading"
@@ -169,7 +170,8 @@
       "exit": "Leave session",
       "menu": "Menu",
       "close": "Close",
-      "notifications": "Notifications"
+      "notifications": "Notifications",
+      "history": "History"
     },
     "dash": {
       "eyebrow": "your dashboard",
@@ -240,7 +242,7 @@
     },
     "exams": {
       "eyebrow": "your exam",
-      "title": "Which exam are you preparing for?",
+      "title": "Your own curriculum",
       "subtitle": "Pick your exam and the subjects open up.",
       "ready": "ready",
       "soon": "soon",
@@ -252,7 +254,7 @@
       "code": "short code",
       "name": "exam name",
       "desc": "short description",
-      "create": "Create",
+      "create": "Add",
       "cancel": "Cancel",
       "codeTaken": "That code is already taken.",
       "docs": "curriculum info",
@@ -263,7 +265,26 @@
       "docEmpty": "Nothing uploaded yet.",
       "aiPending": "The AI isn't connected yet: what you upload is stored but not processed.",
       "topics": "topics",
-      "open": "Open"
+      "open": "Open",
+      "hint": "This exam is yours. Add subjects and topics to start explaining.",
+      "addSubject": "Add subject",
+      "subjectName": "subject name",
+      "addTopic": "Add topic",
+      "topicName": "topic name",
+      "conceptsLabel": "concepts (one per line)",
+      "conceptsHint": "The understanding map is built from these.",
+      "deleteTopic": "Delete topic",
+      "deleteExam": "Delete exam",
+      "deleteExamConfirm": "This exam, its subjects and topics will be deleted. Are you sure?",
+      "deleteTopicConfirm": "This topic and its concepts will be deleted. Are you sure?",
+      "editExam": "Edit exam",
+      "noSubjects": "No subjects yet.",
+      "docs2": {
+        "open": "Open",
+        "delete": "Delete",
+        "deleteConfirm": "This document will be deleted. Are you sure?",
+        "expired": "Couldn't create a link."
+      }
     },
     "profile": {
       "eyebrow": "your profile",
@@ -426,6 +447,17 @@
       "hand": "hands",
       "school": "school",
       "mood": "mood"
+    },
+    "history": {
+      "title": "Your sessions",
+      "empty": "No sessions yet.",
+      "mode": {
+        "teach": "teaching",
+        "socratic": "socratic"
+      },
+      "active": "in progress",
+      "finished": "finished",
+      "open": "Open"
     }
   },
   "auth": {
@@ -477,5 +509,28 @@
     "save": "Save",
     "delete": "Delete",
     "edit": "Edit"
+  },
+  "faq": {
+    "eyebrow": "faq",
+    "title": "Common questions",
+    "q1": "How does Tutorla work?",
+    "a1": "You pick a topic and explain it to the AI. It acts like a curious student — asking questions and marking the gaps in your explanation. It never hands you the answer; it makes what's missing visible.",
+    "q2": "Is this a homework-doing tool?",
+    "a2": "No — the opposite. Tutorla won't answer for you; it asks you to explain. The point isn't finishing the task, it's seeing whether you actually understood.",
+    "q3": "Which exams does it cover?",
+    "a3": "The YKS curriculum is loaded: maths, physics, chemistry, biology, Turkish, literature, history, geography, philosophy, religious studies and English. LGS, KPSS, DGS, ALES, SAT and TÜBİTAK are next. You can also add your own exam and curriculum.",
+    "q4": "Does it cost anything?",
+    "a4": "We're in closed testing and it's free. Pricing isn't decided yet; when it is, the early-access list hears first.",
+    "q5": "What happens to my data?",
+    "a5": "Your sessions and progress are visible only to you — locked down at the database level. You can make your profile fully private. Servers are in Frankfurt.",
+    "q6": "Is the AI connected yet?",
+    "a6": "Not yet. The student currently runs on hand-written rules and is labelled “scripted student” in the interface. We're working on the persona; it'll take over when it's ready."
+  },
+  "pricing": {
+    "eyebrow": "pricing",
+    "title": "Free for now",
+    "body": "We're in closed testing. Everything is free and unlimited during this period. When we settle on pricing, the early-access list hears first — and gets its own terms.",
+    "badge": "closed test",
+    "cta": "Join early access"
   }
 }

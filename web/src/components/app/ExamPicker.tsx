@@ -10,15 +10,25 @@ import { Collapse } from "@/components/ui/Collapse";
    duruyor ve öğrenci kendi sınavını ekleyebiliyor. */
 export function ExamPicker() {
   const t = useTranslations("app.exams");
-  const { ready, exams, curriculum, refreshExams } = useApp();
+  const { ready, exams, curriculum, progress, refreshExams } = useApp();
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState({ code: "", name: "", description: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
 
-  const topicCount = (examId: string) => {
+  const topicsOf = (examId: string) => {
     const subjectIds = new Set(curriculum.subjects.filter((s) => s.examId === examId).map((s) => s.id));
-    return curriculum.topics.filter((x) => subjectIds.has(x.subjectId)).length;
+    return curriculum.topics.filter((x) => subjectIds.has(x.subjectId));
+  };
+
+  /* Sınav kartında ilerleme: o sınavın konularının ortalaması. */
+  const examProgress = (examId: string) => {
+    const topics = topicsOf(examId);
+    if (topics.length === 0) return { started: 0, percent: 0 };
+    const rows = topics.map((x) => progress.get(x.id));
+    const started = rows.filter((r) => r && (r.settled > 0 || r.gaps > 0)).length;
+    const percent = Math.round(rows.reduce((n, r) => n + (r?.percent ?? 0), 0) / topics.length);
+    return { started, percent };
   };
 
   async function create(e: React.FormEvent) {
@@ -55,7 +65,8 @@ export function ExamPicker() {
         <>
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {exams.map((ex) => {
-              const n = topicCount(ex.id);
+              const n = topicsOf(ex.id).length;
+              const prog = examProgress(ex.id);
               const usable = ex.active && n > 0;
               return (
                 <Link
@@ -70,6 +81,16 @@ export function ExamPicker() {
                     </span>
                   </div>
                   {ex.description && <p className="text-[14px] leading-[1.45] text-ink-2">{ex.description}</p>}
+                  {usable && prog.started > 0 && (
+                    <div className="mt-2 flex flex-col gap-1">
+                      <div className="h-[5px] overflow-hidden rounded-[3px] bg-surface-2">
+                        <i className="block h-full bg-glow transition-[width] duration-500" style={{ width: `${prog.percent}%` }} />
+                      </div>
+                      <span className="meta text-[12px] tabular-nums">
+                        %{prog.percent} · {prog.started}/{n} {t("topics")}
+                      </span>
+                    </div>
+                  )}
                   <div className="mt-auto flex items-baseline justify-between pt-2">
                     <span className="meta text-[13px]">
                       {usable ? `${n} ${t("topics")}` : t("soonHint")}

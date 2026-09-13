@@ -7,6 +7,7 @@ import { EmojiPicker } from "./EmojiPicker";
 import { GifPicker } from "./GifPicker";
 import { Popover } from "./Popover";
 import { Collapse } from "@/components/ui/Collapse";
+import { TimeAgo } from "@/components/ui/Time";
 
 function Avatar({ emoji }: { emoji: string }) {
   return <span className="grid size-8 shrink-0 place-items-center rounded-[30%] border border-line bg-surface text-[15px]" aria-hidden="true">{emoji}</span>;
@@ -92,7 +93,7 @@ export function CommentThread({
         <div className="min-w-0 flex-1">
           <div className="flex flex-wrap items-baseline gap-2">
             <span className="text-[14px] font-semibold">{c.author?.displayName || c.author?.handle || "—"}</span>
-            <span className="meta text-[12px]">{new Date(c.createdAt).toLocaleDateString()}</span>
+            <TimeAgo iso={c.createdAt} className="meta text-[12px]" />
           </div>
           <p className="mt-0.5 whitespace-pre-wrap text-[14px] leading-[1.5] text-ink-2">{c.body}</p>
           {c.gifUrl && (

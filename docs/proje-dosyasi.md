@@ -242,7 +242,9 @@ Harfler Figtree ExtraBold gliflerinden **outline'a çevrilmiş path** olarak gö
 └──────────────┴─────────────────────────┴──────────────────┘
 ```
 
-Tasarlanacak diğer ekranlar: onboarding/karşılama · konu seçimi · oturum sonu özet · profil/ilerleme · pazarlama sitesi · app store görselleri (mobil aşamasında).
+Kurulan diğer ekranlar: tanışma (`/app/baslangic`, dört adım) · sınav seçimi (`/app`) ·
+seans geçmişi (`/app/gecmis`) · profil ve herkese açık profil · akış · bildirimler · pazarlama sitesi.
+Kalan: oturum sonu özet ekranı · app store görselleri (mobil aşamasında).
 
 ---
 
@@ -252,13 +254,17 @@ Tasarlanacak diğer ekranlar: onboarding/karşılama · konu seçimi · oturum s
 
 **Kurulan (11 Eylül 2026):** Next.js 16 · React 19 · Tailwind v4 · TypeScript · next-intl (tr/en) · next-themes · GSAP + Three.js (landing hero). Supabase projesi `tutorla`, ref `bupgkfzkuanzysdpteiy`, eu-central-1, Postgres 17.
 
-**Veri modeli:** `exams → subjects → topics → concepts` müfredat ağacı; `sessions / messages / gaps / concept_states` kullanıcı verisi; `waitlist` erken erişim. İlerleme yüzdesi saklanmaz, `topic_progress` görünümünde türetilir. RLS veritabanının içinde zorlanır.
+**Veri modeli:** `exams → subjects → topics → concepts` müfredat ağacı; `sessions / messages / gaps / concept_states` kullanıcı verisi; `moments` davranış kanıtı; `posts / comments / reactions / follows / blocks / reports / notifications` sosyal katman; `exam_documents` yüklenen müfredat; `waitlist` erken erişim. İlerleme yüzdesi saklanmaz, `topic_progress` görünümünde türetilir. RLS veritabanının içinde zorlanır.
 
 **Yapay zekâ tek arayüzün arkasında:** `web/src/lib/engine/`. Şu an `ScriptedEngine` (elle yazılmış kurallar) devrede ve arayüzde `senaryolu öğrenci` rozetiyle işaretli; `ClaudeEngine` geldiğinde `engine/index.ts` içinde tek satır değişecek. **Model eğitmek gerekmiyor** — API'ye istek atılıyor.
 
 **İlk sürüm web MVP** — mobil değil. Gerekçe: App Store / Play Store süreci hem yavaş hem maliyetli; talep görürse sonra eklenir.
 
 **Model stratejisi:** Haiku ile başla, gerektikçe Sonnet'e geç. Persona kalitesi kritik olduğu için oturumun "soru sorma" kısmı daha güçlü modele, rutin işler ucuz modele verilebilir.
+
+**Testler:** `web/` altında vitest — `npm test`. Üç dosya, 24 test: motorun sinyal üretimi
+(sebat/nedensellik/somutlama/sadeleştirme/merak ve tekrar etmemesi), parola kuralları ve
+hata sınıflandırması, müfredat bütünlüğü (slug tekilliği, her konuda kavram olması).
 
 **Ürünün kalbi prompt'tur, kod değil.** İlk haftayı hiç koda dokunmadan Claude.ai üzerinde persona prompt'unu olgunlaştırmaya ayırmak, sonradan mimariyi değiştirmek zorunda kalmayı önler.
 
@@ -320,7 +326,7 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [x] Figtree ve Newsreader'ın Türkçe karakter kontrolü — tam
 - [x] Logo kilitleri düzenlendi — `brand/logo/`
 - [ ] Üç maskot karakterinin gerçek tasarımı (arayüzde yer tutucu duruyor)
-- [ ] Onboarding ve profil/ilerleme ekranları
+- [x] Onboarding ve profil/ilerleme ekranları — dört adımlık tanışma, detaylı profil, fotoğraf yükleme
 - [ ] Logo kilitleriyle favicon arasındaki küçük renk farkının giderilmesi
 
 **Ürün**
@@ -345,9 +351,11 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [ ] Alan adı bağlama (tutorla.com / .app / .co)
 - [ ] Supabase panelinde "Leaked password protection" açılması (HaveIBeenPwned kontrolü)
 - [ ] Mobilde sol konu listesi (anlayış haritası mobilde açılır panel olarak çözüldü)
+- [x] Veritabanı denetçisi bulguları — `reactions`'a birincil anahtar, 21 yabancı anahtara kapsayan indeks
+- [x] Tarihler dile göre biçimleniyor (`TimeAgo`); öncesinde Türkçe arayüzde "9/13/2026" görünüyordu
 
 **İş modeli**
-- [ ] Fiyatlandırma kararı (ücretsiz oturum kotası + abonelik?) — henüz konuşulmadı
+- [ ] Fiyatlandırma kararı (ücretsiz oturum kotası + abonelik?) — landing'de "şimdilik ücretsiz" yazıyor, rakam yok
 - [ ] Birim ekonomi: oturum başına API maliyeti vs. abonelik fiyatı
 
 ## Kaynaklar

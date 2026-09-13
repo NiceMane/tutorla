@@ -6,6 +6,7 @@ import { getRepo } from "@/lib/repo";
 import type { AppNotification } from "@/lib/domain";
 import { Avatar } from "./Avatar";
 import { EmptyState, SkeletonList } from "@/components/ui/States";
+import { TimeAgo } from "@/components/ui/Time";
 
 export function Notifications() {
   const t = useTranslations("app.notif");
@@ -44,7 +45,7 @@ export function Notifications() {
                     <span className="text-[14.5px]">
                       <b className="font-semibold">{who}</b> {t(n.kind)}
                     </span>
-                    <span className="meta block text-[12.5px]">{new Date(n.createdAt).toLocaleString()}</span>
+                    <TimeAgo iso={n.createdAt} className="meta block text-[12.5px]" />
                   </span>
                   {!n.readAt && <i className="size-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />}
                 </span>

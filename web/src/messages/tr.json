@@ -16,7 +16,8 @@
     "themeLight": "Açık temaya geç",
     "themeDark": "Koyu temaya geç",
     "lang": "English",
-    "login": "Giriş yap"
+    "login": "Giriş yap",
+    "sss": "SSS"
   },
   "loader": {
     "label": "yükleniyor"
@@ -169,7 +170,8 @@
       "exit": "Seanstan çık",
       "menu": "Menü",
       "close": "Kapat",
-      "notifications": "Bildirimler"
+      "notifications": "Bildirimler",
+      "history": "Geçmiş"
     },
     "dash": {
       "eyebrow": "panelin",
@@ -240,7 +242,7 @@
     },
     "exams": {
       "eyebrow": "sınavın",
-      "title": "Hangi sınava hazırlanıyorsun?",
+      "title": "Kendi müfredatın",
       "subtitle": "Sınavını seç, dersler açılsın.",
       "ready": "hazır",
       "soon": "yakında",
@@ -252,7 +254,7 @@
       "code": "kısa kod",
       "name": "sınav adı",
       "desc": "kısa açıklama",
-      "create": "Oluştur",
+      "create": "Ekle",
       "cancel": "Vazgeç",
       "codeTaken": "Bu kod zaten kullanılıyor.",
       "docs": "müfredat bilgisi",
@@ -263,7 +265,26 @@
       "docEmpty": "Henüz bilgi yüklenmedi.",
       "aiPending": "Yapay zekâ henüz bağlı değil: yüklediklerin saklanıyor ama işlenmiyor.",
       "topics": "konu",
-      "open": "Aç"
+      "open": "Aç",
+      "hint": "Bu sınav senin. Ders ve konu ekleyerek anlatmaya başlayabilirsin.",
+      "addSubject": "Ders ekle",
+      "subjectName": "ders adı",
+      "addTopic": "Konu ekle",
+      "topicName": "konu adı",
+      "conceptsLabel": "kavramlar (her satıra bir tane)",
+      "conceptsHint": "Anlayış haritası bu kavramlardan oluşur.",
+      "deleteTopic": "Konuyu sil",
+      "deleteExam": "Sınavı sil",
+      "deleteExamConfirm": "Bu sınav, dersleri ve konuları silinecek. Emin misin?",
+      "deleteTopicConfirm": "Bu konu ve kavramları silinecek. Emin misin?",
+      "editExam": "Sınavı düzenle",
+      "noSubjects": "Henüz ders eklenmedi.",
+      "docs2": {
+        "open": "Aç",
+        "delete": "Sil",
+        "deleteConfirm": "Bu belge silinecek. Emin misin?",
+        "expired": "Bağlantı üretilemedi."
+      }
     },
     "profile": {
       "eyebrow": "profilin",
@@ -426,6 +447,17 @@
       "hand": "el",
       "school": "okul",
       "mood": "duygu"
+    },
+    "history": {
+      "title": "Seans geçmişin",
+      "empty": "Henüz seans yok.",
+      "mode": {
+        "teach": "anlatma",
+        "socratic": "sokratik"
+      },
+      "active": "devam ediyor",
+      "finished": "bitti",
+      "open": "Aç"
     }
   },
   "auth": {
@@ -477,5 +509,28 @@
     "save": "Kaydet",
     "delete": "Sil",
     "edit": "Düzenle"
+  },
+  "faq": {
+    "eyebrow": "sık sorulanlar",
+    "title": "Merak edilenler",
+    "q1": "Tutorla nasıl çalışıyor?",
+    "a1": "Bir konu seçiyorsun ve onu yapay zekâya anlatıyorsun. O meraklı bir öğrenci gibi soru soruyor, anlatımındaki boşlukları işaretliyor. Cevabı sana vermiyor — eksiği görünür kılıyor.",
+    "q2": "Ödev yaptırma aracı mı?",
+    "a2": "Hayır, tam tersi. Tutorla sana cevap vermez; senden açıklama ister. Amaç işi bitirmek değil, gerçekten anladığını görmek.",
+    "q3": "Hangi sınavlara uygun?",
+    "a3": "Şu an YKS müfredatı yüklü: matematik, fizik, kimya, biyoloji, Türkçe, edebiyat, tarih, coğrafya, felsefe, din kültürü ve İngilizce. LGS, KPSS, DGS, ALES, SAT ve TÜBİTAK sırada. Listede olmayan bir sınav için kendi müfredatını da ekleyebilirsin.",
+    "q4": "Ücretli mi?",
+    "a4": "Şu an kapalı testteyiz ve ücretsiz. Fiyatlandırmaya henüz karar vermedik; karar verince erken erişim listesindekilere önce haber vereceğiz.",
+    "q5": "Verilerim ne oluyor?",
+    "a5": "Seansların ve ilerlemen yalnızca sana görünür — veritabanı düzeyinde başkasının erişimine kapalı. Profilini istersen tamamen gizleyebilirsin. Sunucular Frankfurt'ta.",
+    "q6": "Yapay zekâ şu an bağlı mı?",
+    "a6": "Henüz değil. Öğrenci şimdilik elle yazılmış kurallarla çalışıyor ve arayüzde “senaryolu öğrenci” diye işaretli. Persona üzerinde çalışıyoruz; hazır olunca yerini alacak."
+  },
+  "pricing": {
+    "eyebrow": "fiyatlandırma",
+    "title": "Şimdilik ücretsiz",
+    "body": "Kapalı testteyiz. Bu dönemde her şey ücretsiz ve sınırsız. Fiyatlandırmaya karar verdiğimizde erken erişim listesindekilere önce haber vereceğiz — ve onlara ayrı bir koşul tanıyacağız.",
+    "badge": "kapalı test",
+    "cta": "Erken erişime katıl"
   }
 }

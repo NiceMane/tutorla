@@ -31,7 +31,8 @@ web/
 ## Landing page (`web/`)
 
 Next.js 16 · React 19 · Tailwind v4 · TypeScript. İki dil (`/` Türkçe, `/en` İngilizce — `next-intl`),
-açık/koyu tema (`next-themes`, navbar'daki düğme), Lenis yumuşak kaydırma, GSAP ScrollTrigger,
+açık/koyu tema (`next-themes`, navbar'daki düğme), GSAP ScrollTrigger (kaydırma yumuşatması
+kütüphaneyle değil, `scrub` ile — Lenis kaldırıldı: tekerleği ele geçirmek kaydırmayı kaygan yapıyordu),
 hero'da Three.js ile extrude edilmiş 3D `tutorla_` kilidi (imleci takip eder, kaydırdıkça yuvarlanıp yerini seans ekranına bırakır).
 
 ```bash
@@ -49,7 +50,8 @@ Vercel projesi `tutorla`, kök dizin `web`, GitHub deposuna bağlı — `main`'e
 dağıtılıyor. Elle dağıtım için **depo kökünden** `npx vercel deploy --prod` (kök dizin ayarı `web`
 olduğu için `--cwd web` ile çalışmaz).
 
-Geliştirme sunucusu `http://localhost:3000` (İngilizce: `/en`). Prod build `npm run build`, lint `npx eslint src`.
+Geliştirme sunucusu `http://localhost:3000` (İngilizce: `/en`). Prod build `npm run build`,
+lint `npx eslint src`, testler `npm test` (vitest — motor, parola kuralları, müfredat bütünlüğü).
 Komutların sonuna `#` ile yorum eklemeyin — zsh onu argüman olarak geçirir.
 
 Kaynak yapısı: `src/app/[locale]/(marketing)/` (landing), `src/app/[locale]/app/` (uygulama),
@@ -63,7 +65,7 @@ politikası yok — herkes kaydolabilir, kimse listeyi istemciden okuyamaz. List
 
 ## Uygulama (`/app`)
 
-Kalıcı navbar: **Derslerim · Sokratik · Akış · Profil**.
+Kalıcı navbar: **Derslerim · Sokratik · Geçmiş · Akış · Bildirimler · Profil**.
 
 | Rota | Ne |
 |---|---|
@@ -75,6 +77,8 @@ Kalıcı navbar: **Derslerim · Sokratik · Akış · Profil**.
 | `/app/profil` | Profil — fotoğraf, kimlik, öğrencilik, hedef, çalışma alışkanlığı, gizlilik + özet |
 | `/app/profil/[handle]` | Herkese açık profil — takip et, engelle, şikâyet et |
 | `/app/bildirimler` | Bildirimler — yorum, yanıt, tepki, takip |
+| `/app/gecmis` | Seans geçmişi — hangi konu, hangi mod, ne zaman |
+| `/app/baslangic` | Dört adımlık tanışma — ilk girişte bir kez, `profiles.onboarded_at` ile |
 
 **İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
@@ -90,6 +94,10 @@ güvenilmiyor). `error.tsx`, kök ve dil içi `not-found.tsx`, ortak iskelet/bo�
 (`exam_documents` + `exam-docs` depolama kovası). Yapay zekâ bağlanana kadar yüklenenler
 **saklanıyor ama işlenmiyor** — arayüzde de böyle yazıyor.
 
+Kendi eklediğin sınava **ders, konu ve kavram** ekleyip silebiliyorsun; yüklediğin belgeyi
+imzalı bağlantıyla açıp silebiliyorsun. Resmî müfredata (YKS) dokunulamıyor: RLS'te ayrım
+`created_by is null` üzerinden, `sinav_sahibi(exam_id)` kontrolüyle yapılıyor — istemciye güvenilmiyor.
+
 **Yapay zekâ henüz bağlı değil.** AI'a dokunan her şey `src/lib/engine/` altındaki tek arayüzün
 arkasında; şu an elle yazılmış kurallarla çalışan `ScriptedEngine` devrede ve arayüzde
 `senaryolu öğrenci` rozetiyle işaretli. Claude'a geçiş `src/lib/engine/index.ts` içinde tek satır.
@@ -100,7 +108,7 @@ Eğitim gerekmiyor — Claude API'ye istek, oturum başına ~$0.008 (Haiku).
 Supabase projesi: **`tutorla`** · ref `bupgkfzkuanzysdpteiy` · eu-central-1 · Postgres 17
 
 ```
-supabase/migrations/   şema, RLS, davranış anları, akış, profil, sınavlar
+supabase/migrations/   şema, RLS, davranış anları, akış, profil, sınavlar, kendi müfredatın
 supabase/storage.sql   depolama kovaları ve politikaları (elle uygulanır)
 supabase/seed.sql      müfredat — ÜRETİLMİŞ, kaynak web/src/lib/curriculum.ts
 supabase/dev-user.sql  GEÇİCİ geliştirme hesabı (auth gelince silinecek)
@@ -203,6 +211,9 @@ Model stratejisi: Haiku ile başla, gerektikçe Sonnet'e geç. Ürünün kalbi p
 - [x] Veritabanı şeması ve RLS — Supabase `tutorla`
 - [x] Uygulama iskeleti — panel + seans ekranı, çalışır durumda
 - [x] **Giriş ekranları** — e-posta + şifre çalışıyor; Google için dashboard ayarı gerekiyor
+- [x] Profil derinliği, tanışma akışı, seans geçmişi, kendi müfredatını düzenleme
+- [x] Landing'de SSS ve fiyatlandırma bölümleri
+- [x] Testler — `npm test` (24 test: motor sinyalleri, parola kuralları, müfredat bütünlüğü)
 - [ ] **Claude API** — persona prompt'u ve `ClaudeEngine`
 - [ ] `tutorla.com` / `.app` / `.co` domain müsaitliği
 - [ ] TÜRKPATENT'te "Tutorla" sorgusu ve başvuru

@@ -7,12 +7,13 @@ import { getRepo } from "@/lib/repo";
 import type { ExamDocument, Session, Topic } from "@/lib/domain";
 import { ProgressBar } from "./ProgressBar";
 import { TeachingEvidence } from "./TeachingEvidence";
+import { OwnCurriculum } from "./OwnCurriculum";
 import type { MomentKind } from "@/lib/domain";
 
 export function ExamDetail({ code }: { code: string }) {
   const t = useTranslations("app.exams");
   const td = useTranslations("app.dash");
-  const { ready, exams, curriculum, personas, progress } = useApp();
+  const { ready, exams, curriculum, personas, progress, refreshExams } = useApp();
   const router = useRouter();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [docs, setDocs] = useState<ExamDocument[]>([]);
@@ -24,6 +25,8 @@ export function ExamDetail({ code }: { code: string }) {
   const [closedTotal, setClosedTotal] = useState(0);
 
   const exam = exams.find((e) => e.code.toLowerCase() === code.toLowerCase()) ?? null;
+  /* Resmî sınavlarda created_by null; yalnızca kendi eklediğin düzenlenebilir. */
+  const mine = Boolean(exam?.createdBy);
   const subjects = exam ? curriculum.subjects.filter((s) => s.examId === exam.id) : [];
   const persona = personas.find((p) => p.active) ?? personas[0];
 
@@ -90,6 +93,25 @@ export function ExamDetail({ code }: { code: string }) {
       <Link href="/app" className="meta text-[13.5px] hover:text-ink">← {t("eyebrow")}</Link>
       <h1 className="mt-3 text-[clamp(1.8rem,3.6vw,2.6rem)]">{exam?.name ?? "…"}</h1>
       {exam?.description && <p className="mt-2 text-ink-2">{exam.description}</p>}
+
+      {mine && exam && (
+        <div className="mt-4 flex flex-wrap gap-2">
+          <button
+            type="button"
+            onClick={async () => {
+              if (!window.confirm(t("deleteExamConfirm"))) return;
+              await getRepo().deleteExam(exam.id);
+              await refreshExams();
+              router.push("/app");
+            }}
+            className="btn btn-ghost h-9 text-[13.5px]"
+          >
+            {t("deleteExam")}
+          </button>
+        </div>
+      )}
+
+      {mine && exam && <OwnCurriculum exam={exam} onChange={async () => { await refreshExams(); window.location.reload(); }} />}
 
       {hasContent ? (
         <>
@@ -184,7 +206,35 @@ export function ExamDetail({ code }: { code: string }) {
             {docs.length === 0 && <li className="meta text-[14px]">{t("docEmpty")}</li>}
             {docs.map((d) => (
               <li key={d.id} className="rounded-[var(--radius-ui)] border border-line bg-paper px-3 py-2">
-                <span className="font-medium">{d.title}</span>
+                <div className="flex flex-wrap items-start justify-between gap-2">
+                  <span className="font-medium">{d.title}</span>
+                  <div className="flex shrink-0 gap-3">
+                    {d.fileUrl && (
+                      <button
+                        type="button"
+                        onClick={async () => {
+                          const url = await getRepo().documentUrl(d.fileUrl!);
+                          if (url) window.open(url, "_blank", "noopener");
+                          else window.alert(t("docs2.expired"));
+                        }}
+                        className="meta text-[12.5px] hover:text-primary"
+                      >
+                        {t("docs2.open")}
+                      </button>
+                    )}
+                    <button
+                      type="button"
+                      onClick={async () => {
+                        if (!window.confirm(t("docs2.deleteConfirm"))) return;
+                        await getRepo().deleteExamDocument(d.id);
+                        await loadDocs();
+                      }}
+                      className="meta text-[12.5px] hover:text-accent"
+                    >
+                      {t("docs2.delete")}
+                    </button>
+                  </div>
+                </div>
                 {d.notes && <p className="mt-1 text-[13.5px] text-ink-2">{d.notes}</p>}
                 {d.fileUrl && <span className="meta mt-1 block text-[12.5px]">📎 {d.fileUrl.split("/").pop()}</span>}
               </li>

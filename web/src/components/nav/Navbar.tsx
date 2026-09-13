@@ -9,12 +9,13 @@ import { useScrolled } from "@/lib/hooks";
 import { Collapse } from "@/components/ui/Collapse";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 
-export const SECTIONS = ["ters", "nasil", "personalar", "neden", "erken-erisim"] as const;
-const LABEL: Record<(typeof SECTIONS)[number], "ters" | "nasil" | "personalar" | "neden" | "erken"> = {
+export const SECTIONS = ["ters", "nasil", "personalar", "neden", "sss", "erken-erisim"] as const;
+const LABEL: Record<(typeof SECTIONS)[number], "ters" | "nasil" | "personalar" | "neden" | "sss" | "erken"> = {
   ters: "ters",
   nasil: "nasil",
   personalar: "personalar",
   neden: "neden",
+  sss: "sss",
   "erken-erisim": "erken",
 };
 

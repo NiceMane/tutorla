@@ -243,7 +243,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
         </aside>
 
         {/* orta: sohbet */}
-        <div className="flex min-h-0 min-w-0 flex-col">
+        <main className="flex min-h-0 min-w-0 flex-col">
           <div className="flex flex-wrap items-baseline justify-between gap-2 border-b border-line px-[clamp(12px,2.5vw,20px)] py-3">
             <div>
               <h1 className="text-[19px]">{topic?.name}</h1>
@@ -374,7 +374,7 @@ export function SessionScreen({ sessionId }: { sessionId: string }) {
               </div>
             </div>
           )}
-        </div>
+        </main>
 
         {/* sağ: anlayış haritası (masaüstü) */}
         <aside className="hidden min-h-0 flex-col gap-5 overflow-y-auto border-l border-line p-4 lg:flex">

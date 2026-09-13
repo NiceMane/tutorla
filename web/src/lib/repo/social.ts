@@ -40,7 +40,16 @@ export interface SocialRepo {
   /* sınavlar */
   listExams(): Promise<Exam[]>;
   createExam(input: { code: string; name: string; description: string | null }): Promise<Exam>;
+  updateExam(id: string, patch: { name?: string; description?: string | null }): Promise<void>;
+  deleteExam(id: string): Promise<void>;
+  /* Kendi sınavına müfredat ağacı */
+  addSubject(examId: string, name: string): Promise<void>;
+  addTopic(subjectId: string, name: string, concepts: string[]): Promise<void>;
+  deleteTopic(topicId: string): Promise<void>;
   listExamDocuments(examId: string): Promise<ExamDocument[]>;
+  deleteExamDocument(id: string): Promise<void>;
+  /* Özel kovadaki belge için imzalı bağlantı */
+  documentUrl(path: string): Promise<string | null>;
   addExamDocument(input: { examId: string; title: string; notes: string | null; file?: File | null }): Promise<ExamDocument>;
 
   /* akış */

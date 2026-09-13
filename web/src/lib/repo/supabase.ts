@@ -774,4 +774,77 @@ export class SupabaseRepo implements Repo {
     if (error) fail(error, "sorgu");
     return true;
   }
+
+  /* ------------------------------------------- kendi sınavının müfredatı */
+
+  private slug(s: string): string {
+    return s.toLocaleLowerCase("tr")
+      .replaceAll("ı", "i").replaceAll("İ", "i").replaceAll("ş", "s").replaceAll("ğ", "g")
+      .replaceAll("ü", "u").replaceAll("ö", "o").replaceAll("ç", "c")
+      .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || "konu";
+  }
+
+  async updateExam(id: string, patch: { name?: string; description?: string | null }): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("exams").update(patch).eq("id", id);
+    if (error) fail(error, "exams.update");
+    this.curriculum = null;
+  }
+
+  async deleteExam(id: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("exams").delete().eq("id", id);
+    if (error) fail(error, "exams.delete");
+    this.curriculum = null;
+  }
+
+  async addSubject(examId: string, name: string): Promise<void> {
+    const sb = await this.sb();
+    const { count } = await sb.from("subjects").select("id", { count: "exact", head: true }).eq("exam_id", examId);
+    const { error } = await sb.from("subjects")
+      .insert({ exam_id: examId, slug: this.slug(name), name, position: (count ?? 0) + 1 });
+    if (error) fail(error, "subjects.insert");
+    this.curriculum = null;
+  }
+
+  async addTopic(subjectId: string, name: string, concepts: string[]): Promise<void> {
+    const sb = await this.sb();
+    const { count } = await sb.from("topics").select("id", { count: "exact", head: true }).eq("subject_id", subjectId);
+    const { data, error } = await sb.from("topics")
+      .insert({ subject_id: subjectId, slug: this.slug(name), name, position: (count ?? 0) + 1 })
+      .select("id").single();
+    if (error) fail(error, "topics.insert");
+    const topicId = str((data as Row).id);
+    const rows = concepts.map((c, i) => ({ topic_id: topicId, slug: this.slug(c), name: c, position: i + 1 }));
+    if (rows.length) {
+      const { error: cErr } = await sb.from("concepts").insert(rows);
+      if (cErr) fail(cErr, "concepts.insert");
+    }
+    this.curriculum = null;
+  }
+
+  async deleteTopic(topicId: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("topics").delete().eq("id", topicId);
+    if (error) fail(error, "topics.delete");
+    this.curriculum = null;
+  }
+
+  async deleteExamDocument(id: string): Promise<void> {
+    const sb = await this.sb();
+    const { data } = await sb.from("exam_documents").select("file_url").eq("id", id).maybeSingle();
+    const path = data ? (data as Row).file_url : null;
+    const { error } = await sb.from("exam_documents").delete().eq("id", id);
+    if (error) fail(error, "exam_documents.delete");
+    /* Kayıt gitti; dosyayı da temizle. Başarısız olursa kayıt yine silinmiş olur. */
+    if (path) await sb.storage.from("exam-docs").remove([str(path)]).catch(() => undefined);
+  }
+
+  /* exam-docs özel kova: kalıcı URL yok, kısa ömürlü imzalı bağlantı üretiyoruz. */
+  async documentUrl(path: string): Promise<string | null> {
+    const sb = await this.sb();
+    const { data, error } = await sb.storage.from("exam-docs").createSignedUrl(path, 300);
+    if (error) return null;
+    return data?.signedUrl ?? null;
+  }
 }

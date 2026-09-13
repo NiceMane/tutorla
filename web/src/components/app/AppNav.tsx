@@ -14,6 +14,7 @@ import { Avatar } from "./Avatar";
 const LINKS = [
   { href: "/app", key: "lessons" },
   { href: "/app/sokratik", key: "socratic" },
+  { href: "/app/gecmis", key: "history" },
   { href: "/app/akis", key: "feed" },
   { href: "/app/bildirimler", key: "notifications" },
   { href: "/app/profil", key: "profile" },
