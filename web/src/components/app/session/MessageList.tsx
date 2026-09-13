@@ -29,7 +29,10 @@ export function MessageList({
         const gap = gapFor(m);
         const moment = momentFor(m);
         return (
-          <div key={m.id} className="flex flex-col gap-2">
+          <div
+            key={m.id}
+            className={`flex flex-col gap-2 ${m.role === "teacher" ? "anim-slide-left" : "anim-slide-right"}`}
+          >
             <div className={`max-w-[85%] rounded-[9px] px-3.5 py-2.5 leading-[1.5] ${m.role === "teacher" ? "self-end bg-primary text-on-primary" : "border border-line bg-surface-2"}`}>
               {/* curriculum'daki tek <strong> vurgusu için */}
               <span dangerouslySetInnerHTML={{ __html: m.content.replace(/<(?!\/?strong>)/g, "&lt;") }} />
@@ -37,7 +40,7 @@ export function MessageList({
             {moment && <MomentChip kind={moment.kind} label={moment.label} />}
             {gap && (
               <>
-                <div className="meta self-start rounded-[var(--radius-ui)] border border-dashed border-accent px-2.5 py-1 text-[13px] !text-accent">
+                <div className="meta anim-pop self-start rounded-[var(--radius-ui)] border border-dashed border-accent px-2.5 py-1 text-[13px] !text-accent">
                   {gap.label}
                 </div>
                 {/* Mekanizmayı yalnızca ilk boşlukta, tam görüldüğü anda söyle.
@@ -51,7 +54,21 @@ export function MessageList({
         );
       })}
 
-      {thinking && <div className="meta self-start px-1 text-[13px]">{t("thinking")}</div>}
+      {/* Öğrenci düşünürken: üç nokta sırayla yanıp söner — bekleme ölü değil. */}
+      {thinking && (
+        <div className="meta anim-fade-in flex items-center gap-2 self-start px-1 text-[13px]">
+          <span className="flex gap-1" aria-hidden="true">
+            {[0, 1, 2].map((d) => (
+              <i
+                key={d}
+                className="block size-1.5 animate-[thinkDot_1.1s_ease-in-out_infinite] rounded-full bg-ink-3 motion-reduce:animate-none"
+                style={{ animationDelay: `${d * 0.16}s` }}
+              />
+            ))}
+          </span>
+          {t("thinking")}
+        </div>
+      )}
     </div>
   );
 }

@@ -35,8 +35,8 @@ export function Notifications() {
         ) : items.length === 0 ? (
           <EmptyState title={t("empty")} />
         ) : (
-          <ul className="flex flex-col gap-2">
-            {items.map((n) => {
+          <ul className="stagger flex flex-col gap-2">
+            {items.map((n, i) => {
               const who = n.actor?.displayName || (n.actor?.handle ? `@${n.actor.handle}` : "—");
               const body = (
                 <span className="flex min-w-0 flex-1 items-center gap-3">
@@ -51,7 +51,7 @@ export function Notifications() {
                 </span>
               );
               return (
-                <li key={n.id} className={`card px-4 py-3 ${n.readAt ? "" : "border-primary/40"}`}>
+                <li key={n.id} style={{ "--i": i } as React.CSSProperties} className={`card lift px-4 py-3 ${n.readAt ? "" : "border-primary/40"}`}>
                   {n.actor?.handle ? (
                     <Link href={`/app/profil/${n.actor.handle}` as "/app"} className="flex items-center">{body}</Link>
                   ) : (

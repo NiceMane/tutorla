@@ -42,7 +42,7 @@ export function UnderstandingMap({ topicName, concepts, states, closed, targetId
           return (
             <li
               key={c.id}
-              className={`flex items-center gap-2 rounded-[var(--radius-ui)] px-1.5 py-1 ${
+              className={`flex items-center gap-2 rounded-[var(--radius-ui)] px-1.5 py-1 transition-colors duration-300 ${
                 c.id === targetId ? "bg-surface-2" : ""
               } ${st === "untouched" ? "text-ink-3" : "text-ink-2"}`}
             >
@@ -50,7 +50,7 @@ export function UnderstandingMap({ topicName, concepts, states, closed, targetId
               <span className="truncate">{c.name}</span>
               {viaTeaching && (
                 <span
-                  className="meta ml-auto shrink-0 text-[11.5px] !text-primary"
+                  className="meta anim-pop ml-auto shrink-0 text-[11.5px] !text-primary"
                   title={t("closedHint")}
                 >
                   {t("closedByTeaching")}
@@ -61,7 +61,7 @@ export function UnderstandingMap({ topicName, concepts, states, closed, targetId
         })}
       </ul>
       {closedCount > 0 && (
-        <p className="rounded-[var(--radius-ui)] border border-primary/40 bg-[color-mix(in_oklab,var(--primary)_7%,transparent)] px-2.5 py-2 text-[12.5px] leading-[1.45] text-primary">
+        <p className="anim-fade-up rounded-[var(--radius-ui)] border border-primary/40 bg-[color-mix(in_oklab,var(--primary)_7%,transparent)] px-2.5 py-2 text-[12.5px] leading-[1.45] text-primary">
           <b className="font-semibold">{closedCount}</b> {t("closedByTeaching")} — {t("closedHint")}
         </p>
       )}

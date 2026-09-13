@@ -5,6 +5,7 @@ import { Link } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import { Collapse } from "@/components/ui/Collapse";
+import { ProgressBar } from "./ProgressBar";
 
 /* Sınav seçimi. Yalnızca YKS'nin müfredatı yüklü; diğerleri "yakında" olarak
    duruyor ve öğrenci kendi sınavını ekleyebiliyor. */
@@ -63,8 +64,8 @@ export function ExamPicker() {
         </div>
       ) : (
         <>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {exams.map((ex) => {
+          <div className="stagger mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {exams.map((ex, i) => {
               const n = topicsOf(ex.id).length;
               const prog = examProgress(ex.id);
               const usable = ex.active && n > 0;
@@ -72,7 +73,8 @@ export function ExamPicker() {
                 <Link
                   key={ex.id}
                   href={`/app/sinav/${encodeURIComponent(ex.code)}` as "/app"}
-                  className={`card group flex flex-col gap-2 p-5 transition-colors ${usable ? "hover:border-primary" : "hover:border-line-2"}`}
+                  style={{ "--i": i } as React.CSSProperties}
+                  className={`card lift group flex flex-col gap-2 p-5 ${usable ? "hover:border-primary" : "hover:border-line-2"}`}
                 >
                   <div className="flex items-start justify-between gap-3">
                     <span className="text-[1.5rem] font-extrabold tracking-[-0.03em]">{ex.name}</span>
@@ -83,9 +85,7 @@ export function ExamPicker() {
                   {ex.description && <p className="text-[14px] leading-[1.45] text-ink-2">{ex.description}</p>}
                   {usable && prog.started > 0 && (
                     <div className="mt-2 flex flex-col gap-1">
-                      <div className="h-[5px] overflow-hidden rounded-[3px] bg-surface-2">
-                        <i className="block h-full bg-glow transition-[width] duration-500" style={{ width: `${prog.percent}%` }} />
-                      </div>
+                      <ProgressBar percent={prog.percent} />
                       <span className="meta text-[12px] tabular-nums">
                         %{prog.percent} · {prog.started}/{n} {t("topics")}
                       </span>

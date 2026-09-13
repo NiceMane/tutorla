@@ -20,7 +20,7 @@ export function MobileMap({ percent, children }: { percent: number; children: Re
         <span className="meta text-[13px]">{t("map")}</span>
         <span className="min-w-0 flex-1">
           <span className="block h-[5px] overflow-hidden rounded-[3px] bg-surface-2">
-            <i className="block h-full bg-glow transition-[width] duration-500" style={{ width: `${percent}%` }} />
+            <i className="bar-fill block h-full w-full bg-glow" style={{ "--pct": percent / 100 } as React.CSSProperties} />
           </span>
         </span>
         <span className="meta shrink-0 text-[13px] !text-primary tabular-nums">%{percent}</span>

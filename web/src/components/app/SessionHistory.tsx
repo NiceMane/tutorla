@@ -36,10 +36,10 @@ export function SessionHistory() {
         ) : sessions.length === 0 ? (
           <EmptyState title={t("empty")} />
         ) : (
-          <ul className="flex flex-col gap-2">
-            {sessions.map((s) => (
-              <li key={s.id}>
-                <Link href={`/app/seans/${s.id}` as "/app"} className="card flex flex-wrap items-center gap-3 px-4 py-3 hover:border-line-2">
+          <ul className="stagger flex flex-col gap-2">
+            {sessions.map((s, i) => (
+              <li key={s.id} style={{ "--i": i } as React.CSSProperties}>
+                <Link href={`/app/seans/${s.id}` as "/app"} className="card lift flex flex-wrap items-center gap-3 px-4 py-3 hover:border-line-2">
                   <span className="font-medium">{topicName(s.topicId)}</span>
                   <span className="meta text-[13px]">{subjectName(s.topicId)}</span>
                   <span className={`chip text-[11.5px] ${s.mode === "socratic" ? "!border-primary !text-primary" : ""}`}>

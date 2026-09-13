@@ -22,7 +22,7 @@ export function MomentIcon({ kind }: { kind: MomentKind }) {
 export function MomentChip({ kind, label }: { kind: MomentKind; label: string }) {
   const t = useTranslations("app.moment");
   return (
-    <div className="flex items-center gap-2 self-start rounded-[var(--radius-ui)] border border-primary/45 bg-[color-mix(in_oklab,var(--primary)_8%,transparent)] px-2.5 py-1 text-[13px] text-primary">
+    <div className="anim-pop flex items-center gap-2 self-start rounded-[var(--radius-ui)] border border-primary/45 bg-[color-mix(in_oklab,var(--primary)_8%,transparent)] px-2.5 py-1 text-[13px] text-primary">
       <MomentIcon kind={kind} />
       <span className="font-semibold">{t(`kind.${kind}`)}</span>
       <span className="meta !text-primary/85">— {label}</span>

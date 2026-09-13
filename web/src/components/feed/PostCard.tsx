@@ -13,9 +13,11 @@ import { TimeAgo } from "@/components/ui/Time";
 
 export function PostCard({
   post, meId, examName, comments, onToggleComments, onReact, onBookmark,
-  onDelete, onEdit, onComment, onDeleteComment, onReactComment,
+  onDelete, onEdit, onComment, onDeleteComment, onReactComment, index = 0, fresh = false,
 }: {
   post: Post;
+  index?: number;
+  fresh?: boolean;
   meId: string | null;
   examName: string | null;
   comments: Comment[] | undefined;
@@ -36,7 +38,10 @@ export function PostCard({
   const handle = post.author?.handle;
 
   return (
-    <li className="card p-4">
+    <li
+      style={{ "--i": Math.min(index, 8) } as React.CSSProperties}
+      className={`card p-4 transition-colors duration-300 ${fresh ? "anim-flash border-primary/50" : ""}`}
+    >
       <div className="flex gap-3">
         {handle ? (
           <Link href={`/app/profil/${handle}` as "/app"} aria-label={post.author?.displayName ?? handle}>

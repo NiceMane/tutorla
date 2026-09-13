@@ -74,7 +74,7 @@ Kalıcı navbar: **Derslerim · Sokratik · Geçmiş · Akış · Bildirimler ·
 | `/app/seans/[id]` | Seans ekranı — üç kolon: konu listesi, sohbet, anlayış haritası |
 | `/app/sokratik` | Sokratik mod — ana modun tersi: o sorar, sen düşünürsün |
 | `/app/akis` | Akış — Tümü/Takip/Kayıtlılar sekmeleri, sayfalama, iyimser tepkiler, düzenleme, yer imi, şikâyet |
-| `/app/profil` | Profil — fotoğraf, kimlik, öğrencilik, hedef, çalışma alışkanlığı, gizlilik + özet |
+| `/app/profil` | Profil — fotoğraf (kırp/döndür/kameradan çek), kimlik, öğrencilik, hedef, çalışma alışkanlığı, gizlilik + özet |
 | `/app/profil/[handle]` | Herkese açık profil — takip et, engelle, şikâyet et |
 | `/app/bildirimler` | Bildirimler — yorum, yanıt, tepki, takip |
 | `/app/gecmis` | Seans geçmişi — hangi konu, hangi mod, ne zaman |
@@ -89,6 +89,17 @@ akıştan düşer), kota sınırı (dakikada 3 gönderi / 8 yorum — veritaban�
 güvenilmiyor). `error.tsx`, kök ve dil içi `not-found.tsx`, ortak iskelet/boş/hata bileşenleri.
 
 **SEO.** `sitemap.xml`, `robots.txt` (uygulama ve giriş dizine girmez), Open Graph paylaşım görseli.
+
+**Fotoğraf her yerde aynı yoldan geçiyor.** `src/components/media/` altında tek bir
+zincir var: dosya seç · sürükle-bırak · panodan yapıştır · kameradan çek → kırp
+(sürükle, tekerlek/iki parmak, 90° döndür) → tarayıcıda WebP'ye kodla → yükle.
+Önizleme ile çıktı aynı çizim kodundan üretiliyor: ne görüyorsan o kaydediliyor.
+512×512 avatar ~4 KB, telefonla çekilen 8 MB'lık kare akışta ~130 KB'a iniyor.
+
+**Hareket sözlüğü.** `globals.css` içinde tek yerde: sıralı beliriş (`stagger`),
+kart kalkışı (`lift`), dolan çubuk (`bar-fill`), yeni satır vurgusu (`anim-flash`),
+kayma/pop/sarsıntı ve kısa onaylar için `ToastHost`. Hepsi
+`prefers-reduced-motion` altında kapanıyor.
 
 **Kendi sınavını ekleme.** Listede olmayan bir sınav eklenip müfredat bilgisi yüklenebiliyor
 (`exam_documents` + `exam-docs` depolama kovası). Yapay zekâ bağlanana kadar yüklenenler
@@ -214,6 +225,8 @@ Model stratejisi: Haiku ile başla, gerektikçe Sonnet'e geç. Ürünün kalbi p
 - [x] Profil derinliği, tanışma akışı, seans geçmişi, kendi müfredatını düzenleme
 - [x] Landing'de SSS ve fiyatlandırma bölümleri
 - [x] Testler — `npm test` (24 test: motor sinyalleri, parola kuralları, müfredat bütünlüğü)
+- [x] Fotoğraf zinciri — kırpma, döndürme, kamera, sürükle-bırak, yapıştırma, WebP sıkıştırma
+- [x] Arayüz hareketi — sıralı beliriş, dolan çubuklar, toast onayları, adım geçişleri
 - [ ] **Claude API** — persona prompt'u ve `ClaudeEngine`
 - [ ] `tutorla.com` / `.app` / `.co` domain müsaitliği
 - [ ] TÜRKPATENT'te "Tutorla" sorgusu ve başvuru

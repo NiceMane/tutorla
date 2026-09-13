@@ -11,6 +11,11 @@ import { GifPicker } from "./GifPicker";
 import { Popover } from "./Popover";
 import { PostCard } from "./PostCard";
 import { EmptyState, ErrorState, SkeletonList } from "@/components/ui/States";
+import { Avatar } from "@/components/app/Avatar";
+import { Modal } from "@/components/ui/Modal";
+import { CameraCapture } from "@/components/media/CameraCapture";
+import { useToast } from "@/components/ui/Toast";
+import { imageFromTransfer, imageToFile, shrinkImage } from "@/lib/image";
 
 const MAX_BYTES = 5 * 1024 * 1024;
 
@@ -31,7 +36,11 @@ export function Feed() {
   const [uploading, setUploading] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [openComments, setOpenComments] = useState<Record<string, Comment[] | undefined>>({});
+  const [dragging, setDragging] = useState(false);
+  const [camera, setCamera] = useState(false);
+  const [freshId, setFreshId] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const toast = useToast();
 
   /* Olay işleyicilerinden çağrılır: baştan yükler */
   const load = useCallback(async (sc: FeedScope = scope) => {
@@ -99,11 +108,13 @@ export function Feed() {
     if ((!v && media.length === 0) || posting) return;
     setPosting(true);
     try {
-      await getRepo().createPost({ body: v || "—", examId: profile?.examId ?? null, media });
+      const created = await getRepo().createPost({ body: v || "—", examId: profile?.examId ?? null, media });
       setBody("");
       setMedia([]);
       setErr(null);
       await load();
+      /* Yeni gönderi listede bir kez vurgulansın. */
+      setFreshId(created.id);
     } catch (e) {
       setErr(e instanceof Error ? e.message : "—");
     } finally {
@@ -111,21 +122,42 @@ export function Feed() {
     }
   }
 
-  async function pickFile(file: File | null) {
-    if (!file) return;
-    if (file.size > MAX_BYTES) return setErr(t("tooBig"));
+  /* Büyük fotoğraflar tarayıcıda küçültülüp öyle yükleniyor: telefonla çekilen
+     4 MB'lık kare akışta 200 KB'a iniyor, sınıra takılmadan da geçiyor. */
+  const pickFile = useCallback(async (input: File | null) => {
+    if (!input) return;
+    if (!input.type.startsWith("image/")) return setErr(t("tooBig"));
     setErr(null);
     setUploading(true);
     try {
+      const file = await shrinkImage(input);
+      if (file.size > MAX_BYTES) {
+        setErr(t("tooBig"));
+        return;
+      }
       const up = await getRepo().uploadImage(file);
       setMedia((m) => [...m, up]);
     } catch (e2) {
-      setErr(e2 instanceof Error ? e2.message : "—");
+      const msg = e2 instanceof Error ? e2.message : "—";
+      setErr(msg);
+      toast(msg, "err");
     } finally {
       setUploading(false);
       if (fileRef.current) fileRef.current.value = "";
     }
-  }
+  }, [t, toast]);
+
+  /* Panodan yapıştırılan görsel doğrudan eklensin (ekran görüntüsü paylaşmak yaygın). */
+  useEffect(() => {
+    const onPaste = (e: ClipboardEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && ["INPUT", "TEXTAREA"].includes(target.tagName) === false) return;
+      const f = imageFromTransfer(e.clipboardData);
+      if (f) { e.preventDefault(); void pickFile(f); }
+    };
+    window.addEventListener("paste", onPaste);
+    return () => window.removeEventListener("paste", onPaste);
+  }, [pickFile]);
 
   async function toggleComments(postId: string) {
     if (openComments[postId]) {
@@ -150,11 +182,15 @@ export function Feed() {
       <p className="eyebrow">{t("eyebrow")}</p>
       <h1 className="mt-3 text-[clamp(1.7rem,3.4vw,2.4rem)]">{t("title")}</h1>
 
-      <form onSubmit={submit} className="card mt-6 p-4">
+      <form
+        onSubmit={submit}
+        onDragOver={(e) => { e.preventDefault(); setDragging(true); }}
+        onDragLeave={() => setDragging(false)}
+        onDrop={(e) => { e.preventDefault(); setDragging(false); void pickFile(imageFromTransfer(e.dataTransfer)); }}
+        className={`card mt-6 p-4 transition-colors duration-200 ${dragging ? "border-primary bg-[color-mix(in_oklab,var(--primary)_6%,transparent)]" : ""}`}
+      >
         <div className="flex gap-3">
-          <span className="grid size-9 shrink-0 place-items-center rounded-[30%] border border-line bg-surface text-[17px]" aria-hidden="true">
-            {profile?.avatarEmoji ?? "🦉"}
-          </span>
+          <Avatar profile={profile} size="md" className="mt-0.5" />
           <textarea
             value={body} onChange={(e) => setBody(e.target.value)} rows={3} maxLength={2000}
             placeholder={t("placeholder")} disabled={posting}
@@ -165,23 +201,35 @@ export function Feed() {
         {media.length > 0 && (
           <div className="mt-3 flex flex-wrap gap-2">
             {media.map((m, i) => (
-              <div key={m.url + i} className="relative">
+              <div key={m.url + i} className="anim-pop group relative">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 <img src={m.url} alt="" className="h-28 rounded-[var(--radius-ui)] border border-line object-cover" />
-                <button type="button" aria-label="×" onClick={() => setMedia((x) => x.filter((_, j) => j !== i))}
-                  className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full border border-line bg-paper text-[13px]">×</button>
+                <button
+                  type="button" aria-label="×"
+                  onClick={() => setMedia((x) => x.filter((_, j) => j !== i))}
+                  className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full border border-line bg-paper text-[13px] transition-transform duration-200 hover:rotate-90 hover:border-accent hover:text-accent"
+                >×</button>
               </div>
             ))}
           </div>
         )}
-        {err && <p className="mt-2 text-[13.5px] text-accent">{err}</p>}
+        {uploading && (
+          <div className="anim-fade-in mt-3 h-1 overflow-hidden rounded-full bg-surface-2">
+            <i className="anim-indeterminate block h-full w-1/3 rounded-full bg-glow" />
+          </div>
+        )}
+        {err && <p className="anim-shake mt-2 text-[13.5px] text-accent">{err}</p>}
 
         <div className="mt-3 flex flex-wrap items-center gap-1.5 border-t border-line pt-3">
           <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp,image/gif" hidden
             onChange={(e) => pickFile(e.target.files?.[0] ?? null)} />
           <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
-            className="rounded-[var(--radius-ui)] px-2.5 py-1.5 text-[13px] font-semibold text-ink-2 hover:bg-surface disabled:opacity-50">
+            className="rounded-[var(--radius-ui)] px-2.5 py-1.5 text-[13px] font-semibold text-ink-2 transition-colors hover:bg-surface disabled:opacity-50">
             {uploading ? t("uploading") : t("photo")}
+          </button>
+          <button type="button" onClick={() => setCamera(true)} disabled={uploading}
+            className="rounded-[var(--radius-ui)] px-2.5 py-1.5 text-[13px] font-semibold text-ink-2 transition-colors hover:bg-surface disabled:opacity-50">
+            {t("camera")}
           </button>
           <Popover button={({ toggle }) => (
             <button type="button" onClick={toggle} className="rounded-[var(--radius-ui)] px-2.5 py-1.5 text-[13px] font-semibold text-ink-2 hover:bg-surface">{t("gif")}</button>
@@ -198,12 +246,21 @@ export function Feed() {
         </div>
       </form>
 
+      <Modal open={camera} onClose={() => setCamera(false)} title={t("camera")}>
+        <CameraCapture
+          onCapture={async (img, mirrored) => {
+            setCamera(false);
+            await pickFile(await imageToFile(img, mirrored));
+          }}
+        />
+      </Modal>
+
       <div className="mt-6 flex gap-1.5" role="tablist">
         {(["all", "following", "bookmarks"] as FeedScope[]).map((sc) => (
           <button
             key={sc} type="button" role="tab" aria-selected={scope === sc}
             onClick={() => setScope(sc)}
-            className={`rounded-[var(--radius-ui)] px-3 py-1.5 text-[13.5px] font-semibold transition-colors ${
+            className={`rounded-[var(--radius-ui)] px-3 py-1.5 text-[13.5px] font-semibold transition-[background-color,color,transform] duration-200 active:scale-95 ${
               scope === sc ? "bg-primary text-on-primary" : "text-ink-2 hover:bg-surface"
             }`}
           >
@@ -220,10 +277,12 @@ export function Feed() {
         <div className="mt-6"><EmptyState title={t("empty")} /></div>
       ) : (
         <>
-          <ul className="mt-6 flex flex-col gap-4">
-            {posts.map((p) => (
+          <ul className="stagger mt-6 flex flex-col gap-4">
+            {posts.map((p, i) => (
               <PostCard
                 key={p.id}
+                index={i}
+                fresh={p.id === freshId}
                 post={p}
                 meId={user?.id ?? null}
                 examName={examName(p.examId)}

@@ -1,15 +1,15 @@
 "use client";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import { useTranslations } from "next-intl";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import type { Grade, Profile, StudyStyle } from "@/lib/domain";
 import { Avatar } from "./Avatar";
+import { AvatarEditor } from "./AvatarEditor";
 
 const AVATARS = ["🦉", "🦊", "🐢", "🐙", "🦋", "🌱", "📚", "🧠", "🎯", "⚡", "🔭", "☕"];
 const GRADES: Grade[] = ["9", "10", "11", "12", "mezun"];
 const STYLES: StudyStyle[] = ["sabah", "gece", "karma"];
-const MAX_AVATAR = 2 * 1024 * 1024;
 
 type Form = {
   displayName: string; handle: string; bio: string; avatarEmoji: string;
@@ -61,8 +61,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
   const [saved, setSaved] = useState(false);
   const [err, setErr] = useState<string | null>(null);
   const [avatarUrl, setAvatarUrl] = useState(profile?.avatarUrl ?? null);
-  const [uploading, setUploading] = useState(false);
-  const fileRef = useRef<HTMLInputElement>(null);
+  const [editingPhoto, setEditingPhoto] = useState(false);
 
   const set = <K extends keyof Form>(k: K, v: Form[K]) => setForm((f) => ({ ...f, [k]: v }));
   const subjects = curriculum.subjects.filter((s) => !form.examId || s.examId === form.examId);
@@ -76,22 +75,6 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
       [other]: f[other].filter((x) => x !== slug),
     }));
   };
-
-  async function pickAvatar(file: File | null) {
-    if (!file) return;
-    if (file.size > MAX_AVATAR) return setErr(t("photoHint"));
-    setErr(null);
-    setUploading(true);
-    try {
-      setAvatarUrl(await getRepo().uploadAvatar(file));
-      await refreshProfile();
-    } catch (e) {
-      setErr(e instanceof Error ? e.message : "—");
-    } finally {
-      setUploading(false);
-      if (fileRef.current) fileRef.current.value = "";
-    }
-  }
 
   async function save(e: React.FormEvent) {
     e.preventDefault();
@@ -139,30 +122,53 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
     <form onSubmit={save} className="flex flex-col gap-5">
       <Section title={t("photo")}>
         <div className="flex flex-wrap items-center gap-4">
-          <Avatar profile={{ avatarUrl, avatarEmoji: form.avatarEmoji, displayName: form.displayName }} size="xl" />
+          {/* Fotoğrafın üstüne gelince değiştirme katmanı açılır — kart da tıklanabilir. */}
+          <button
+            type="button"
+            onClick={() => setEditingPhoto(true)}
+            className="group relative rounded-[30%] outline-none ring-primary/60 focus-visible:ring-2"
+            aria-label={t("upload")}
+          >
+            <Avatar profile={{ avatarUrl, avatarEmoji: form.avatarEmoji, displayName: form.displayName }} size="xl" className="transition-transform duration-200 group-hover:scale-[1.03]" />
+            <span className="absolute inset-0 grid place-items-center rounded-[30%] bg-[color-mix(in_oklab,var(--ink)_55%,transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
+              </svg>
+            </span>
+          </button>
           <div className="flex flex-col gap-2">
-            <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" hidden
-              onChange={(e) => pickAvatar(e.target.files?.[0] ?? null)} />
             <div className="flex flex-wrap gap-2">
-              <button type="button" onClick={() => fileRef.current?.click()} disabled={uploading}
-                className="btn btn-ghost h-9 text-[13.5px] disabled:opacity-60">
-                {uploading ? t("cropping") : t("upload")}
+              <button type="button" onClick={() => setEditingPhoto(true)} className="btn btn-ghost h-9 text-[13.5px]">
+                {avatarUrl ? t("changePhoto") : t("upload")}
               </button>
               {avatarUrl && (
-                <button type="button" disabled={uploading}
+                <button
+                  type="button"
                   onClick={async () => { await getRepo().removeAvatar(); setAvatarUrl(null); await refreshProfile(); }}
-                  className="btn btn-ghost h-9 text-[13.5px]">{t("remove")}</button>
+                  className="btn btn-ghost h-9 text-[13.5px]"
+                >
+                  {t("remove")}
+                </button>
               )}
             </div>
             <span className="meta text-[12.5px]">{t("photoHint")}</span>
           </div>
         </div>
+
+        <AvatarEditor
+          open={editingPhoto}
+          onClose={() => setEditingPhoto(false)}
+          currentUrl={avatarUrl}
+          onUploaded={async (url) => { setAvatarUrl(url); await refreshProfile(); }}
+          onRemoved={async () => { setAvatarUrl(null); await refreshProfile(); }}
+        />
+
         <div className="flex flex-col gap-2">
           <span className="meta text-[13px]">{t("useEmoji")}</span>
           <div className="flex flex-wrap gap-1.5">
             {AVATARS.map((a) => (
               <button key={a} type="button" onClick={() => set("avatarEmoji", a)} aria-pressed={form.avatarEmoji === a}
-                className={`grid size-10 place-items-center rounded-[30%] border text-[19px] transition-colors ${
+                className={`grid size-10 place-items-center rounded-[30%] border text-[19px] transition-[transform,border-color,background-color] duration-200 hover:scale-105 active:scale-95 ${
                   form.avatarEmoji === a ? "border-primary bg-[color-mix(in_oklab,var(--primary)_12%,transparent)]" : "border-line hover:border-line-2"
                 }`}>{a}</button>
             ))}

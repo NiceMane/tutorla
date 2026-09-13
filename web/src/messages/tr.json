@@ -285,7 +285,13 @@
         "delete": "Sil",
         "deleteConfirm": "Bu belge silinecek. Emin misin?",
         "expired": "Bağlantı üretilemedi."
-      }
+      },
+      "subjectAdded": "Ders eklendi.",
+      "topicAdded": "Konu ve kavramlar eklendi.",
+      "topicDeleted": "Konu silindi.",
+      "examDeleted": "Sınav silindi.",
+      "docAdded": "Belge yüklendi.",
+      "docDeleted": "Belge silindi."
     },
     "profile": {
       "eyebrow": "profilin",
@@ -296,7 +302,7 @@
       "upload": "Fotoğraf yükle",
       "remove": "Kaldır",
       "useEmoji": "Simge kullan",
-      "photoHint": "PNG/JPG/WebP · en fazla 2 MB",
+      "photoHint": "Kırpabilir, döndürebilir, kameradan çekebilirsin.",
       "cropping": "hazırlanıyor…",
       "identity": "kimlik",
       "name": "görünen ad",
@@ -359,7 +365,8 @@
       "notFound": "Böyle bir profil yok.",
       "private": "Bu profil gizli.",
       "empty": "Henüz doldurulmamış.",
-      "completeness": "profil doluluğu"
+      "completeness": "profil doluluğu",
+      "changePhoto": "Fotoğrafı değiştir"
     },
     "feed": {
       "eyebrow": "akış",
@@ -389,7 +396,8 @@
       "all": "Tümü",
       "following": "Takip",
       "bookmarks": "Kayıtlılar",
-      "editHint": "düzenlendi"
+      "editHint": "düzenlendi",
+      "camera": "Kamera"
     },
     "socratic": {
       "eyebrow": "sokratik mod",
@@ -533,5 +541,31 @@
     "body": "Kapalı testteyiz. Bu dönemde her şey ücretsiz ve sınırsız. Fiyatlandırmaya karar verdiğimizde erken erişim listesindekilere önce haber vereceğiz — ve onlara ayrı bir koşul tanıyacağız.",
     "badge": "kapalı test",
     "cta": "Erken erişime katıl"
+  },
+  "media": {
+    "photoTitle": "Profil fotoğrafı",
+    "dropHere": "Fotoğrafı buraya bırak",
+    "dropHint": "Sürükleyip bırakabilir, panodan yapıştırabilir (⌘V) ya da kameradan çekebilirsin.",
+    "chooseFile": "Dosya seç",
+    "useCamera": "Kameradan çek",
+    "reframe": "Mevcut fotoğrafı yeniden çerçevele",
+    "removePhoto": "Fotoğrafı kaldır",
+    "back": "Geri",
+    "shoot": "Çek",
+    "switchCamera": "Kamerayı değiştir",
+    "opening": "kamera açılıyor…",
+    "noCamera": "Bu cihazda kullanılabilir bir kamera bulunamadı.",
+    "denied": "Kamera izni verilmedi.",
+    "deniedHint": "Tarayıcının adres çubuğundaki kamera simgesinden izin verip tekrar deneyebilirsin. Dilersen dosya da seçebilirsin.",
+    "zoom": "yakınlaştır",
+    "rotate": "Döndür",
+    "reset": "Sıfırla",
+    "apply": "Kaydet",
+    "saving": "yükleniyor…",
+    "cropHint": "Sürükleyerek konumlandır, tekerlek veya iki parmakla yakınlaştır.",
+    "cropAria": "Kırpma alanı: ok tuşlarıyla kaydır, artı ve eksi ile yakınlaştır.",
+    "notImage": "Bu bir görsel dosyası değil.",
+    "tooBig": "Dosya çok büyük (en fazla 12 MB).",
+    "cantEditCurrent": "Mevcut fotoğraf yeniden çerçevelenemedi; yeni bir fotoğraf seç."
   }
 }

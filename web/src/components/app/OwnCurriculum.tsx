@@ -5,6 +5,7 @@ import { getRepo } from "@/lib/repo";
 import { useApp } from "@/lib/store";
 import type { Exam } from "@/lib/domain";
 import { Collapse } from "@/components/ui/Collapse";
+import { useToast } from "@/components/ui/Toast";
 
 /* Öğrencinin kendi eklediği sınava ders ve konu eklemesi.
    Resmî müfredat buradan değiştirilemez — RLS de buna izin vermiyor. */
@@ -16,17 +17,23 @@ export function OwnCurriculum({ exam, onChange }: { exam: Exam; onChange: () => 
   const [topic, setTopic] = useState({ name: "", concepts: "" });
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<string | null>(null);
+  /* Yeni eklenen satır bir kez vurgulansın: uzun listede nereye düştüğü belli olsun. */
+  const [fresh, setFresh] = useState<string | null>(null);
+  const toast = useToast();
 
   const subjects = curriculum.subjects.filter((s) => s.examId === exam.id);
 
-  const run = async (fn: () => Promise<unknown>) => {
+  const run = async (fn: () => Promise<unknown>, done?: string) => {
     setBusy(true);
     setErr(null);
     try {
       await fn();
       await onChange();
+      if (done) toast(done);
     } catch (e) {
-      setErr(e instanceof Error ? e.message : "—");
+      const msg = e instanceof Error ? e.message : "—";
+      setErr(msg);
+      toast(msg, "err");
     } finally {
       setBusy(false);
     }
@@ -41,7 +48,8 @@ export function OwnCurriculum({ exam, onChange }: { exam: Exam; onChange: () => 
         onSubmit={(e) => {
           e.preventDefault();
           if (!subjectName.trim()) return;
-          run(async () => { await getRepo().addSubject(exam.id, subjectName.trim()); setSubjectName(""); });
+          const name = subjectName.trim();
+          run(async () => { await getRepo().addSubject(exam.id, name); setSubjectName(""); setFresh(name); }, t("subjectAdded"));
         }}
         className="mt-4 flex flex-wrap gap-2"
       >
@@ -60,12 +68,13 @@ export function OwnCurriculum({ exam, onChange }: { exam: Exam; onChange: () => 
       {subjects.length === 0 ? (
         <p className="meta mt-4 text-[14px]">{t("noSubjects")}</p>
       ) : (
-        <ul className="mt-4 flex flex-col gap-3">
-          {subjects.map((s) => {
+        <ul className="stagger mt-4 flex flex-col gap-3">
+          {subjects.map((s, si) => {
             const topics = curriculum.topics.filter((x) => x.subjectId === s.id);
             const open = openSubject === s.id;
             return (
-              <li key={s.id} className="rounded-[var(--radius-card)] border border-line p-4">
+              <li key={s.id} style={{ "--i": si } as React.CSSProperties}
+                  className={`rounded-[var(--radius-card)] border border-line p-4 ${fresh === s.name ? "anim-flash" : ""}`}>
                 <div className="flex flex-wrap items-center justify-between gap-3">
                   <span className="font-semibold">{s.name}</span>
                   <button type="button" onClick={() => setOpenSubject(open ? null : s.id)} className="btn btn-ghost h-8 px-3 text-[13px]">
@@ -76,11 +85,11 @@ export function OwnCurriculum({ exam, onChange }: { exam: Exam; onChange: () => 
                 {topics.length > 0 && (
                   <ul className="mt-3 flex flex-col">
                     {topics.map((x) => (
-                      <li key={x.id} className="flex items-center justify-between gap-3 border-t border-line py-2 first:border-t-0">
+                      <li key={x.id} className={`flex items-center justify-between gap-3 border-t border-line py-2 first:border-t-0 ${fresh === x.name ? "anim-flash" : ""}`}>
                         <span className="truncate text-[14.5px]">{x.name}</span>
                         <button
                           type="button" disabled={busy}
-                          onClick={() => { if (window.confirm(t("deleteTopicConfirm"))) run(() => getRepo().deleteTopic(x.id)); }}
+                          onClick={() => { if (window.confirm(t("deleteTopicConfirm"))) run(() => getRepo().deleteTopic(x.id), t("topicDeleted")); }}
                           className="meta shrink-0 text-[12.5px] hover:text-accent"
                         >
                           {t("deleteTopic")}
@@ -101,7 +110,8 @@ export function OwnCurriculum({ exam, onChange }: { exam: Exam; onChange: () => 
                         await getRepo().addTopic(s.id, name, concepts);
                         setTopic({ name: "", concepts: "" });
                         setOpenSubject(null);
-                      });
+                        setFresh(name);
+                      }, t("topicAdded"));
                     }}
                     className="flex flex-col gap-3 pt-3"
                   >

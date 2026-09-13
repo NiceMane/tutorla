@@ -3,6 +3,7 @@ import { AppProvider } from "@/lib/store";
 import { RequireAuth } from "@/components/auth/RequireAuth";
 import { AppNav } from "@/components/app/AppNav";
 import { OnboardingGate } from "@/components/app/OnboardingGate";
+import { ToastHost } from "@/components/ui/Toast";
 
 /* Uygulama kabuğu: pazarlama sayfasının navbar/footer'ı burada yok. */
 export default async function AppLayout({
@@ -18,10 +19,12 @@ export default async function AppLayout({
     <RequireAuth>
       <AppProvider>
         <OnboardingGate>
-          <div className="flex min-h-dvh flex-col bg-paper">
-            <AppNav />
-            {children}
-          </div>
+          <ToastHost>
+            <div className="flex min-h-dvh flex-col bg-paper">
+              <AppNav />
+              {children}
+            </div>
+          </ToastHost>
         </OnboardingGate>
       </AppProvider>
     </RequireAuth>

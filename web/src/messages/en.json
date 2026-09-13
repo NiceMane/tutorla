@@ -285,7 +285,13 @@
         "delete": "Delete",
         "deleteConfirm": "This document will be deleted. Are you sure?",
         "expired": "Couldn't create a link."
-      }
+      },
+      "subjectAdded": "Subject added.",
+      "topicAdded": "Topic and concepts added.",
+      "topicDeleted": "Topic deleted.",
+      "examDeleted": "Exam deleted.",
+      "docAdded": "Document uploaded.",
+      "docDeleted": "Document deleted."
     },
     "profile": {
       "eyebrow": "your profile",
@@ -296,7 +302,7 @@
       "upload": "Upload photo",
       "remove": "Remove",
       "useEmoji": "Use an icon",
-      "photoHint": "PNG/JPG/WebP · max 2 MB",
+      "photoHint": "Crop it, rotate it, or take one with your camera.",
       "cropping": "preparing…",
       "identity": "identity",
       "name": "display name",
@@ -359,7 +365,8 @@
       "notFound": "No such profile.",
       "private": "This profile is private.",
       "empty": "Not filled in yet.",
-      "completeness": "profile completeness"
+      "completeness": "profile completeness",
+      "changePhoto": "Change photo"
     },
     "feed": {
       "eyebrow": "feed",
@@ -389,7 +396,8 @@
       "all": "All",
       "following": "Following",
       "bookmarks": "Saved",
-      "editHint": "edited"
+      "editHint": "edited",
+      "camera": "Camera"
     },
     "socratic": {
       "eyebrow": "socratic mode",
@@ -533,5 +541,31 @@
     "body": "We're in closed testing. Everything is free and unlimited during this period. When we settle on pricing, the early-access list hears first — and gets its own terms.",
     "badge": "closed test",
     "cta": "Join early access"
+  },
+  "media": {
+    "photoTitle": "Profile photo",
+    "dropHere": "Drop a photo here",
+    "dropHint": "Drag and drop, paste from the clipboard (⌘V) or take one with your camera.",
+    "chooseFile": "Choose a file",
+    "useCamera": "Use camera",
+    "reframe": "Reframe current photo",
+    "removePhoto": "Remove photo",
+    "back": "Back",
+    "shoot": "Capture",
+    "switchCamera": "Switch camera",
+    "opening": "opening camera…",
+    "noCamera": "No usable camera was found on this device.",
+    "denied": "Camera permission was denied.",
+    "deniedHint": "You can allow it from the camera icon in the address bar and try again — or just choose a file.",
+    "zoom": "zoom",
+    "rotate": "Rotate",
+    "reset": "Reset",
+    "apply": "Save",
+    "saving": "uploading…",
+    "cropHint": "Drag to position, scroll or pinch to zoom.",
+    "cropAria": "Crop area: move with arrow keys, zoom with plus and minus.",
+    "notImage": "That file isn't an image.",
+    "tooBig": "File is too large (12 MB max).",
+    "cantEditCurrent": "Couldn't reframe the current photo; pick a new one."
   }
 }

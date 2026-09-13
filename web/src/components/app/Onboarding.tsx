@@ -5,6 +5,8 @@ import { useRouter } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import type { Grade, StudyStyle } from "@/lib/domain";
+import { Avatar } from "./Avatar";
+import { AvatarEditor } from "./AvatarEditor";
 
 const GRADES: Grade[] = ["9", "10", "11", "12", "mezun"];
 const STYLES: StudyStyle[] = ["sabah", "gece", "karma"];
@@ -18,7 +20,10 @@ export function Onboarding() {
   const { profile, exams, curriculum, refreshProfile } = useApp();
   const router = useRouter();
   const [step, setStep] = useState(0);
+  const [dir, setDir] = useState<1 | -1>(1);
   const [busy, setBusy] = useState(false);
+  const [photo, setPhoto] = useState(profile?.avatarUrl ?? null);
+  const [editingPhoto, setEditingPhoto] = useState(false);
   const [f, setF] = useState({
     displayName: profile?.displayName ?? "", handle: profile?.handle ?? "",
     avatarEmoji: profile?.avatarEmoji || "🦉", examId: profile?.examId ?? "",
@@ -65,10 +70,39 @@ export function Onboarding() {
       title: t("s1title"), sub: t("s1sub"),
       body: (
         <div className="flex flex-col gap-4">
+          {/* Fotoğraf burada da eklenebilsin: profile gitmeden önce tanış. */}
+          <div className="flex items-center gap-4">
+            <button
+              type="button"
+              onClick={() => setEditingPhoto(true)}
+              className="group relative rounded-[30%] outline-none ring-primary/60 focus-visible:ring-2"
+              aria-label={tp("upload")}
+            >
+              <Avatar profile={{ avatarUrl: photo, avatarEmoji: f.avatarEmoji, displayName: f.displayName }} size="lg"
+                className="transition-transform duration-200 group-hover:scale-[1.04]" />
+              <span className="absolute inset-0 grid place-items-center rounded-[30%] bg-[color-mix(in_oklab,var(--ink)_55%,transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
+                </svg>
+              </span>
+            </button>
+            <button type="button" onClick={() => setEditingPhoto(true)} className="btn btn-ghost h-9 text-[13.5px]">
+              {photo ? tp("changePhoto") : tp("upload")}
+            </button>
+          </div>
+
+          <AvatarEditor
+            open={editingPhoto}
+            onClose={() => setEditingPhoto(false)}
+            currentUrl={photo}
+            onUploaded={async (url) => { setPhoto(url); await refreshProfile(); }}
+            onRemoved={async () => { setPhoto(null); await refreshProfile(); }}
+          />
+
           <div className="flex flex-wrap gap-1.5">
             {AVATARS.map((a) => (
               <button key={a} type="button" onClick={() => set("avatarEmoji", a)} aria-pressed={f.avatarEmoji === a}
-                className={`grid size-11 place-items-center rounded-[30%] border text-[20px] ${
+                className={`grid size-11 place-items-center rounded-[30%] border text-[20px] transition-[transform,border-color,background-color] duration-200 hover:scale-105 active:scale-95 ${
                   f.avatarEmoji === a ? "border-primary bg-[color-mix(in_oklab,var(--primary)_12%,transparent)]" : "border-line"
                 }`}>{a}</button>
             ))}
@@ -168,12 +202,17 @@ export function Onboarding() {
     <main className="mx-auto w-full max-w-[560px] px-[clamp(14px,3vw,28px)] py-12">
       <div className="flex items-center gap-2">
         {steps.map((_, i) => (
-          <span key={i} className={`h-1 flex-1 rounded-full transition-colors ${i <= step ? "bg-primary" : "bg-surface-2"}`} />
+          <span key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-surface-2">
+            <i
+              className="block h-full origin-left rounded-full bg-primary transition-transform duration-500 ease-out motion-reduce:transition-none"
+              style={{ transform: `scaleX(${i <= step ? 1 : 0})` }}
+            />
+          </span>
         ))}
       </div>
       <p className="meta mt-3 text-[12.5px]">{t("step")} {step + 1} {t("of")} {steps.length}</p>
 
-      <div key={step} className="anim-fade-up mt-5">
+      <div key={step} className={`mt-5 ${dir === 1 ? "anim-slide-left" : "anim-slide-right"}`}>
         <h1 className="text-[clamp(1.5rem,3.2vw,2rem)]">{cur.title}</h1>
         <p className="mt-2 text-ink-2">{cur.sub}</p>
         <div className="mt-6">{cur.body}</div>
@@ -181,10 +220,10 @@ export function Onboarding() {
 
       <div className="mt-8 flex flex-wrap items-center gap-3">
         {step > 0 && (
-          <button type="button" onClick={() => setStep((s) => s - 1)} className="btn btn-ghost">{t("back")}</button>
+          <button type="button" onClick={() => { setDir(-1); setStep((s) => s - 1); }} className="btn btn-ghost">{t("back")}</button>
         )}
         <button type="button" disabled={busy}
-          onClick={() => (last ? finish() : setStep((s) => s + 1))}
+          onClick={() => { if (last) { finish(); } else { setDir(1); setStep((s) => s + 1); } }}
           className="btn btn-primary disabled:opacity-60">
           {last ? t("finish") : t("next")}
         </button>

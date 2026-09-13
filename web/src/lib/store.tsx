@@ -14,6 +14,7 @@ type AppState = {
   refresh: () => Promise<void>;
   refreshProfile: () => Promise<void>;
   refreshExams: () => Promise<void>;
+  refreshCurriculum: () => Promise<void>;
   reset: () => Promise<void>;
 };
 
@@ -42,6 +43,13 @@ export function AppProvider({ children }: { children: ReactNode }) {
     setExams(await repo.listExams());
   }, [repo]);
 
+  /* Kendi sınavına ders/konu ekleyince müfredat ağacı tazelenmeli.
+     Eskiden bunun yerine sayfa baştan yükleniyordu: kaydırma kayboluyor,
+     onay mesajı da doğduğu anda ölüyordu. */
+  const refreshCurriculum = useCallback(async () => {
+    setCurriculum(await repo.getCurriculum());
+  }, [repo]);
+
   useEffect(() => {
     let alive = true;
     (async () => {
@@ -67,8 +75,8 @@ export function AppProvider({ children }: { children: ReactNode }) {
   }, [repo, refresh]);
 
   const value = useMemo<AppState>(
-    () => ({ ready, curriculum, personas, progress, profile, exams, refresh, refreshProfile, refreshExams, reset }),
-    [ready, curriculum, personas, progress, profile, exams, refresh, refreshProfile, refreshExams, reset],
+    () => ({ ready, curriculum, personas, progress, profile, exams, refresh, refreshProfile, refreshExams, refreshCurriculum, reset }),
+    [ready, curriculum, personas, progress, profile, exams, refresh, refreshProfile, refreshExams, refreshCurriculum, reset],
   );
   return <Ctx.Provider value={value}>{children}</Ctx.Provider>;
 }

@@ -8,13 +8,15 @@ import type { ExamDocument, Session, Topic } from "@/lib/domain";
 import { ProgressBar } from "./ProgressBar";
 import { TeachingEvidence } from "./TeachingEvidence";
 import { OwnCurriculum } from "./OwnCurriculum";
+import { useToast } from "@/components/ui/Toast";
 import type { MomentKind } from "@/lib/domain";
 
 export function ExamDetail({ code }: { code: string }) {
   const t = useTranslations("app.exams");
   const td = useTranslations("app.dash");
-  const { ready, exams, curriculum, personas, progress, refreshExams } = useApp();
+  const { ready, exams, curriculum, personas, progress, refreshExams, refreshCurriculum } = useApp();
   const router = useRouter();
+  const toast = useToast();
   const [sessions, setSessions] = useState<Session[]>([]);
   const [docs, setDocs] = useState<ExamDocument[]>([]);
   const [busy, setBusy] = useState<string | null>(null);
@@ -70,6 +72,7 @@ export function ExamDetail({ code }: { code: string }) {
       setDoc({ title: "", notes: "" });
       setFile(null);
       await loadDocs();
+      toast(t("docAdded"));
     } finally {
       setSaving(false);
     }
@@ -102,6 +105,7 @@ export function ExamDetail({ code }: { code: string }) {
               if (!window.confirm(t("deleteExamConfirm"))) return;
               await getRepo().deleteExam(exam.id);
               await refreshExams();
+              toast(t("examDeleted"));
               router.push("/app");
             }}
             className="btn btn-ghost h-9 text-[13.5px]"
@@ -111,15 +115,15 @@ export function ExamDetail({ code }: { code: string }) {
         </div>
       )}
 
-      {mine && exam && <OwnCurriculum exam={exam} onChange={async () => { await refreshExams(); window.location.reload(); }} />}
+      {mine && exam && <OwnCurriculum exam={exam} onChange={async () => { await Promise.all([refreshExams(), refreshCurriculum()]); }} />}
 
       {hasContent ? (
         <>
-          <div className="mt-8 grid gap-5 lg:grid-cols-2">
-            {subjects.map((subject) => {
+          <div className="stagger mt-8 grid gap-5 lg:grid-cols-2">
+            {subjects.map((subject, si) => {
               const topics = curriculum.topics.filter((x) => x.subjectId === subject.id);
               return (
-                <section key={subject.id} className="card p-5">
+                <section key={subject.id} style={{ "--i": si } as React.CSSProperties} className="card p-5">
                   <h2 className="text-[1.15rem]">{subject.name}</h2>
                   <ul className="mt-3 flex flex-col">
                     {topics.map((topic) => {
@@ -132,7 +136,7 @@ export function ExamDetail({ code }: { code: string }) {
                             type="button"
                             onClick={() => openTopic(topic)}
                             disabled={busy !== null}
-                            className="group flex w-full items-center gap-4 py-3 text-left transition-opacity disabled:opacity-50"
+                            className="group flex w-full items-center gap-4 rounded-[var(--radius-ui)] px-1 py-3 text-left transition-[opacity,background-color,padding] duration-200 hover:bg-surface hover:px-2 disabled:opacity-50"
                           >
                             <span className="min-w-0 flex-1">
                               <span className="block truncate font-medium group-hover:text-primary">{topic.name}</span>
@@ -153,7 +157,7 @@ export function ExamDetail({ code }: { code: string }) {
           </div>
 
           {(closedTotal > 0 || Object.keys(evidence).length > 0) && (
-            <div className="mt-10 grid gap-5 md:grid-cols-2">
+            <div className="stagger mt-10 grid gap-5 md:grid-cols-2">
               <section className="card p-5">
                 <h2 className="meta text-[15px]">{td("learning")}</h2>
                 <p className="meta mt-1 text-[13px]">{td("learningHint")}</p>
@@ -202,10 +206,10 @@ export function ExamDetail({ code }: { code: string }) {
             </label>
           </form>
 
-          <ul className="mt-5 flex flex-col gap-2">
+          <ul className="stagger mt-5 flex flex-col gap-2">
             {docs.length === 0 && <li className="meta text-[14px]">{t("docEmpty")}</li>}
-            {docs.map((d) => (
-              <li key={d.id} className="rounded-[var(--radius-ui)] border border-line bg-paper px-3 py-2">
+            {docs.map((d, di) => (
+              <li key={d.id} style={{ "--i": di } as React.CSSProperties} className="rounded-[var(--radius-ui)] border border-line bg-paper px-3 py-2 transition-colors hover:border-line-2">
                 <div className="flex flex-wrap items-start justify-between gap-2">
                   <span className="font-medium">{d.title}</span>
                   <div className="flex shrink-0 gap-3">
@@ -215,7 +219,7 @@ export function ExamDetail({ code }: { code: string }) {
                         onClick={async () => {
                           const url = await getRepo().documentUrl(d.fileUrl!);
                           if (url) window.open(url, "_blank", "noopener");
-                          else window.alert(t("docs2.expired"));
+                          else toast(t("docs2.expired"), "err");
                         }}
                         className="meta text-[12.5px] hover:text-primary"
                       >
@@ -228,6 +232,7 @@ export function ExamDetail({ code }: { code: string }) {
                         if (!window.confirm(t("docs2.deleteConfirm"))) return;
                         await getRepo().deleteExamDocument(d.id);
                         await loadDocs();
+                        toast(t("docDeleted"));
                       }}
                       className="meta text-[12.5px] hover:text-accent"
                     >

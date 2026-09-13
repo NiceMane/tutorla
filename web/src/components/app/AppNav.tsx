@@ -67,13 +67,19 @@ export function AppNav() {
               key={l.href}
               href={l.href}
               aria-current={active(l.href) ? "page" : undefined}
-              className={`rounded-[var(--radius-ui)] px-3 py-2 text-[14.5px] font-medium transition-colors ${
+              className={`relative rounded-[var(--radius-ui)] px-3 py-2 text-[14.5px] font-medium transition-colors ${
                 active(l.href) ? "bg-surface text-ink" : "text-ink-2 hover:bg-surface hover:text-ink"
               }`}
             >
               {t(l.key)}
+              {/* etkin sekmenin altındaki çizgi ortadan açılır */}
+              <i
+                className="pointer-events-none absolute inset-x-2 -bottom-px block h-[2px] origin-center rounded-full bg-primary transition-transform duration-300 ease-out motion-reduce:transition-none"
+                style={{ transform: `scaleX(${active(l.href) ? 1 : 0})` }}
+                aria-hidden="true"
+              />
               {l.key === "notifications" && unread > 0 && (
-                <span className="ml-1.5 inline-grid min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-white tabular-nums">
+                <span className="anim-pop ml-1.5 inline-grid min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-white tabular-nums">
                   {unread > 9 ? "9+" : unread}
                 </span>
               )}

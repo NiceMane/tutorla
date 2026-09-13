@@ -327,6 +327,8 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [x] Logo kilitleri düzenlendi — `brand/logo/`
 - [ ] Üç maskot karakterinin gerçek tasarımı (arayüzde yer tutucu duruyor)
 - [x] Onboarding ve profil/ilerleme ekranları — dört adımlık tanışma, detaylı profil, fotoğraf yükleme
+- [x] Profil fotoğrafı: kırpma, döndürme, kameradan çekme, sürükle-bırak, panodan yapıştırma
+- [x] Arayüz hareketi: tek bir hareket sözlüğü, hareket kısıtlaması olanlarda kapalı
 - [ ] Logo kilitleriyle favicon arasındaki küçük renk farkının giderilmesi
 
 **Ürün**
