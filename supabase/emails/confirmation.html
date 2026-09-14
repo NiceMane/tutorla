@@ -1,0 +1,134 @@
+<!--
+  Tutorla · Supabase kimlik doğrulama e-postası — hesap doğrulama
+  Panelde: Authentication → Emails → Confirm signup → bu dosyanın tamamını yapıştır.
+  Konu satırı: Tutorla hesabını doğrula
+-->
+<!doctype html>
+<html lang="tr" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="x-apple-disable-message-reformatting">
+<meta name="color-scheme" content="light dark">
+<meta name="supported-color-schemes" content="light dark">
+<title>E-postanı doğrula</title>
+<!--[if mso]>
+<xml><o:OfficeDocumentSettings><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
+<![endif]-->
+<style>
+  /* Çoğu istemci <style> etiketini atar; bu yüzden HER kural satır içinde de var.
+     Buradakiler yalnızca ek: koyu mod ve dar ekran. */
+  body { margin:0 !important; padding:0 !important; width:100% !important; }
+  table { border-collapse:collapse; }
+  img { border:0; outline:none; text-decoration:none; -ms-interpolation-mode:bicubic; }
+  a { text-decoration:none; }
+  .dark-only { display:none !important; mso-hide:all; }
+  @media (max-width:600px) {
+    .card { padding:28px 22px !important; }
+    .h1 { font-size:22px !important; }
+    .btn a { display:block !important; }
+  }
+  @media (prefers-color-scheme: dark) {
+    .bg { background-color:#12150E !important; }
+    .card { background-color:#1B1F15 !important; border-color:#333A2A !important; }
+    .h1, .strong { color:#EAE6D3 !important; }
+    .body-text { color:#B4B098 !important; }
+    .meta-text, .footer-text { color:#8E8A74 !important; }
+    .hair { border-color:#333A2A !important; }
+    .link { color:#8FC4D6 !important; }
+    .code-box { background-color:#232818 !important; border-color:#333A2A !important; color:#EAE6D3 !important; }
+    .light-only { display:none !important; mso-hide:all; }
+    .dark-only { display:block !important; }
+  }
+</style>
+</head>
+<body class="bg" style="margin:0;padding:0;background-color:#EDE8DA;">
+  <!-- önizleme satırı: gelen kutusunda konunun yanında görünür -->
+  <div style="display:none;font-size:1px;color:#EDE8DA;line-height:1px;max-height:0;max-width:0;opacity:0;overflow:hidden;">Tek adım kaldı: e-postanı doğrula ve anlatmaya başla.&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;&#847;&zwnj;&nbsp;</div>
+
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="bg" style="background-color:#EDE8DA;">
+    <tr>
+      <td align="center" style="padding:36px 14px;">
+
+        <table role="presentation" width="560" cellpadding="0" cellspacing="0" border="0" style="width:560px;max-width:560px;">
+          <tr>
+            <td class="card" style="background-color:#F8F5EC;border:1px solid #E1DCCB;border-radius:12px;padding:40px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;">
+
+              <!-- logo -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td style="padding-bottom:26px;">
+                <a href="https://tutorla.vercel.app" style="text-decoration:none;">
+                  <img class="light-only" src="https://tutorla.vercel.app/brand/tutorla-email.png" width="180" height="50" alt="tutorla_"
+                       style="display:block;width:180px;height:50px;border-radius:4px;">
+                  <!--[if !mso]><!-->
+                  <img class="dark-only" src="https://tutorla.vercel.app/brand/tutorla-email-dark.png" width="180" height="50" alt="tutorla_"
+                       style="display:none;width:180px;height:50px;border-radius:4px;">
+                  <!--<![endif]-->
+                </a>
+              </td></tr></table>
+
+              <!-- üst etiket -->
+              <p style="margin:0 0 10px;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:15px;line-height:1.3;color:#1F6E85;" class="link">hoş geldin</p>
+
+              <!-- başlık -->
+              <h1 class="h1" style="margin:0 0 14px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:26px;line-height:1.25;font-weight:800;letter-spacing:-0.5px;color:#22271A;">E-postanı doğrula</h1>
+
+              <!-- gövde -->
+              <p class="body-text" style="margin:0 0 26px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:15.5px;line-height:1.6;color:#4C513E;">Tutorla'da rolleri ters çeviriyoruz: yapay zekâ öğrenci, anlatan sensin. Başlamak için tek adım kaldı — aşağıdaki düğmeye bas, hesabın hazır olsun.</p>
+
+                            <!-- düğme: Outlook için VML, diğerleri için normal bağlantı -->
+              <table role="presentation" cellpadding="0" cellspacing="0" border="0" class="btn" style="margin:0 0 24px;"><tr><td>
+                <!--[if mso]>
+                <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word"
+                  href="{{ .ConfirmationURL }}" style="height:50px;v-text-anchor:middle;width:230px;" arcsize="14%" stroke="f" fillcolor="#1F6E85">
+                  <w:anchorlock/>
+                  <center style="color:#F8F5EC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:16px;font-weight:bold;">E-postamı doğrula</center>
+                </v:roundrect>
+                <![endif]-->
+                <!--[if !mso]><!-->
+                <a href="{{ .ConfirmationURL }}"
+                   style="display:inline-block;background-color:#1F6E85;color:#F8F5EC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:16px;font-weight:700;line-height:1;padding:17px 30px;border-radius:7px;text-decoration:none;">E-postamı doğrula</a>
+                <!--<![endif]-->
+              </td></tr></table>
+
+              <p class="meta-text" style="margin:0 0 6px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12.5px;line-height:1.6;color:#676B58;">Düğme çalışmazsa bu bağlantıyı tarayıcına yapıştır:</p>
+              <p style="margin:0 0 26px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12.5px;line-height:1.5;word-break:break-all;">
+                <a href="{{ .ConfirmationURL }}" class="link" style="color:#1F6E85;text-decoration:underline;">{{ .ConfirmationURL }}</a>
+              </p>
+
+
+              <!-- ince çizgi -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td class="hair" style="border-top:1px solid #E1DCCB;font-size:0;line-height:0;height:1px;">&nbsp;</td>
+              </tr></table>
+
+              <p class="meta-text" style="margin:20px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#676B58;">Bağlantı <b class="strong" style="color:#22271A;">24 saat</b> geçerli ve yalnızca bir kez kullanılabilir. Bu hesabı sen açmadıysan bu e-postayı görmezden gelebilirsin; kimse senin adına giriş yapamaz.</p>
+
+              <!-- İngilizce karşılığı: aynı e-posta iki dilde okunabilsin -->
+              <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+                <td class="hair" style="border-top:1px solid #E1DCCB;font-size:0;line-height:0;height:1px;padding-top:22px;">&nbsp;</td>
+              </tr></table>
+              <p class="meta-text" style="margin:16px 0 0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:13px;line-height:1.6;color:#676B58;">
+                <span style="font-weight:600;">EN &nbsp;</span>Confirm your email to finish creating your Tutorla account. The link is valid for 24 hours and can be used once. If you didn't sign up, you can safely ignore this message.
+              </p>
+
+            </td>
+          </tr>
+
+          <!-- alt bilgi -->
+          <tr>
+            <td align="center" style="padding:22px 12px 0;">
+              <p class="footer-text" style="margin:0 0 4px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12.5px;line-height:1.6;color:#676B58;">
+                <a href="https://tutorla.vercel.app" class="link" style="color:#1F6E85;text-decoration:none;font-weight:600;">Tutorla</a> — yapay zekâya sen öğret
+              </p>
+              <p class="footer-text" style="margin:0;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,'Helvetica Neue',Arial,sans-serif;font-size:12px;line-height:1.6;color:#676B58;">
+                Bu otomatik bir e-postadır, yanıtlanmaz. · This is an automated message.
+              </p>
+            </td>
+          </tr>
+        </table>
+
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
