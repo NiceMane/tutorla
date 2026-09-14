@@ -6,7 +6,7 @@ export default function robots(): MetadataRoute.Robots {
   return {
     rules: [
       /* Uygulama ve giriş dizine girmesin: içerik değil, kişisel alan. */
-      { userAgent: "*", allow: "/", disallow: ["/app/", "/en/app/", "/giris", "/en/giris"] },
+      { userAgent: "*", allow: "/", disallow: ["/app/", "/en/app/", "/giris", "/en/giris", "/sifre-yenile", "/en/sifre-yenile"] },
     ],
     sitemap: `${BASE}/sitemap.xml`,
   };

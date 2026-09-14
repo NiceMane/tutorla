@@ -16,6 +16,10 @@ type AuthState = {
   signIn(email: string, password: string): Promise<AuthError | null>;
   signUp(email: string, password: string): Promise<AuthError | "confirm" | null>;
   signInWithGoogle(redirectTo: string): Promise<AuthError | null>;
+  /* Şifre sıfırlama e-postası gönderir; bağlantı /sifre-yenile sayfasına döner. */
+  requestPasswordReset(email: string): Promise<AuthError | null>;
+  /* Sıfırlama bağlantısıyla gelen oturumda yeni şifreyi yazar. */
+  updatePassword(password: string): Promise<AuthError | null>;
   signOut(): Promise<void>;
 };
 
@@ -78,7 +82,14 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         return error ? classify(error.message) : null;
       },
       async signUp(email, password) {
-        const { data, error } = await getSupabase().auth.signUp({ email, password });
+        /* Doğrulama bağlantısı kullanıcının kaydolduğu adrese dönmeli.
+           Belirtilmezse Supabase'in Site URL'i kullanılır — o da hâlâ
+           localhost'u gösteriyorsa bağlantı boşluğa düşer. */
+        const { data, error } = await getSupabase().auth.signUp({
+          email,
+          password,
+          options: { emailRedirectTo: `${window.location.origin}/app` },
+        });
         if (error) return classify(error.message);
         /* Oturum gelmediyse e-posta doğrulaması bekleniyor demektir */
         return data.session ? null : "confirm";
@@ -88,6 +99,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           provider: "google",
           options: { redirectTo },
         });
+        return error ? classify(error.message) : null;
+      },
+      async requestPasswordReset(email) {
+        const { error } = await getSupabase().auth.resetPasswordForEmail(email, {
+          redirectTo: `${window.location.origin}/sifre-yenile`,
+        });
+        return error ? classify(error.message) : null;
+      },
+      async updatePassword(password) {
+        const { error } = await getSupabase().auth.updateUser({ password });
         return error ? classify(error.message) : null;
       },
       async signOut() {

@@ -502,7 +502,22 @@
     "errMismatch": "Şifreler eşleşmiyor.",
     "errWeak": "Şifre koşullarını sağlamıyor.",
     "errRate": "Çok fazla deneme oldu. Birkaç dakika bekleyip tekrar dene.",
-    "errTaken": "Bu e-posta zaten kayıtlı. Giriş yapmayı dene."
+    "errTaken": "Bu e-posta zaten kayıtlı. Giriş yapmayı dene.",
+    "forgotLink": "Şifremi unuttum",
+    "forgotTitle": "Şifreni sıfırla",
+    "forgotText": "E-posta adresini yaz, sana yeni şifre belirleme bağlantısı gönderelim.",
+    "forgotSubmit": "Sıfırlama bağlantısı gönder",
+    "backToSignin": "Girişe dön",
+    "resetSentText": "Bu adres kayıtlıysa sıfırlama bağlantısı gönderildi. Bağlantı 1 saat geçerli.",
+    "resetEyebrow": "şifre",
+    "resetTitle": "Yeni şifre belirle",
+    "resetFor": "Şifresi değişecek hesap:",
+    "newPassword": "yeni şifre",
+    "resetSubmit": "Şifreyi güncelle",
+    "resetDoneTitle": "Şifren güncellendi",
+    "resetDoneText": "Yeni şifrenle giriş yaptın. Panele yönlendiriliyorsun…",
+    "resetExpiredTitle": "Bağlantının süresi dolmuş",
+    "resetExpiredText": "Sıfırlama bağlantıları 1 saat geçerli ve yalnızca bir kez kullanılabilir. Giriş ekranından yeni bir bağlantı isteyebilirsin."
   },
   "common": {
     "retry": "Tekrar dene",

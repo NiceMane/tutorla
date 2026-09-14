@@ -167,6 +167,15 @@ Hesap açarken: şifre iki kez, canlı koşul listesi (en az 8 karakter · bir h
 göster/gizle düğmesi. Koşullar sağlanana ve iki alan eşleşene kadar düğme pasif. Girişte yalnızca
 uzunluk kontrolü var — eski hesaplar yeni kurallara takılmasın diye.
 
+**Şifremi unuttum** giriş ekranında: adresini yaz, sıfırlama bağlantısı gelsin. Bağlantı
+`/sifre-yenile` sayfasına düşer, oradan yeni şifre belirlenir (aynı koşullar geçerli).
+Adresin kayıtlı olup olmadığı bilerek söylenmez — "bu adres kayıtlıysa gönderildi" denir.
+
+**E-postalar markalı.** Supabase'in varsayılan şablonları yerine `supabase/emails/`
+altındaki altı şablon kullanılıyor: Tutorla logosu, Mesai paleti, Türkçe metin ve altında
+İngilizce karşılığı, her birinde "ne kadar geçerli / kaç kez / sen istemediysen" cümlesi.
+Uygulaması: `SUPABASE_ACCESS_TOKEN=... node supabase/emails/uygula.mjs`.
+
 Not: bu koşullar istemcide. Sunucu tarafında da zorlamak isterseniz Supabase panelinde
 `Authentication → Policies → Password requirements` ayarlanabilir.
 

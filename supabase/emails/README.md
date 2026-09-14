@@ -45,9 +45,26 @@ görünümüne geç, dosyanın tamamını yapıştır, konu satırını da yukar
 - **Alan adı değişirse** (`tutorla.com` alınırsa) logonun adresi de değişmeli;
   `uygula.mjs` yeniden çalıştırılırsa yeterli.
 
+## Bağlantılar nereye gidiyor?
+
+Uygulama artık hedefi kendisi söylüyor: kayıt olurken
+`emailRedirectTo = <kaydolduğun adres>/app`, şifre sıfırlarken
+`redirectTo = <adres>/sifre-yenile`. Belirtilmeseydi Supabase'in **Site URL**
+ayarı kullanılırdı; o da hâlâ `localhost` gösteriyorsa bağlantılar boşluğa düşerdi.
+
+Panelde şunlar tanımlı olmalı (Authentication → URL Configuration):
+
+- **Site URL:** `https://tutorla.vercel.app`
+- **Redirect URLs:** `https://tutorla.vercel.app/**` ve geliştirme için
+  `http://localhost:3001/**`
+
 ## Uyarı: kendi SMTP'n gerekli
 
 Supabase'in yerleşik e-posta servisi **saatte birkaç mesajla** sınırlı ve yalnızca
 proje üyelerine gönderim yapar. Gerçek kullanıcılara e-posta gidebilmesi için
 Authentication → Emails → SMTP Settings altında kendi sağlayıcın (Resend, Postmark,
 Amazon SES…) tanımlanmalı. Şablonlar SMTP'den bağımsız, şimdiden uygulanabilir.
+
+Ölçtük: art arda iki sıfırlama isteğinde Supabase
+`429 over_email_send_rate_limit` döndürüyor. Arayüz bunu "biraz bekle" diye
+gösteriyor ama gerçek çözüm kendi SMTP'n.

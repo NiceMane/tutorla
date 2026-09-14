@@ -502,7 +502,22 @@
     "errMismatch": "Passwords don't match.",
     "errWeak": "Password doesn't meet the requirements.",
     "errRate": "Too many attempts. Wait a few minutes and try again.",
-    "errTaken": "That e-mail is already registered. Try signing in."
+    "errTaken": "That e-mail is already registered. Try signing in.",
+    "forgotLink": "Forgot your password?",
+    "forgotTitle": "Reset your password",
+    "forgotText": "Enter your email and we'll send you a link to choose a new password.",
+    "forgotSubmit": "Send reset link",
+    "backToSignin": "Back to sign in",
+    "resetSentText": "If that address is registered, a reset link is on its way. It's valid for one hour.",
+    "resetEyebrow": "password",
+    "resetTitle": "Choose a new password",
+    "resetFor": "Password will change for:",
+    "newPassword": "new password",
+    "resetSubmit": "Update password",
+    "resetDoneTitle": "Password updated",
+    "resetDoneText": "You're signed in with the new password. Taking you to the app…",
+    "resetExpiredTitle": "This link has expired",
+    "resetExpiredText": "Reset links are valid for one hour and can be used once. You can request a new one from the sign-in screen."
   },
   "common": {
     "retry": "Try again",

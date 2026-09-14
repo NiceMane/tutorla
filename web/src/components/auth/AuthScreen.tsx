@@ -13,7 +13,7 @@ type Mode = "signin" | "signup";
 
 export function AuthScreen() {
   const t = useTranslations("auth");
-  const { user, ready, enabled, signIn, signUp, signInWithGoogle } = useAuth();
+  const { user, ready, enabled, signIn, signUp, signInWithGoogle, requestPasswordReset } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
   const next = params.get("next") || "/app";
@@ -26,6 +26,9 @@ export function AuthScreen() {
   const [busy, setBusy] = useState(false);
   const [err, setErr] = useState<AuthError | "mismatch" | "weak" | null>(null);
   const [confirm, setConfirm] = useState(false);
+  /* Şifremi unuttum: aynı ekranda küçük bir üçüncü hâl. */
+  const [forgot, setForgot] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const signup = mode === "signup";
   const mismatch = signup && password2.length > 0 && password !== password2;
@@ -58,6 +61,19 @@ export function AuthScreen() {
     router.replace(next as "/app");
   }
 
+  async function sendReset() {
+    if (busy) return;
+    setErr(null);
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email.trim())) return setErr("email");
+    setBusy(true);
+    const res = await requestPasswordReset(email.trim());
+    setBusy(false);
+    /* Hız sınırı dışındaki hatalar bilerek yutuluyor: "bu e-posta kayıtlı mı"
+       sorusunun cevabı sızmasın. */
+    if (res === "rate") return setErr(res);
+    setSent(true);
+  }
+
   async function google() {
     setErr(null);
     setBusy(true);
@@ -86,7 +102,19 @@ export function AuthScreen() {
 
       <main className="grid place-items-center px-5 pb-16">
         <div className="w-full max-w-[380px] anim-fade-up">
-          {confirm ? (
+          {sent ? (
+            <div key="sent" className="card anim-fade-up p-7" role="status">
+              <h1 className="text-[1.5rem]">{t("checkMail")}</h1>
+              <p className="mt-3 text-[15px] leading-[1.55] text-ink-2">{t("resetSentText")}</p>
+              <button
+                type="button"
+                onClick={() => { setSent(false); setForgot(false); }}
+                className="btn btn-ghost mt-5"
+              >
+                {t("signIn")}
+              </button>
+            </div>
+          ) : confirm ? (
             <div key="confirm" className="card p-7 anim-fade-up" role="status">
               <h1 className="text-[1.5rem]">{t("checkMail")}</h1>
               <p className="mt-3 text-[15px] leading-[1.55] text-ink-2">{t("checkMailText")}</p>
@@ -96,10 +124,11 @@ export function AuthScreen() {
             </div>
           ) : (
             <div key={mode} className="anim-fade-in">
-              <p className="eyebrow">{signup ? t("subtitleSignup") : t("subtitle")}</p>
+              <p className="eyebrow">{forgot ? t("resetEyebrow") : signup ? t("subtitleSignup") : t("subtitle")}</p>
               <h1 className="mt-2 text-[clamp(1.7rem,4vw,2.2rem)]">
-                {signup ? t("titleSignup") : t("title")}
+                {forgot ? t("forgotTitle") : signup ? t("titleSignup") : t("title")}
               </h1>
+              {forgot && <p className="mt-3 text-[15px] leading-[1.55] text-ink-2">{t("forgotText")}</p>}
 
               {!enabled ? (
                 <p className="mt-6 text-[15px] text-ink-2">
@@ -116,6 +145,7 @@ export function AuthScreen() {
                       placeholder="ad@ornek.com"
                     />
                   </label>
+                  {!forgot && (
                   <PasswordField
                     label={t("password")}
                     value={password}
@@ -126,8 +156,9 @@ export function AuthScreen() {
                     disabled={busy}
                     invalid={err === "weak"}
                   />
+                  )}
 
-                  {signup && (
+                  {!forgot && signup && (
                     <>
                       <PasswordField
                         label={t("passwordAgain")}
@@ -146,20 +177,49 @@ export function AuthScreen() {
 
                   {err && <p className="anim-fade-in text-[14px] text-accent" role="alert">{errText[err]}</p>}
 
-                  <button
-                    type="submit"
-                    disabled={busy || (signup && (!passwordOk(password) || password !== password2))}
-                    className="btn btn-primary justify-center disabled:opacity-50"
-                  >
-                    {busy ? t("working") : signup ? t("signUp") : t("signIn")}
-                  </button>
+                  {forgot ? (
+                    <>
+                      <button
+                        type="button" onClick={sendReset} disabled={busy}
+                        className="btn btn-primary justify-center disabled:opacity-50"
+                      >
+                        {busy ? t("working") : t("forgotSubmit")}
+                      </button>
+                      <button
+                        type="button" onClick={() => { setForgot(false); setErr(null); }}
+                        className="meta text-[14px] underline decoration-dotted underline-offset-4 hover:text-primary"
+                      >
+                        {t("backToSignin")}
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      type="submit"
+                      disabled={busy || (signup && (!passwordOk(password) || password !== password2))}
+                      className="btn btn-primary justify-center disabled:opacity-50"
+                    >
+                      {busy ? t("working") : signup ? t("signUp") : t("signIn")}
+                    </button>
+                  )}
 
+                  {!forgot && !signup && (
+                    <button
+                      type="button" onClick={() => { setForgot(true); setErr(null); }}
+                      className="meta -mt-1 self-start text-[13.5px] underline decoration-dotted underline-offset-4 hover:text-primary"
+                    >
+                      {t("forgotLink")}
+                    </button>
+                  )}
+
+                  {!forgot && (
                   <div className="flex items-center gap-3 py-1">
                     <span className="h-px flex-1 bg-line" />
                     <span className="meta text-[13px]">{t("or")}</span>
                     <span className="h-px flex-1 bg-line" />
                   </div>
+                  )}
 
+                  {!forgot && (
                   <button type="button" onClick={google} disabled={busy} className="btn btn-ghost justify-center disabled:opacity-60">
                     <svg width="17" height="17" viewBox="0 0 18 18" aria-hidden="true">
                       <path fill="#4285F4" d="M17.6 9.2c0-.6-.1-1.3-.2-1.9H9v3.5h4.8a4.1 4.1 0 0 1-1.8 2.7v2.3h2.9c1.7-1.6 2.7-3.9 2.7-6.6z" />
@@ -169,7 +229,9 @@ export function AuthScreen() {
                     </svg>
                     {t("google")}
                   </button>
+                  )}
 
+                  {!forgot && (
                   <button
                     type="button"
                     onClick={() => {
@@ -181,6 +243,7 @@ export function AuthScreen() {
                   >
                     {signup ? t("toSignin") : t("toSignup")}
                   </button>
+                  )}
                 </form>
               )}
 

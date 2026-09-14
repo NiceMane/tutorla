@@ -349,6 +349,8 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [x] **Giriş ekranları** — `/giris`, e-posta + şifre çalışıyor, `/app` korumalı, çıkış var. Tarayıcıda şifre kalmadı.
 - [ ] Google girişi — Google Cloud'da OAuth istemcisi + Supabase'de sağlayıcı ayarı (kod hazır)
 - [ ] E-posta onayı / SMTP — yeni kayıtlar doğrulama bekliyor; yayında kendi SMTP'niz gerekli
+- [x] Kimlik doğrulama e-postaları markalandı — `supabase/emails/`, altı şablon + uygulama betiği
+- [x] Şifremi unuttum akışı — giriş ekranında istek, `/sifre-yenile` sayfasında yeni şifre
 - [x] Vercel'e deploy — https://tutorla.vercel.app, GitHub'a bağlı
 - [ ] Alan adı bağlama (tutorla.com / .app / .co)
 - [ ] Supabase panelinde "Leaked password protection" açılması (HaveIBeenPwned kontrolü)
