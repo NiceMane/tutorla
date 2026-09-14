@@ -3,7 +3,7 @@
    fark yalnızca verinin nereden geldiği. */
 import { getSupabase } from "@/lib/supabase";
 import type {
-  Comment, Concept, ConceptState, ConceptStatus, Exam, ExamDocument, Gap,
+  Comment, Concept, ConceptState, ConceptStatus, DmMessage, DmThread, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
   AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
   ReportReason, Session, SessionMode, SessionStatus,
@@ -309,6 +309,8 @@ export class SupabaseRepo implements Repo {
       targetUniversity: t("target_university"),
       targetDepartment: t("target_department"),
       targetRank: n("target_rank"),
+      track: t("track"),
+      targetScore: n("target_score"),
       weeklyHours: n("weekly_hours"),
       studyStyle: t("study_style") as Profile["studyStyle"],
       strongSubjects: (r.strong_subjects as string[] | null) ?? [],
@@ -323,7 +325,7 @@ export class SupabaseRepo implements Repo {
   }
 
   /* Profil sütunları tek yerde: sorgular arasında kayma olmasın. */
-  private static readonly PROFILE_COLS = "id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at";
+  private static readonly PROFILE_COLS = "id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,track,target_score,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at";
 
   async getMyProfile(): Promise<Profile | null> {
     const sb = await this.sb();
@@ -341,7 +343,8 @@ export class SupabaseRepo implements Repo {
       avatarEmoji: "avatar_emoji", avatarUrl: "avatar_url", examId: "exam_id",
       grade: "grade", school: "school", city: "city", examYear: "exam_year",
       targetUniversity: "target_university", targetDepartment: "target_department",
-      targetRank: "target_rank", weeklyHours: "weekly_hours", studyStyle: "study_style",
+      targetRank: "target_rank", track: "track", targetScore: "target_score",
+      weeklyHours: "weekly_hours", studyStyle: "study_style",
       strongSubjects: "strong_subjects", weakSubjects: "weak_subjects", goals: "goals",
       isPublic: "is_public", onboardedAt: "onboarded_at",
     };
@@ -846,5 +849,151 @@ export class SupabaseRepo implements Repo {
     const { data, error } = await sb.storage.from("exam-docs").createSignedUrl(path, 300);
     if (error) return null;
     return data?.signedUrl ?? null;
+  }
+
+  /* --------------------------------------------------------- mesajlaşma */
+
+  private toDm(r: Row): DmMessage {
+    return {
+      id: str(r.id),
+      threadId: str(r.thread_id),
+      senderId: str(r.sender_id),
+      body: str(r.body),
+      createdAt: str(r.created_at),
+    };
+  }
+
+  async listThreads(): Promise<DmThread[]> {
+    const sb = await this.sb();
+    const me = await this.userId();
+
+    /* Kendi üyeliklerim: kanal listesi + en son ne zaman okuduğum */
+    const { data: mine, error: e1 } = await sb
+      .from("dm_members")
+      .select(`thread_id,last_read_at,dm_threads!inner(id,last_message_at)`)
+      .eq("user_id", me);
+    if (e1) fail(e1, "sorgu");
+    const rows = (mine as Row[]) ?? [];
+    if (rows.length === 0) return [];
+
+    const ids = rows.map((r) => str(r.thread_id));
+
+    /* Karşı taraflar tek sorguda: kanal başına ikinci üye */
+    const { data: others, error: e2 } = await sb
+      .from("dm_members")
+      .select(`thread_id,profiles!inner(${SupabaseRepo.PROFILE_COLS})`)
+      .in("thread_id", ids)
+      .neq("user_id", me);
+    if (e2) fail(e2, "sorgu");
+
+    /* Son mesaj ve okunmamış sayısı: kanalların tüm mesajları yerine
+       yalnızca son 200 satır — liste ekranı için fazlasıyla yeterli. */
+    const { data: msgs, error: e3 } = await sb
+      .from("dm_messages")
+      .select("id,thread_id,sender_id,body,created_at")
+      .in("thread_id", ids)
+      .order("created_at", { ascending: false })
+      .limit(200);
+    if (e3) fail(e3, "sorgu");
+
+    const otherOf = new Map<string, Profile | null>();
+    for (const r of (others as Row[]) ?? []) {
+      otherOf.set(str(r.thread_id), this.toProfile(r.profiles as Row | null));
+    }
+    const last = new Map<string, Row>();
+    const unread = new Map<string, number>();
+    for (const r of (msgs as Row[]) ?? []) {
+      const tid = str(r.thread_id);
+      if (!last.has(tid)) last.set(tid, r);
+      const seen = rows.find((x) => str(x.thread_id) === tid);
+      if (str(r.sender_id) !== me && seen && str(r.created_at) > str(seen.last_read_at)) {
+        unread.set(tid, (unread.get(tid) ?? 0) + 1);
+      }
+    }
+
+    return rows
+      .map((r) => {
+        const tid = str(r.thread_id);
+        const thread = r.dm_threads as Row;
+        const lastRow = last.get(tid);
+        return {
+          id: tid,
+          other: otherOf.get(tid) ?? null,
+          lastMessage: lastRow ? str(lastRow.body) : null,
+          lastMessageAt: str(thread.last_message_at),
+          unread: unread.get(tid) ?? 0,
+        };
+      })
+      .sort((a, b) => (a.lastMessageAt < b.lastMessageAt ? 1 : -1));
+  }
+
+  async openThread(userId: string): Promise<string> {
+    const sb = await this.sb();
+    /* Kanal açmak iki tabloya yazmayı gerektiriyor; veritabanı işlevi
+       engel kontrolünü de yapıyor. */
+    const { data, error } = await sb.rpc("dm_kanal_ac", { hedef: userId });
+    if (error) fail(error, "sorgu");
+    return String(data);
+  }
+
+  async listMessages(threadId: string, before: string | null = null, limit = 40): Promise<DmMessage[]> {
+    const sb = await this.sb();
+    let q = sb
+      .from("dm_messages")
+      .select("id,thread_id,sender_id,body,created_at")
+      .eq("thread_id", threadId)
+      .order("created_at", { ascending: false })
+      .limit(limit);
+    if (before) q = q.lt("created_at", before);
+    const { data, error } = await q;
+    if (error) fail(error, "sorgu");
+    /* Ekranda eskiden yeniye */
+    return ((data as Row[]) ?? []).map((r) => this.toDm(r)).reverse();
+  }
+
+  async sendMessage(threadId: string, body: string): Promise<DmMessage> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("dm_messages")
+      .insert({ thread_id: threadId, sender_id: await this.userId(), body })
+      .select("id,thread_id,sender_id,body,created_at").single();
+    if (error) fail(error, "sorgu");
+    return this.toDm(data as Row);
+  }
+
+  async deleteMessage(id: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("dm_messages").delete().eq("id", id);
+    if (error) fail(error, "sorgu");
+  }
+
+  async markThreadRead(threadId: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb
+      .from("dm_members")
+      .update({ last_read_at: new Date().toISOString() })
+      .eq("thread_id", threadId)
+      .eq("user_id", await this.userId());
+    if (error) fail(error, "sorgu");
+  }
+
+  async unreadMessageCount(): Promise<number> {
+    const threads = await this.listThreads();
+    return threads.reduce((n, t) => n + t.unread, 0);
+  }
+
+  subscribeMessages(threadId: string, onMessage: (m: DmMessage) => void): () => void {
+    /* Anlık akış: karşı taraf yazdığında yenilemeye gerek kalmasın.
+       Bağlantı kurulamazsa sohbet yine çalışır, yalnızca gecikmeli olur. */
+    const sb = getSupabase();
+    const channel = sb
+      .channel(`dm:${threadId}`)
+      .on(
+        "postgres_changes",
+        { event: "INSERT", schema: "public", table: "dm_messages", filter: `thread_id=eq.${threadId}` },
+        (payload) => onMessage(this.toDm(payload.new as Row)),
+      )
+      .subscribe();
+    return () => { void sb.removeChannel(channel); };
   }
 }

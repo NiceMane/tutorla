@@ -4,12 +4,12 @@ import { useTranslations } from "next-intl";
 import { useRouter } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
-import type { Grade, StudyStyle } from "@/lib/domain";
+import { GRADE_KEYS, STYLE_KEYS, TRACK_KEYS } from "@/lib/options";
+import { optionLabel } from "@/lib/labels";
 import { Avatar } from "./Avatar";
 import { AvatarEditor } from "./AvatarEditor";
 
-const GRADES: Grade[] = ["9", "10", "11", "12", "mezun"];
-const STYLES: StudyStyle[] = ["sabah", "gece", "karma"];
+
 const AVATARS = ["🦉", "🦊", "🐢", "🐙", "🦋", "🌱", "📚", "🧠", "🎯", "⚡"];
 
 /* Dört adımlık tanışma. onboarded_at şemada duruyordu ama hiç kullanılmıyordu;
@@ -27,12 +27,15 @@ export function Onboarding() {
   const [f, setF] = useState({
     displayName: profile?.displayName ?? "", handle: profile?.handle ?? "",
     avatarEmoji: profile?.avatarEmoji || "🦉", examId: profile?.examId ?? "",
-    grade: profile?.grade ?? "", targetUniversity: profile?.targetUniversity ?? "",
+    grade: profile?.grade ?? "", track: profile?.track ?? "", targetUniversity: profile?.targetUniversity ?? "",
     targetDepartment: profile?.targetDepartment ?? "", goals: profile?.goals ?? "",
     weeklyHours: profile?.weeklyHours ? String(profile.weeklyHours) : "",
     studyStyle: profile?.studyStyle ?? "", strongSubjects: profile?.strongSubjects ?? [] as string[],
   });
   const set = <K extends keyof typeof f>(k: K, v: (typeof f)[K]) => setF((x) => ({ ...x, [k]: v }));
+  /* Öneriden seçilirse anahtar, elle yazılırsa metin saklanıyor. */
+  const keyOf = (ns: string, label: string, keys: readonly string[]) =>
+    keys.find((k) => optionLabel(tp, ns, k) === label) ?? label;
   const subjects = curriculum.subjects.filter((s) => !f.examId || s.examId === f.examId);
   const input = "h-10 w-full rounded-[var(--radius-ui)] border border-line-2 bg-paper px-3 outline-none focus:border-primary";
 
@@ -48,12 +51,13 @@ export function Onboarding() {
               handle: f.handle.trim() || null,
               avatarEmoji: f.avatarEmoji,
               examId: f.examId || null,
-              grade: (f.grade || null) as Grade | null,
+              grade: f.grade || null,
               targetUniversity: f.targetUniversity.trim() || null,
               targetDepartment: f.targetDepartment.trim() || null,
               goals: f.goals.trim() || null,
               weeklyHours: f.weeklyHours ? Number(f.weeklyHours) : null,
-              studyStyle: (f.studyStyle || null) as StudyStyle | null,
+              studyStyle: f.studyStyle || null,
+              track: f.track || null,
               strongSubjects: f.strongSubjects,
               onboardedAt: new Date().toISOString(),
             },
@@ -131,13 +135,30 @@ export function Onboarding() {
               </button>
             ))}
           </div>
-          <label className="flex flex-col gap-1.5">
-            <span className="meta text-[13px]">{tp("grade")}</span>
-            <select value={f.grade} onChange={(e) => set("grade", e.target.value)} className={input}>
-              <option value="">—</option>
-              {GRADES.map((g) => <option key={g} value={g}>{tp(`grades.${g}`)}</option>)}
-            </select>
-          </label>
+          <div className="grid gap-4 sm:grid-cols-2">
+            <label className="flex flex-col gap-1.5">
+              <span className="meta text-[13px]">{tp("grade")}</span>
+              <input
+                list="tanis-sinif" className={input} maxLength={40}
+                value={optionLabel(tp, "grades", f.grade) ?? ""}
+                onChange={(e) => set("grade", keyOf("grades", e.target.value, GRADE_KEYS))}
+              />
+              <datalist id="tanis-sinif">
+                {GRADE_KEYS.map((g) => <option key={g} value={tp(`grades.${g}`)} />)}
+              </datalist>
+            </label>
+            <label className="flex flex-col gap-1.5">
+              <span className="meta text-[13px]">{tp("track")}</span>
+              <input
+                list="tanis-alan" className={input} maxLength={40}
+                value={optionLabel(tp, "tracks", f.track) ?? ""}
+                onChange={(e) => set("track", keyOf("tracks", e.target.value, TRACK_KEYS))}
+              />
+              <datalist id="tanis-alan">
+                {TRACK_KEYS.map((v) => <option key={v} value={tp(`tracks.${v}`)} />)}
+              </datalist>
+            </label>
+          </div>
         </div>
       ),
     },
@@ -171,10 +192,15 @@ export function Onboarding() {
           </label>
           <label className="flex flex-col gap-1.5">
             <span className="meta text-[13px]">{tp("studyStyle")}</span>
-            <select value={f.studyStyle} onChange={(e) => set("studyStyle", e.target.value)} className={input}>
-              <option value="">—</option>
-              {STYLES.map((v) => <option key={v} value={v}>{tp(`styles.${v}`)}</option>)}
-            </select>
+            <input
+              list="tanis-duzen" className={input} maxLength={60}
+              value={optionLabel(tp, "styles", f.studyStyle) ?? ""}
+              onChange={(e) => set("studyStyle", keyOf("styles", e.target.value, STYLE_KEYS))}
+            />
+            <datalist id="tanis-duzen">
+              {STYLE_KEYS.map((v) => <option key={v} value={tp(`styles.${v}`)} />)}
+            </datalist>
+            <span className="meta text-[12.5px]">{tp("freeHint")}</span>
           </label>
           {subjects.length > 0 && (
             <div className="flex flex-col gap-2">

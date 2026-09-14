@@ -6,15 +6,17 @@ import { getRepo } from "@/lib/repo";
 import type { Grade, Profile, StudyStyle } from "@/lib/domain";
 import { Avatar } from "./Avatar";
 import { AvatarEditor } from "./AvatarEditor";
+import { CITIES, DEPARTMENTS, GRADE_KEYS, STYLE_KEYS, TRACK_KEYS, UNIVERSITIES } from "@/lib/options";
+import { optionLabel } from "@/lib/labels";
 
 const AVATARS = ["🦉", "🦊", "🐢", "🐙", "🦋", "🌱", "📚", "🧠", "🎯", "⚡", "🔭", "☕"];
-const GRADES: Grade[] = ["9", "10", "11", "12", "mezun"];
-const STYLES: StudyStyle[] = ["sabah", "gece", "karma"];
+
 
 type Form = {
   displayName: string; handle: string; bio: string; avatarEmoji: string;
   examId: string; grade: string; school: string; city: string; examYear: string;
   targetUniversity: string; targetDepartment: string; targetRank: string;
+  track: string; targetScore: string;
   weeklyHours: string; studyStyle: string; goals: string; isPublic: boolean;
   strongSubjects: string[]; weakSubjects: string[];
 };
@@ -26,6 +28,7 @@ const fromProfile = (p: Profile | null): Form => ({
   examYear: p?.examYear ? String(p.examYear) : "",
   targetUniversity: p?.targetUniversity ?? "", targetDepartment: p?.targetDepartment ?? "",
   targetRank: p?.targetRank ? String(p.targetRank) : "",
+  track: p?.track ?? "", targetScore: p?.targetScore ? String(p.targetScore) : "",
   weeklyHours: p?.weeklyHours ? String(p.weeklyHours) : "",
   studyStyle: p?.studyStyle ?? "", goals: p?.goals ?? "",
   isPublic: p?.isPublic ?? true,
@@ -55,6 +58,10 @@ function Section({ title, children }: { title: string; children: React.ReactNode
 
 export function ProfileForm({ onDone }: { onDone?: () => void }) {
   const t = useTranslations("app.profile");
+  /* Kullanıcı öneriyi seçtiyse anahtarı, kendi yazdıysa metni sakla:
+     "Gececi" → "gece", "sabah 6'da kalkarım" → olduğu gibi. */
+  const keyOf = (ns: string, label: string, keys: string[]) =>
+    keys.find((k) => optionLabel(t, ns, k) === label) ?? label;
   const { profile, exams, curriculum, refreshProfile } = useApp();
   const [form, setForm] = useState<Form>(() => fromProfile(profile));
   const [saving, setSaving] = useState(false);
@@ -98,6 +105,8 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         targetUniversity: form.targetUniversity.trim() || null,
         targetDepartment: form.targetDepartment.trim() || null,
         targetRank: numOrNull(form.targetRank),
+        track: form.track.trim() || null,
+        targetScore: numOrNull(form.targetScore),
         weeklyHours: numOrNull(form.weeklyHours),
         studyStyle: (form.studyStyle || null) as StudyStyle | null,
         strongSubjects: form.strongSubjects,
@@ -199,17 +208,34 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
               {exams.map((ex) => <option key={ex.id} value={ex.id}>{ex.name}</option>)}
             </select>
           </Field>
-          <Field label={t("grade")}>
-            <select value={form.grade} onChange={(e) => set("grade", e.target.value)} className={inputCls}>
-              <option value="">—</option>
-              {GRADES.map((g) => <option key={g} value={g}>{t(`grades.${g}`)}</option>)}
-            </select>
+          <Field label={t("grade")} hint={t("freeHint")}>
+            <input
+              list="secenek-sinif" value={optionLabel(t, "grades", form.grade) ?? ""}
+              onChange={(e) => set("grade", keyOf("grades", e.target.value, [...GRADE_KEYS]))}
+              maxLength={40} className={inputCls}
+            />
+            <datalist id="secenek-sinif">
+              {GRADE_KEYS.map((g) => <option key={g} value={t(`grades.${g}`)} />)}
+            </datalist>
           </Field>
           <Field label={t("school")}>
             <input value={form.school} onChange={(e) => set("school", e.target.value)} maxLength={80} className={inputCls} />
           </Field>
-          <Field label={t("city")}>
-            <input value={form.city} onChange={(e) => set("city", e.target.value)} maxLength={40} className={inputCls} />
+          <Field label={t("city")} hint={t("freeHint")}>
+            <input list="secenek-sehir" value={form.city} onChange={(e) => set("city", e.target.value)} maxLength={40} className={inputCls} />
+            <datalist id="secenek-sehir">
+              {CITIES.map((c) => <option key={c} value={c} />)}
+            </datalist>
+          </Field>
+          <Field label={t("track")} hint={t("freeHint")}>
+            <input
+              list="secenek-alan" value={optionLabel(t, "tracks", form.track) ?? ""}
+              onChange={(e) => set("track", keyOf("tracks", e.target.value, [...TRACK_KEYS]))}
+              maxLength={40} className={inputCls}
+            />
+            <datalist id="secenek-alan">
+              {TRACK_KEYS.map((v) => <option key={v} value={t(`tracks.${v}`)} />)}
+            </datalist>
           </Field>
           <Field label={t("examYear")}>
             <input type="number" min={2025} max={2040} value={form.examYear}
@@ -220,15 +246,25 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
 
       <Section title={t("target")}>
         <div className="grid gap-4 md:grid-cols-2">
-          <Field label={t("targetUniversity")}>
-            <input value={form.targetUniversity} onChange={(e) => set("targetUniversity", e.target.value)} maxLength={80} className={inputCls} />
+          <Field label={t("targetUniversity")} hint={t("freeHint")}>
+            <input list="secenek-uni" value={form.targetUniversity} onChange={(e) => set("targetUniversity", e.target.value)} maxLength={80} className={inputCls} />
+            <datalist id="secenek-uni">
+              {UNIVERSITIES.map((u) => <option key={u} value={u} />)}
+            </datalist>
           </Field>
-          <Field label={t("targetDepartment")}>
-            <input value={form.targetDepartment} onChange={(e) => set("targetDepartment", e.target.value)} maxLength={80} className={inputCls} />
+          <Field label={t("targetDepartment")} hint={t("freeHint")}>
+            <input list="secenek-bolum" value={form.targetDepartment} onChange={(e) => set("targetDepartment", e.target.value)} maxLength={80} className={inputCls} />
+            <datalist id="secenek-bolum">
+              {DEPARTMENTS.map((d) => <option key={d} value={d} />)}
+            </datalist>
           </Field>
           <Field label={t("targetRank")}>
             <input type="number" min={1} value={form.targetRank}
               onChange={(e) => set("targetRank", e.target.value)} className={inputCls} />
+          </Field>
+          <Field label={t("targetScore")}>
+            <input type="number" min={0} max={560} step="0.001" value={form.targetScore}
+              onChange={(e) => set("targetScore", e.target.value)} className={inputCls} />
           </Field>
         </div>
         <Field label={t("goals")}>
@@ -243,11 +279,15 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
             <input type="number" min={0} max={120} value={form.weeklyHours}
               onChange={(e) => set("weeklyHours", e.target.value)} className={inputCls} />
           </Field>
-          <Field label={t("studyStyle")}>
-            <select value={form.studyStyle} onChange={(e) => set("studyStyle", e.target.value)} className={inputCls}>
-              <option value="">—</option>
-              {STYLES.map((v) => <option key={v} value={v}>{t(`styles.${v}`)}</option>)}
-            </select>
+          <Field label={t("studyStyle")} hint={t("freeHint")}>
+            <input
+              list="secenek-duzen" value={optionLabel(t, "styles", form.studyStyle) ?? ""}
+              onChange={(e) => set("studyStyle", keyOf("styles", e.target.value, [...STYLE_KEYS]))}
+              maxLength={60} className={inputCls}
+            />
+            <datalist id="secenek-duzen">
+              {STYLE_KEYS.map((v) => <option key={v} value={t(`styles.${v}`)} />)}
+            </datalist>
           </Field>
         </div>
         {subjects.length > 0 && (

@@ -23,9 +23,13 @@ export function TimeAgo({ iso, className }: { iso: string; className?: string })
   const now = useSyncExternalStore(subscribe, nowMinute, noNow);
 
   const relative = now !== null && now - date.getTime() < WEEK;
+  /* Saat dakikaya yuvarlı olduğu için (ve sunucu saati tarayıcıdan birkaç
+     saniye ileri olabildiği için) yeni bir kayıt "16 saniye sonra" diye
+     gelecekte görünebiliyordu. Taban hiçbir zaman kaydın gerisinde kalmıyor. */
+  const base = now === null ? 0 : Math.max(now, date.getTime());
   return (
     <span className={className} title={f.dateTime(date, { dateStyle: "long", timeStyle: "short" })}>
-      {relative ? f.relativeTime(date, now) : f.dateTime(date, { dateStyle: "medium" })}
+      {relative ? f.relativeTime(date, base) : f.dateTime(date, { dateStyle: "medium" })}
     </span>
   );
 }

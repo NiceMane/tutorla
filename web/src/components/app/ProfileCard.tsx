@@ -3,31 +3,36 @@ import { useTranslations } from "next-intl";
 import type { Profile, ProfileStats } from "@/lib/domain";
 import { Avatar } from "./Avatar";
 import { CountUp } from "@/components/ui/CountUp";
+import { optionLabel } from "@/lib/labels";
 import { ProgressBar } from "./ProgressBar";
 
 /* Profilin okunur görünümü — hem kendi sayfanda hem herkese açık sayfada. */
 export function ProfileCard({
-  profile, stats, subjectName, examName, actions,
+  profile, stats, subjectName, examName, actions, onEdit,
 }: {
   profile: Profile;
   stats: ProfileStats | null;
   subjectName: (slug: string) => string;
   examName: string | null;
   actions?: React.ReactNode;
+  /* Yalnızca kendi profilinde: eksik alanlara çağrı */
+  onEdit?: () => void;
 }) {
   const t = useTranslations("app.profile");
 
   const rows: [string, string | null][] = [
     [t("exam"), examName],
-    [t("grade"), profile.grade ? t(`grades.${profile.grade}`) : null],
+    [t("grade"), optionLabel(t, "grades", profile.grade)],
+    [t("track"), optionLabel(t, "tracks", profile.track)],
     [t("school"), profile.school],
     [t("city"), profile.city],
     [t("examYear"), profile.examYear ? String(profile.examYear) : null],
     [t("targetUniversity"), profile.targetUniversity],
     [t("targetDepartment"), profile.targetDepartment],
     [t("targetRank"), profile.targetRank ? `${profile.targetRank.toLocaleString("tr")}.` : null],
+    [t("targetScore"), profile.targetScore ? String(profile.targetScore) : null],
     [t("weeklyHours"), profile.weeklyHours ? `${profile.weeklyHours} sa` : null],
-    [t("studyStyle"), profile.studyStyle ? t(`styles.${profile.studyStyle}`) : null],
+    [t("studyStyle"), optionLabel(t, "styles", profile.studyStyle)],
   ];
   const filled = rows.filter(([, v]) => v);
 
@@ -35,10 +40,15 @@ export function ProfileCard({
   const allFields = [
     profile.displayName, profile.handle, profile.bio, profile.avatarUrl, profile.examId,
     profile.grade, profile.school, profile.city, profile.examYear, profile.targetUniversity,
-    profile.targetDepartment, profile.targetRank, profile.weeklyHours, profile.studyStyle,
+    profile.targetDepartment, profile.targetRank, profile.track, profile.targetScore,
+    profile.weeklyHours, profile.studyStyle,
     profile.goals, profile.strongSubjects.length ? "x" : null, profile.weakSubjects.length ? "x" : null,
   ];
   const percent = Math.round((allFields.filter(Boolean).length / allFields.length) * 100);
+
+  /* Boş kalan alanları adıyla söyle: "profil doluluğu %24" tek başına ne
+     yapılacağını anlatmıyordu. */
+  const missing = rows.filter(([, v]) => !v).map(([k]) => k);
 
   const stat = (label: string, value: number) => (
     <div key={label} className="flex flex-col">
@@ -75,6 +85,18 @@ export function ProfileCard({
           <ProgressBar percent={percent} />
         </div>
       </div>
+
+      {onEdit && missing.length > 0 && (
+        <div className="card anim-fade-up flex flex-wrap items-center gap-3 border-primary/35 bg-[color-mix(in_oklab,var(--primary)_5%,transparent)] p-5">
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">{t("missingTitle")}</p>
+            <p className="meta mt-1 text-[13.5px] leading-[1.5]">
+              {t("missingHint", { alanlar: missing.slice(0, 4).join(", ") + (missing.length > 4 ? "…" : "") })}
+            </p>
+          </div>
+          <button type="button" onClick={onEdit} className="btn btn-primary h-9 shrink-0 text-[13.5px]">{t("fill")}</button>
+        </div>
+      )}
 
       {stats && (
         <div className="card anim-fade-up grid grid-cols-2 gap-5 p-5 sm:grid-cols-4">

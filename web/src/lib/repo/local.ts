@@ -4,7 +4,7 @@
    böylece Supabase'e geçiş satır satır eşleşir. */
 import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
-  Comment, Concept, ConceptState, ConceptStatus, Exam, ExamDocument, Gap,
+  Comment, Concept, ConceptState, ConceptStatus, DmMessage, DmThread, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
   AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
   Session, SessionMode,
@@ -51,9 +51,10 @@ type Store = {
   gaps: Gap[];
   moments: Moment[];
   states: (ConceptState & { conceptId: string })[];
+  dms?: DmMessage[];
 };
 
-const empty: Store = { exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [] };
+const empty: Store = { exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [], dms: [] };
 
 function read(): Store {
   if (typeof window === "undefined") return { ...empty };
@@ -260,6 +261,7 @@ export class LocalRepo implements Repo {
       avatarEmoji: "🦉", avatarUrl: null, examId: null,
       grade: null, school: null, city: null, examYear: null,
       targetUniversity: null, targetDepartment: null, targetRank: null,
+      track: null, targetScore: null,
       weeklyHours: null, studyStyle: null, strongSubjects: [], weakSubjects: [],
       goals: null, isPublic: true, streakDays: 0, longestStreak: 0,
       createdAt: null, onboardedAt: null,
@@ -468,4 +470,30 @@ export class LocalRepo implements Repo {
     write(st);
   }
   async documentUrl(): Promise<string | null> { return null; }
+
+  /* ---------------------------------------------------------- mesajlaşma
+     Tarayıcı deposunda karşı taraf yok: kanal listesi boş kalıyor, gönderilen
+     mesaj yalnızca kendi cihazında duruyor. Supabase bağlıyken asıl hâli. */
+  async listThreads(): Promise<DmThread[]> { return []; }
+  async openThread(): Promise<string> { throw new Error("Mesajlaşma için giriş yapman gerekiyor."); }
+  async listMessages(threadId: string): Promise<DmMessage[]> {
+    return read().dms?.filter((m) => m.threadId === threadId) ?? [];
+  }
+  async sendMessage(threadId: string, body: string): Promise<DmMessage> {
+    const st = read();
+    const msg: DmMessage = {
+      id: uid(), threadId, senderId: "local", body, createdAt: new Date().toISOString(),
+    };
+    st.dms = [...(st.dms ?? []), msg];
+    write(st);
+    return msg;
+  }
+  async deleteMessage(id: string): Promise<void> {
+    const st = read();
+    st.dms = (st.dms ?? []).filter((m) => m.id !== id);
+    write(st);
+  }
+  async markThreadRead(): Promise<void> {}
+  async unreadMessageCount(): Promise<number> { return 0; }
+  subscribeMessages(): () => void { return () => {}; }
 }

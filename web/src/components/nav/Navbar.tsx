@@ -10,6 +10,9 @@ import { Collapse } from "@/components/ui/Collapse";
 import { MenuIcon } from "@/components/ui/MenuIcon";
 
 export const SECTIONS = ["ters", "nasil", "personalar", "neden", "sss", "erken-erisim"] as const;
+/* Üst şeritte "Erken erişim" hem bağlantı hem düğme olarak iki kez duruyordu;
+   masaüstünde düğme yeterli. Mobil panelde altısı da kalıyor. */
+const BAR = SECTIONS.filter((id) => id !== "erken-erisim");
 const LABEL: Record<(typeof SECTIONS)[number], "ters" | "nasil" | "personalar" | "neden" | "sss" | "erken"> = {
   ters: "ters",
   nasil: "nasil",
@@ -48,25 +51,26 @@ export function Navbar() {
       }`}
     >
       <div className="container-x flex h-[72px] items-center gap-4">
-        <a href="#top" onClick={go("top")} className="flex items-center gap-3" aria-label="Tutorla">
+        <a href="#top" onClick={go("top")} className="flex shrink-0 items-center gap-3" aria-label="Tutorla">
           <Wordmark className="h-7 w-auto" />
-          <span className="meta hidden text-[13px] sm:inline">{t("badge")}</span>
+          {/* Rozet yalnızca gerçekten yer varken: dar ekranda menüyü sıkıştırıyordu. */}
+          <span className="meta hidden whitespace-nowrap text-[13px] 2xl:inline">{t("badge")}</span>
         </a>
 
-        <nav className="mx-auto hidden items-center gap-1 lg:flex" aria-label="main">
-          {SECTIONS.map((id) => (
+        <nav className="mx-auto hidden items-center gap-0.5 lg:flex xl:gap-1" aria-label="main">
+          {BAR.map((id) => (
             <a
               key={id}
               href={`#${id}`}
               onClick={go(id)}
-              className="rounded-[var(--radius-ui)] px-3 py-2 text-[14.5px] font-medium text-ink-2 transition-colors hover:bg-surface hover:text-ink"
+              className="whitespace-nowrap rounded-[var(--radius-ui)] px-2.5 py-2 text-[14px] font-medium text-ink-2 transition-colors hover:bg-surface hover:text-ink xl:px-3 xl:text-[14.5px]"
             >
               {t(LABEL[id])}
             </a>
           ))}
         </nav>
 
-        <div className="ml-auto flex items-center gap-2 lg:ml-0">
+        <div className="ml-auto flex shrink-0 items-center gap-2 lg:ml-0">
           <Link
             href={pathname}
             locale={locale === "tr" ? "en" : "tr"}
@@ -78,11 +82,11 @@ export function Navbar() {
           <ThemeToggle />
           <Link
             href="/giris"
-            className="hidden h-9 items-center rounded-[var(--radius-ui)] px-3 text-[14px] font-semibold text-ink-2 transition-colors hover:text-primary sm:inline-flex"
+            className="hidden h-9 items-center whitespace-nowrap rounded-[var(--radius-ui)] px-2.5 text-[14px] font-semibold text-ink-2 transition-colors hover:text-primary sm:inline-flex"
           >
             {t("login")}
           </Link>
-          <a href="#erken-erisim" onClick={go("erken-erisim")} className="btn btn-primary hidden h-9 px-4 text-[14px] sm:inline-flex">
+          <a href="#erken-erisim" onClick={go("erken-erisim")} className="btn btn-primary hidden h-9 whitespace-nowrap px-4 text-[14px] sm:inline-flex">
             {t("cta")}
           </a>
           <button

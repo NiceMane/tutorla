@@ -2,8 +2,8 @@
    biri müfredat/seans, bu ise sosyal taraf. İkisi de aynı sınıfta uygulanıyor
    ama arayüzleri ayrı olduğu için okuması ve değiştirmesi kolay. */
 import type {
-  AppNotification, Comment, Exam, ExamDocument, FollowState, MediaKind,
-  Post, Profile, ProfileStats, ReportReason,
+  AppNotification, Comment, DmMessage, DmThread, Exam, ExamDocument, FollowState,
+  MediaKind, Post, Profile, ProfileStats, ReportReason,
 } from "@/lib/domain";
 
 export type NewPost = { body: string; examId: string | null; media: { url: string; kind: MediaKind }[] };
@@ -66,4 +66,15 @@ export interface SocialRepo {
 
   /* medya */
   uploadImage(file: File): Promise<{ url: string; kind: MediaKind }>;
+
+  /* mesajlaşma */
+  listThreads(): Promise<DmThread[]>;
+  openThread(userId: string): Promise<string>;
+  listMessages(threadId: string, before?: string | null, limit?: number): Promise<DmMessage[]>;
+  sendMessage(threadId: string, body: string): Promise<DmMessage>;
+  deleteMessage(id: string): Promise<void>;
+  markThreadRead(threadId: string): Promise<void>;
+  unreadMessageCount(): Promise<number>;
+  /* Yeni mesaj geldiğinde haber verir; aboneliği kapatan işlevi döndürür. */
+  subscribeMessages(threadId: string, onMessage: (m: DmMessage) => void): () => void;
 }

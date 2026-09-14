@@ -171,7 +171,8 @@
       "menu": "Menü",
       "close": "Kapat",
       "notifications": "Bildirimler",
-      "history": "Geçmiş"
+      "history": "Geçmiş",
+      "messages": "Mesajlar"
     },
     "dash": {
       "eyebrow": "panelin",
@@ -318,11 +319,17 @@
       "city": "şehir",
       "examYear": "sınav yılı",
       "grades": {
+        "5": "5. sınıf",
+        "6": "6. sınıf",
+        "7": "7. sınıf",
+        "8": "8. sınıf",
         "9": "9. sınıf",
         "10": "10. sınıf",
         "11": "11. sınıf",
         "12": "12. sınıf",
-        "mezun": "Mezun"
+        "hazirlik": "Hazırlık",
+        "mezun": "Mezun",
+        "universite": "Üniversite öğrencisi"
       },
       "target": "hedefin",
       "targetUniversity": "hedef üniversite",
@@ -335,7 +342,9 @@
       "styles": {
         "sabah": "Sabahçı",
         "gece": "Gececi",
-        "karma": "Karma"
+        "karma": "Karma",
+        "haftasonu": "Hafta sonu yoğun",
+        "araliklı": "Aralıklı (pomodoro)"
       },
       "strong": "güçlü derslerin",
       "weak": "geliştirmek istediklerin",
@@ -366,7 +375,20 @@
       "private": "Bu profil gizli.",
       "empty": "Henüz doldurulmamış.",
       "completeness": "profil doluluğu",
-      "changePhoto": "Fotoğrafı değiştir"
+      "changePhoto": "Fotoğrafı değiştir",
+      "tracks": {
+        "sayisal": "Sayısal",
+        "esit": "Eşit ağırlık",
+        "sozel": "Sözel",
+        "dil": "Dil"
+      },
+      "track": "alanın",
+      "targetScore": "hedef puan",
+      "freeHint": "Listede yoksa kendin yazabilirsin.",
+      "missingTitle": "Profilini tamamla",
+      "missingHint": "Şunlar boş: {alanlar}. Öğrencin seni ne kadar tanırsa anlatırken o kadar isabetli soru sorar.",
+      "fill": "Doldur",
+      "empty2": "Bu alan henüz boş"
     },
     "feed": {
       "eyebrow": "akış",
@@ -467,6 +489,20 @@
       "active": "devam ediyor",
       "finished": "bitti",
       "open": "Aç"
+    },
+    "messages": {
+      "eyebrow": "mesajların",
+      "title": "Mesajlar",
+      "empty": "Henüz mesajın yok",
+      "emptyHint": "Akışta birinin profiline git, 'Mesaj gönder' de. Anlatmakta zorlandığın konuyu birlikte çözebilirsiniz.",
+      "pick": "Soldan bir sohbet seç.",
+      "noMessages": "—",
+      "firstMessage": "İlk mesajı sen yaz.",
+      "placeholder": "Mesajını yaz…",
+      "send": "Gönder",
+      "emoji": "Emoji",
+      "back": "Geri",
+      "openChat": "Mesaj gönder"
     }
   },
   "auth": {

@@ -49,7 +49,7 @@ export function ProfileView() {
           </div>
         ) : (
           <div className="anim-fade-up">
-            <ProfileCard profile={profile} stats={stats} subjectName={subjectName} examName={examName} />
+            <ProfileCard profile={profile} stats={stats} subjectName={subjectName} examName={examName} onEdit={() => setEditing(true)} />
           </div>
         )}
       </div>

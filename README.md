@@ -65,7 +65,9 @@ politikası yok — herkes kaydolabilir, kimse listeyi istemciden okuyamaz. List
 
 ## Uygulama (`/app`)
 
-Kalıcı navbar: **Derslerim · Sokratik · Geçmiş · Akış · Bildirimler · Profil**.
+Kalıcı navbar: **Derslerim · Sokratik · Geçmiş · Akış · Mesajlar · Bildirimler · Profil** —
+her biri ikonuyla; dar ekranda etiketler düşüyor, ikon kalıyor. Okunmamış mesaj ve
+bildirim sayısı rozetle görünüyor.
 
 | Rota | Ne |
 |---|---|
@@ -79,10 +81,22 @@ Kalıcı navbar: **Derslerim · Sokratik · Geçmiş · Akış · Bildirimler ·
 | `/app/bildirimler` | Bildirimler — yorum, yanıt, tepki, takip |
 | `/app/gecmis` | Seans geçmişi — hangi konu, hangi mod, ne zaman |
 | `/app/baslangic` | Dört adımlık tanışma — ilk girişte bir kez, `profiles.onboarded_at` ile |
+| `/app/mesajlar` | Birebir mesajlaşma — anlık (realtime), okunmamış rozeti, profilden başlatılır |
 
 **İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
 `src/lib/engine/` altında, seçim `getEngine(mode)` ile.
+
+**Mesajlaşma.** Akış herkese açık; mesajlar iki kişi arasında kalıyor. Kanal bir
+profildeki "Mesaj gönder" ile açılıyor (`dm_kanal_ac` işlevi — engel kontrolünü de
+o yapıyor), yeni mesajlar Supabase realtime ile anında düşüyor, dakikada 30 mesaj
+kotası veritabanı tetikleyicisinde. Engellenen biriyle kanal açılmıyor, açık kanala
+da yazılamıyor.
+
+**Profil alanları serbest.** Sınıf, alan, şehir, çalışma düzeni, hedef üniversite ve
+bölüm artık öneri listesi gösteren ama listeye hapsetmeyen alanlar: hazırlık sınıfındaki
+de, açıköğretimdeki de, "sabah 5'te kalkarım" diyen de kendini yazabiliyor. Eksik
+alanlar profilde adıyla sayılıyor ve tek tıkla forma götürüyor.
 
 **Güvenlik ağı.** Şikâyet (gönderi/yorum/profil), engelleme (engellenen içerik RLS düzeyinde
 akıştan düşer), kota sınırı (dakikada 3 gönderi / 8 yorum — veritabanı tetikleyicisiyle, istemciye

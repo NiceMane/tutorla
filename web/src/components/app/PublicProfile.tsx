@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
-import { Link } from "@/i18n/navigation";
+import { Link, useRouter } from "@/i18n/navigation";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import type { FollowState, Profile, ProfileStats } from "@/lib/domain";
@@ -18,6 +18,8 @@ export function PublicProfile({ handle }: { handle: string }) {
   const [follow, setFollow] = useState<FollowState | null>(null);
   const [blocked, setBlocked] = useState(false);
   const [busy, setBusy] = useState(false);
+  const router = useRouter();
+  const tm = useTranslations("app.messages");
 
   useEffect(() => {
     let alive = true;
@@ -78,6 +80,22 @@ export function PublicProfile({ handle }: { handle: string }) {
               >
                 {follow?.following ? t("unfollow") : t("follow")}
               </button>
+              {/* Engellenmiş biriyle kanal açılmıyor; düğme de görünmesin. */}
+              {!blocked && (
+                <button
+                  type="button" disabled={busy}
+                  onClick={async () => {
+                    setBusy(true);
+                    try {
+                      const thread = await getRepo().openThread(person.id);
+                      router.push(`/app/mesajlar?k=${thread}` as "/app");
+                    } finally { setBusy(false); }
+                  }}
+                  className="btn btn-ghost h-9 text-[13.5px] disabled:opacity-60"
+                >
+                  {tm("openChat")}
+                </button>
+              )}
               <button
                 type="button" disabled={busy}
                 onClick={async () => { setBusy(true); try { setBlocked(await getRepo().toggleBlock(person.id)); } finally { setBusy(false); } }}

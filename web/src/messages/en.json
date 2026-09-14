@@ -171,7 +171,8 @@
       "menu": "Menu",
       "close": "Close",
       "notifications": "Notifications",
-      "history": "History"
+      "history": "History",
+      "messages": "Messages"
     },
     "dash": {
       "eyebrow": "your dashboard",
@@ -318,11 +319,17 @@
       "city": "city",
       "examYear": "exam year",
       "grades": {
+        "5": "Grade 5",
+        "6": "Grade 6",
+        "7": "Grade 7",
+        "8": "Grade 8",
         "9": "Grade 9",
         "10": "Grade 10",
         "11": "Grade 11",
         "12": "Grade 12",
-        "mezun": "Graduate"
+        "hazirlik": "Prep year",
+        "mezun": "Graduate",
+        "universite": "University student"
       },
       "target": "your goal",
       "targetUniversity": "target university",
@@ -333,9 +340,11 @@
       "weeklyHours": "weekly study (hours)",
       "studyStyle": "when do you study",
       "styles": {
-        "sabah": "Morning",
-        "gece": "Night",
-        "karma": "Mixed"
+        "sabah": "Morning person",
+        "gece": "Night owl",
+        "karma": "Mixed",
+        "haftasonu": "Weekend-heavy",
+        "araliklı": "Interval (pomodoro)"
       },
       "strong": "your strong subjects",
       "weak": "what you want to improve",
@@ -366,7 +375,20 @@
       "private": "This profile is private.",
       "empty": "Not filled in yet.",
       "completeness": "profile completeness",
-      "changePhoto": "Change photo"
+      "changePhoto": "Change photo",
+      "tracks": {
+        "sayisal": "Science",
+        "esit": "Equal weight",
+        "sozel": "Social sciences",
+        "dil": "Languages"
+      },
+      "track": "track",
+      "targetScore": "target score",
+      "freeHint": "Not on the list? Type your own.",
+      "missingTitle": "Complete your profile",
+      "missingHint": "Still empty: {alanlar}. The better your student knows you, the sharper its questions.",
+      "fill": "Fill in",
+      "empty2": "Not filled in yet"
     },
     "feed": {
       "eyebrow": "feed",
@@ -467,6 +489,20 @@
       "active": "in progress",
       "finished": "finished",
       "open": "Open"
+    },
+    "messages": {
+      "eyebrow": "your messages",
+      "title": "Messages",
+      "empty": "No messages yet",
+      "emptyHint": "Open someone's profile from the feed and hit 'Send a message'. Work through a topic together.",
+      "pick": "Pick a conversation on the left.",
+      "noMessages": "—",
+      "firstMessage": "Write the first message.",
+      "placeholder": "Write a message…",
+      "send": "Send",
+      "emoji": "Emoji",
+      "back": "Back",
+      "openChat": "Send a message"
     }
   },
   "auth": {

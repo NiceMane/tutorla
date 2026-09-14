@@ -338,6 +338,8 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [ ] Kapalı test için 5–10 gerçek öğrenci
 - [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
 - [x] Uygulama navbar'ı, profil, sınav seçimi (7 sınav türü), akış, Sokratik mod
+- [x] Öğrenciler arası birebir mesajlaşma — anlık, engel ve kota korumalı
+- [x] Profil alanlarının sabit listeden kurtarılması (öneri var, kısıt yok)
 - [x] Öğrencinin kendi sınavını ekleyip müfredat yükleyebilmesi
 - [ ] Yüklenen müfredatın gerçekten işlenmesi — Claude'a bağlı
 - [ ] GIF araması için Giphy/Tenor anahtarı (NEXT_PUBLIC_GIPHY_KEY); yoksa bağlantı yapıştırma

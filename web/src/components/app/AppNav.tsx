@@ -10,12 +10,14 @@ import { useAuth } from "@/lib/auth";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import { Avatar } from "./Avatar";
+import { NavIcon, type NavKey } from "./NavIcon";
 
-const LINKS = [
+const LINKS: { href: string; key: NavKey }[] = [
   { href: "/app", key: "lessons" },
   { href: "/app/sokratik", key: "socratic" },
   { href: "/app/gecmis", key: "history" },
   { href: "/app/akis", key: "feed" },
+  { href: "/app/mesajlar", key: "messages" },
   { href: "/app/bildirimler", key: "notifications" },
   { href: "/app/profil", key: "profile" },
 ] as const;
@@ -31,6 +33,7 @@ export function AppNav() {
   const { profile } = useApp();
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
+  const [unreadDm, setUnreadDm] = useState(0);
 
   /* Okunmamış bildirim rozeti. 60 sn'de bir tazeleniyor — anlık akış
      (realtime) yerine basit yoklama; bu ölçekte yeterli. */
@@ -39,8 +42,11 @@ export function AppNav() {
     let alive = true;
     const tick = async () => {
       try {
-        const n = await getRepo().unreadCount();
-        if (alive) setUnread(n);
+        const [n, dm] = await Promise.all([
+          getRepo().unreadCount(),
+          getRepo().unreadMessageCount().catch(() => 0),
+        ]);
+        if (alive) { setUnread(n); setUnreadDm(dm); }
       } catch { /* sessizce geç: rozet kritik değil */ }
     };
     tick();
@@ -61,26 +67,29 @@ export function AppNav() {
           <Wordmark className="h-6 w-auto" />
         </Link>
 
-        <nav className="mx-auto hidden items-center gap-1 md:flex" aria-label="app">
+        <nav className="mx-auto hidden items-center gap-0.5 md:flex xl:gap-1" aria-label="app">
           {LINKS.map((l) => (
             <Link
               key={l.href}
               href={l.href}
               aria-current={active(l.href) ? "page" : undefined}
-              className={`relative rounded-[var(--radius-ui)] px-3 py-2 text-[14.5px] font-medium transition-colors ${
+              title={t(l.key)}
+              className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-[var(--radius-ui)] px-2.5 py-2 text-[14.5px] font-medium transition-colors xl:px-3 ${
                 active(l.href) ? "bg-surface text-ink" : "text-ink-2 hover:bg-surface hover:text-ink"
               }`}
             >
-              {t(l.key)}
+              <NavIcon name={l.key} className={active(l.href) ? "text-primary" : ""} />
+              {/* Etiketler yalnızca yer varken; aradaki genişliklerde ikon konuşuyor. */}
+              <span className="hidden lg:inline">{t(l.key)}</span>
               {/* etkin sekmenin altındaki çizgi ortadan açılır */}
               <i
                 className="pointer-events-none absolute inset-x-2 -bottom-px block h-[2px] origin-center rounded-full bg-primary transition-transform duration-300 ease-out motion-reduce:transition-none"
                 style={{ transform: `scaleX(${active(l.href) ? 1 : 0})` }}
                 aria-hidden="true"
               />
-              {l.key === "notifications" && unread > 0 && (
-                <span className="anim-pop ml-1.5 inline-grid min-w-[18px] place-items-center rounded-full bg-accent px-1 text-[11px] font-bold text-white tabular-nums">
-                  {unread > 9 ? "9+" : unread}
+              {((l.key === "notifications" && unread > 0) || (l.key === "messages" && unreadDm > 0)) && (
+                <span className="anim-pop absolute -right-0.5 -top-0.5 inline-grid min-w-[17px] place-items-center rounded-full bg-accent px-1 text-[10.5px] font-bold text-white tabular-nums lg:static lg:ml-0.5">
+                  {(() => { const n = l.key === "messages" ? unreadDm : unread; return n > 9 ? "9+" : n; })()}
                 </span>
               )}
             </Link>
@@ -127,10 +136,11 @@ export function AppNav() {
               href={l.href}
               onClick={() => setOpen(false)}
               style={{ transitionDelay: open ? `${50 + i * 40}ms` : "0ms" }}
-              className={`border-b border-line py-3 text-[16px] font-semibold transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+              className={`flex items-center gap-2.5 border-b border-line py-3 text-[16px] font-semibold transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
                 open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
               } ${active(l.href) ? "text-primary" : ""}`}
             >
+              <NavIcon name={l.key} width={18} height={18} />
               {t(l.key)}
             </Link>
           ))}

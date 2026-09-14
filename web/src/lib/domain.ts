@@ -10,8 +10,11 @@ export type PersonaCode = "curious" | "sceptical" | "impatient";
    socratic = AI yönlendirici soru sorar, roller klasik */
 export type SessionMode = "teach" | "socratic";
 
-export type Grade = "9" | "10" | "11" | "12" | "mezun";
-export type StudyStyle = "sabah" | "gece" | "karma";
+/* Sınıf ve çalışma düzeni serbest metin: arayüz öneri listesi gösteriyor ama
+   listede olmayan (hazırlık, açıköğretim, kendi tarifi) da yazılabiliyor.
+   Bilinen anahtarlar çeviriye sahip; gerisi olduğu gibi gösterilir. */
+export type Grade = string;
+export type StudyStyle = string;
 
 export type Profile = {
   id: string;
@@ -31,6 +34,9 @@ export type Profile = {
   targetUniversity: string | null;
   targetDepartment: string | null;
   targetRank: number | null;
+  /* YKS alanı: sayısal / eşit ağırlık / sözel / dil — liste öneri, metin serbest */
+  track: string | null;
+  targetScore: number | null;
   weeklyHours: number | null;
   studyStyle: StudyStyle | null;
   strongSubjects: string[];
@@ -55,6 +61,27 @@ export type ProfileStats = {
 };
 
 export type FollowState = { following: boolean; followers: number; followingCount: number };
+
+/* ------------------------------------------------------------ mesajlaşma */
+
+export type DmThread = {
+  id: string;
+  /* Karşı taraf — birebir kanalda tek kişi */
+  other: Profile | null;
+  lastMessage: string | null;
+  lastMessageAt: string;
+  unread: number;
+};
+
+export type DmMessage = {
+  id: string;
+  threadId: string;
+  senderId: string;
+  body: string;
+  createdAt: string;
+  /* İyimser gönderimde sunucuya ulaşmamış mesaj */
+  pending?: boolean;
+};
 
 export type NotificationKind = "yorum" | "yanit" | "tepki" | "takip";
 
