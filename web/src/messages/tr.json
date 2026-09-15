@@ -173,7 +173,8 @@
       "notifications": "Bildirimler",
       "history": "Geçmiş",
       "messages": "Mesajlar",
-      "search": "Ara"
+      "search": "Ara",
+      "guide": "Rehber"
     },
     "dash": {
       "eyebrow": "panelin",
@@ -528,6 +529,147 @@
         "person": "kişi",
         "post": "gönderi",
         "exam": "sınav"
+      }
+    },
+    "tour": {
+      "title": "Tanıtım turu",
+      "step": "adım {n}/{total}",
+      "next": "Devam",
+      "back": "Geri",
+      "skip": "Turu geç",
+      "finish": "Rehbere git",
+      "hos": {
+        "t": "Hoş geldin — burada roller ters",
+        "b": "Çoğu uygulamada yapay zekâ anlatır, sen dinlersin. Tutorla'da tersi: öğrenci o, anlatan sensin. Bir konuyu ona anlatırken bilmediğin yerler kendiliğinden görünür oluyor."
+      },
+      "dersler": {
+        "t": "Derslerim",
+        "b": "Her şey buradan başlıyor: sınavını seç, dersler ve konular açılsın. Şu an YKS'nin müfredatı yüklü — 11 ders, 24 konu, 120 kavram."
+      },
+      "sinav": {
+        "t": "Sınav kartları",
+        "b": "Karta bastığında o sınavın dersleri açılıyor. Karttaki ince çubuk ilerlemen: kaç kavramın oturduğunu gösteriyor. Listede olmayan bir sınava hazırlanıyorsan kendin ekleyip müfredatını yazabilirsin."
+      },
+      "seans": {
+        "t": "Bir seans nasıl işler?",
+        "b": "Konuyu açtığında öğrencin sana bir soru soruyor. Sen anlatıyorsun, o anlamadığı yeri söylüyor. Cevap vermiyor — bilmediğin yeri görünür kılıyor. Anlattığın her mesaj anlayış haritanı değiştiriyor."
+      },
+      "harita": {
+        "t": "Anlayış haritası ve boşluklar",
+        "b": "Sağdaki listede konunun kavramları var: dokunulmamış, boşluk ya da oturmuş. Öğrencin bir eksik yakaladığında altına kesik çizgili turuncu bir etiket düşüyor — “boşluk: çarpımın nedeni açıklanmadı” gibi. O boşluğu anlatarak kapattığında kavram “anlatarak kapattın” diye işaretleniyor."
+      },
+      "sokratik": {
+        "t": "Sokratik mod",
+        "b": "Ana modun tersi. Burada o sorar, sen düşünürsün: cevabı vermez, daraltan sorularla götürür. Anlatacak kadar bilmediğini düşündüğün konularda buradan başlamak iyi gelir."
+      },
+      "gecmis": {
+        "t": "Geçmiş",
+        "b": "Hangi konuyu ne zaman, hangi modda anlattın — hepsi burada. Yarım kalan bir seansa buradan dönebilirsin."
+      },
+      "akis": {
+        "t": "Akış",
+        "b": "Takıldığın yeri paylaş, başkalarının anlattığını oku. Fotoğraf, GIF ve emoji ile; yorumlara yanıt verilebiliyor. Kaydettiklerin “Kayıtlılar” sekmesinde duruyor."
+      },
+      "mesajlar": {
+        "t": "Mesajlar",
+        "b": "Bir konuyu birlikte çözmek için birebir yazışma. Birinin profiline gir, “Mesaj gönder” de. Mesajlar anında düşüyor, sayfayı yenilemene gerek yok."
+      },
+      "ara": {
+        "t": "Arama — ⌘K",
+        "b": "Büyüteç ya da ⌘K (Windows'ta Ctrl+K). Konu, kavram, kişi, gönderi ve sınav aynı kutuda. Bir konuya bastığında doğrudan anlatmaya başlıyorsun. “turev” yazsan da “türev”i bulur."
+      },
+      "profil": {
+        "t": "Profil",
+        "b": "Öğrencin seni ne kadar tanırsa o kadar isabetli soru sorar: sınıfın, alanın, hedefin, güçlü ve zayıf derslerin. Fotoğrafını kırpıp ekleyebilir, kameradan da çekebilirsin."
+      },
+      "son": {
+        "t": "Hazırsın",
+        "b": "Turu istediğin zaman rehberden yeniden başlatabilirsin. Şimdi seni her şeyin uzun uzun anlatıldığı rehbere götürüyorum."
+      }
+    },
+    "guide": {
+      "eyebrow": "rehber",
+      "title": "Tutorla nasıl kullanılır?",
+      "intro": "Burada ürünün bütün parçaları sırayla anlatılıyor: bir seansın nasıl işlediğinden anlayış haritasındaki işaretlerin ne anlama geldiğine kadar. Acelen varsa turu başlat, arayüzü gezerek göster.",
+      "start": "Turu başlat",
+      "toc": "içindekiler",
+      "back": "Panele dön",
+      "s": {
+        "ters": {
+          "t": "1. Neden roller ters?",
+          "p1": "Bir konuyu bildiğini sanmakla anlatabilmek aynı şey değil. Okurken her şey yerli yerinde görünür; anlatmaya başladığında cümlenin ortasında durursun. İşte o durduğun yer, aslında bilmediğin yerdir.",
+          "p2": "Tutorla bu farkı görünür kılmak için kurulu. Yapay zekâ burada öğretmen değil, meraklı bir öğrenci: soru sorar, anlamadığını söyler, seni açıklamaya zorlar. Cevabı sana vermez — çünkü cevabı vermek, öğrenmenin olduğu yeri kapatmak demek.",
+          "p3": "Buna eğitim araştırmalarında protégé etkisi deniyor: birine anlatmak üzere hazırlanan öğrenci, sınava hazırlanan öğrenciden daha derin öğreniyor."
+        },
+        "seans": {
+          "t": "2. Bir seans adım adım",
+          "p1": "Derslerim → sınav → ders → konu. Konuya bastığın anda seans açılır ve öğrencin ilk sorusunu sorar. Aşağıda gerçek bir seansın kısaltılmış hâli var:",
+          "d1": "\"Örtük fonksiyon\" kısmını anlatır mısın? Orayı hiç anlamadım.",
+          "d2": "Kapalı türevde iki tarafın da x'e göre türevini alırız. y aslında x'e bağlı olduğu için y'nin türevi dy/dx çarpanını getirir.",
+          "dm": "Nedensellik — “çünkü” ile bağladın, ezber gibi durmadı.",
+          "d3": "Peki neden y'nin türevi tek başına 1 değil de dy/dx oluyor? Orada ne oldu?",
+          "dg": "boşluk: zincir kuralının y'ye neden uygulandığı açıklanmadı",
+          "p2": "Gördüğün gibi öğrenci cevabı vermiyor; eksik kalan yeri işaret ediyor. O boşluğu anlattığında kavram “oturmuş” olarak işaretlenir ve haritadaki yüzden yükselir.",
+          "p3": "Seansı bitirdiğinde altına bir not düşer: neyi nasıl anlattığının kısa özeti. Yarım bıraktığın seansa Geçmiş'ten dönebilirsin; yazdığın metin sekmeyi kapatsan bile kaybolmaz."
+        },
+        "harita": {
+          "t": "3. Anlayış haritası ve işaretler",
+          "p1": "Sağdaki panel konunun kavramlarını listeler. Her kavram üç durumdan birindedir:",
+          "l1": "dokunulmamış — henüz konuşulmadı",
+          "l2": "boşluk — anlattın ama bir yeri eksik kaldı",
+          "l3": "oturdu — öğrencinin sorusunu kapatacak kadar açıkladın",
+          "p2": "Yüzde saklanmıyor, her seferinde oturan kavram / toplam kavram olarak hesaplanıyor. Yani sayaç kayması olmaz: haritada ne görüyorsan gerçek durum odur.",
+          "p3": "Mobilde harita sağ panelde değil, başlığın altındaki açılır şeritte. Ürünün çekirdek geri bildirimi olduğu için telefonda da hep elinin altında."
+        },
+        "kanit": {
+          "t": "4. İki kanıt katmanı",
+          "p1": "Öğrenme kanıtı — ne öğrendin. Bir kavram önce boşluk çıkıp sonra oturduysa “anlatarak kapattın” diye işaretlenir. Panelde biriken bu sayı, protégé etkisinin üründeki ölçülebilir izi.",
+          "p2": "Davranış kanıtı — nasıl öğrettin. Anlatırken yaptığın beş şey kaydedilir: sebat, nedensellik, somutlama, sadeleştirme, merak. Bunlar not değil; “bugün iyi çalıştım” hissinin yerine geçen somut kayıt.",
+          "p3": "İkisi birbirinin yerine geçmez: biri ne öğrendiğini, diğeri nasıl öğrendiğini gösterir."
+        },
+        "sokratik": {
+          "t": "5. Sokratik mod",
+          "p1": "Ana modun tersi: burada o sorar, sen düşünürsün. Cevabı vermez, daraltan sorularla götürür. Anlatacak kadar bilmediğini düşündüğün bir konuda önce Sokratik modda ısınıp sonra anlatmaya geçmek iyi bir sıra."
+        },
+        "mufredat": {
+          "t": "6. Kendi sınavın ve müfredatın",
+          "p1": "Listede olmayan bir sınava hazırlanıyorsan Derslerim → “Sınav ekle” ile kendi sınavını açabilirsin. Sonra ders, konu ve kavramları kendin yazarsın — anlayış haritası bu kavramlardan oluşur. Müfredat belgesi (PDF, metin, görsel) da yükleyebilirsin.",
+          "p2": "Resmî müfredata (YKS) dokunulamaz; yalnızca senin eklediğin sınav düzenlenebilir."
+        },
+        "akis": {
+          "t": "7. Akış",
+          "p1": "Takıldığın yeri paylaşabileceğin, başkalarının anlatımını okuyabileceğin yer. Fotoğraf, GIF ve emoji ile gönderi; yorum ve yorumlara yanıt; tepkiler ve yer imleri. Kaydettiklerin “Kayıtlılar” sekmesinde birikir.",
+          "p2": "Rahatsız eden bir gönderi ya da kişi olursa şikâyet ve engelleme var: engellediğin kişinin içeriği akıştan tamamen düşer."
+        },
+        "mesaj": {
+          "t": "8. Mesajlar",
+          "p1": "Bir konuyu birlikte çözmek için birebir yazışma. Birinin profiline gir, “Mesaj gönder” de; kanal açılır. Mesajlar anında düşer, sayfayı yenilemeye gerek yok. Okunmamış sayısı navbar'daki rozette görünür."
+        },
+        "arama": {
+          "t": "9. Arama ve kısayollar",
+          "p1": "Büyüteç ya da ⌘K (Windows'ta Ctrl+K). Konu, kavram, kişi, gönderi ve sınav aynı kutuda. Bir konuya bastığında açık seansın varsa ona devam eder, yoksa yenisi açılır. Türkçe iki yönlü çalışır: “turev” yazsan da “türev”i bulur.",
+          "k1": "⌘K / Ctrl+K — aramayı aç",
+          "k2": "↑ ↓ — sonuçlar arasında gez",
+          "k3": "⏎ — seçili sonucu aç",
+          "k4": "Esc — kapat",
+          "k5": "Seansta ⏎ — mesajı gönder, ⇧⏎ — alt satıra geç"
+        },
+        "profil": {
+          "t": "10. Profil",
+          "p1": "Öğrencin seni ne kadar tanırsa o kadar isabetli soru sorar. Sınıfın, alanın, hedef bölümün, güçlü ve zayıf derslerin — hepsi anlatımın nasıl yönlendirileceğini belirler. Alanların çoğu öneri listesi gösterir ama seni listeye hapsetmez: listede olmayanı da yazabilirsin.",
+          "p2": "Profil fotoğrafını yükleyip kırpabilir, döndürebilir, kameradan çekebilirsin. Profilini herkese kapatmak istersen gizlilik ayarı en altta."
+        },
+        "ai": {
+          "t": "11. Dürüst not: yapay zekâ henüz bağlı değil",
+          "p1": "Şu an öğrencinin soruları elle yazılmış kurallarla üretiliyor ve arayüzde “senaryolu öğrenci” rozetiyle işaretli. Claude bağlandığında sorular senin anlattığın metne göre üretilecek; ürünün akışı aynı kalacak.",
+          "p2": "Aynı şekilde, kendi sınavına yüklediğin müfredat belgeleri şimdilik saklanıyor ama işlenmiyor."
+        }
+      },
+      "tips": {
+        "t": "Daha iyi çalışması için üç ipucu",
+        "a": "Kısa cümlelerle değil, sebep-sonuçla anlat. “Çünkü” geçen cümleler boşlukları daha hızlı ortaya çıkarıyor.",
+        "b": "Öğrenci “anlamadım” dediğinde cümleyi tekrarlama, örnek ver. Somut örnek, tanımı tekrar etmekten daha çok işe yarıyor.",
+        "c": "Bir seansı sonuna kadar götür. Seans notu ancak bitirdiğinde yazılıyor ve genelde en işe yarar geri bildirim orada."
       }
     }
   },

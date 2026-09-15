@@ -73,6 +73,7 @@ export function ExamPicker() {
                 <Link
                   key={ex.id}
                   href={`/app/sinav/${encodeURIComponent(ex.code)}` as "/app"}
+                  data-tur={i === 0 ? "sinav-karti" : undefined}
                   style={{ "--i": i } as React.CSSProperties}
                   className={`card lift group flex flex-col gap-2 p-5 ${usable ? "hover:border-primary" : "hover:border-line-2"}`}
                 >

@@ -173,7 +173,8 @@
       "notifications": "Notifications",
       "history": "History",
       "messages": "Messages",
-      "search": "Search"
+      "search": "Search",
+      "guide": "Guide"
     },
     "dash": {
       "eyebrow": "your dashboard",
@@ -528,6 +529,147 @@
         "person": "person",
         "post": "post",
         "exam": "exam"
+      }
+    },
+    "tour": {
+      "title": "Product tour",
+      "step": "step {n}/{total}",
+      "next": "Next",
+      "back": "Back",
+      "skip": "Skip tour",
+      "finish": "Open the guide",
+      "hos": {
+        "t": "Welcome — the roles are reversed",
+        "b": "In most apps the AI explains and you listen. Here it's the other way round: it's the student, you do the teaching. Explaining a topic to it makes your own gaps visible."
+      },
+      "dersler": {
+        "t": "My lessons",
+        "b": "Everything starts here: pick your exam and the subjects open up. YKS is loaded today — 11 subjects, 24 topics, 120 concepts."
+      },
+      "sinav": {
+        "t": "Exam cards",
+        "b": "Tap a card to open its subjects. The thin bar is your progress: how many concepts have settled. Preparing for an exam that isn't listed? Add it and write your own curriculum."
+      },
+      "seans": {
+        "t": "How a session works",
+        "b": "Open a topic and your student asks you something. You explain, it tells you where it got lost. It never answers — it makes the gap visible. Every message you write updates your understanding map."
+      },
+      "harita": {
+        "t": "Understanding map and gaps",
+        "b": "The list on the right holds the topic's concepts: untouched, gap, or settled. When your student catches something missing, a dashed amber label appears under the message. Close that gap by explaining it and the concept is marked “closed by teaching”."
+      },
+      "sokratik": {
+        "t": "Socratic mode",
+        "b": "The opposite of the main mode: it asks, you think. It won't hand you the answer, it narrows in with questions. A good place to start on topics you can't explain yet."
+      },
+      "gecmis": {
+        "t": "History",
+        "b": "Which topic, when, in which mode — all here. Pick up an unfinished session from this list."
+      },
+      "akis": {
+        "t": "Feed",
+        "b": "Share where you got stuck, read how others explained it. Photos, GIFs and emoji; comments can be replied to. Whatever you bookmark sits in the “Bookmarks” tab."
+      },
+      "mesajlar": {
+        "t": "Messages",
+        "b": "One-to-one chat to work through a topic together. Open someone's profile and hit “Send a message”. Messages arrive instantly — no refresh needed."
+      },
+      "ara": {
+        "t": "Search — ⌘K",
+        "b": "The magnifier or ⌘K (Ctrl+K on Windows). Topics, concepts, people, posts and exams in one box. Hit a topic and you start teaching it right away."
+      },
+      "profil": {
+        "t": "Profile",
+        "b": "The better your student knows you, the sharper its questions: your year, track, target, strong and weak subjects. Crop and upload a photo, or take one with your camera."
+      },
+      "son": {
+        "t": "You're set",
+        "b": "You can restart this tour any time from the guide. Taking you there now — everything explained at length."
+      }
+    },
+    "guide": {
+      "eyebrow": "guide",
+      "title": "How to use Tutorla",
+      "intro": "Every part of the product, explained in order: how a session works, what the marks on your understanding map mean, and everything else. In a hurry? Start the tour and let it point at the real interface.",
+      "start": "Start the tour",
+      "toc": "contents",
+      "back": "Back to the app",
+      "s": {
+        "ters": {
+          "t": "1. Why are the roles reversed?",
+          "p1": "Thinking you know a topic and being able to explain it are not the same thing. Reading feels smooth; explaining stops you mid-sentence. That stop is exactly where the gap is.",
+          "p2": "Tutorla exists to make that visible. The AI here isn't a teacher, it's a curious student: it asks, it says what it didn't follow, it pushes you to explain. It never hands you the answer — handing you the answer would close the very place where learning happens.",
+          "p3": "Education research calls this the protégé effect: students who prepare to teach learn more deeply than students who prepare for a test."
+        },
+        "seans": {
+          "t": "2. A session, step by step",
+          "p1": "My lessons → exam → subject → topic. The moment you open a topic a session starts and your student asks its first question. Here's a shortened real session:",
+          "d1": "Could you explain the \"implicit function\" part? I didn't follow it at all.",
+          "d2": "In implicit differentiation we differentiate both sides with respect to x. Since y depends on x, differentiating y brings in a dy/dx factor.",
+          "dm": "Causality — you linked it with “because”, it didn't sound memorised.",
+          "d3": "But why isn't the derivative of y just 1? What happened there?",
+          "dg": "gap: why the chain rule applies to y wasn't explained",
+          "p2": "Notice the student doesn't answer; it points at what's missing. Explain that gap and the concept is marked as settled, lifting the percentage on your map.",
+          "p3": "When you finish, a short note is written underneath: what you explained and how. You can return to an unfinished session from History, and your draft survives a closed tab."
+        },
+        "harita": {
+          "t": "3. The understanding map",
+          "p1": "The right-hand panel lists the topic's concepts. Each is in one of three states:",
+          "l1": "untouched — not discussed yet",
+          "l2": "gap — you explained it but something was missing",
+          "l3": "settled — you explained enough to close the student's question",
+          "p2": "The percentage isn't stored; it's derived every time as settled ÷ total. No counter drift: what you see is the real state.",
+          "p3": "On phones the map lives in a collapsible strip under the title rather than a side panel — it's the core feedback, so it stays within reach."
+        },
+        "kanit": {
+          "t": "4. Two layers of evidence",
+          "p1": "Learning evidence — what you learned. If a concept was a gap first and settled later, it's marked “closed by teaching”. That count is the measurable trace of the protégé effect.",
+          "p2": "Behaviour evidence — how you taught. Five things get recorded as you explain: persistence, causality, concreteness, simplification, curiosity. Not a grade — a concrete record that replaces the vague feeling of “I studied well today”.",
+          "p3": "Neither replaces the other: one shows what you learned, the other how."
+        },
+        "sokratik": {
+          "t": "5. Socratic mode",
+          "p1": "The opposite of the main mode: it asks, you think. It won't give you the answer, it narrows in with questions. Warming up in Socratic mode before teaching a shaky topic is a good order."
+        },
+        "mufredat": {
+          "t": "6. Your own exam and curriculum",
+          "p1": "Preparing for an exam that isn't listed? My lessons → “Add exam”. Then write your own subjects, topics and concepts — your understanding map is built from those concepts. You can upload curriculum documents (PDF, text, images) too.",
+          "p2": "The official curriculum (YKS) can't be edited; only exams you added yourself."
+        },
+        "akis": {
+          "t": "7. Feed",
+          "p1": "Share where you got stuck, read how others explained it. Posts with photos, GIFs and emoji; comments and replies; reactions and bookmarks. Bookmarks collect in their own tab.",
+          "p2": "If a post or a person bothers you there's reporting and blocking: a blocked person's content disappears from your feed entirely."
+        },
+        "mesaj": {
+          "t": "8. Messages",
+          "p1": "One-to-one chat to work through a topic together. Open someone's profile, hit “Send a message”. Messages arrive instantly, no refresh needed, and unread counts show on the navbar badge."
+        },
+        "arama": {
+          "t": "9. Search and shortcuts",
+          "p1": "The magnifier or ⌘K (Ctrl+K on Windows). Topics, concepts, people, posts and exams in one box. Hit a topic and you continue an open session or start a new one.",
+          "k1": "⌘K / Ctrl+K — open search",
+          "k2": "↑ ↓ — move between results",
+          "k3": "⏎ — open the selected result",
+          "k4": "Esc — close",
+          "k5": "In a session ⏎ — send, ⇧⏎ — new line"
+        },
+        "profil": {
+          "t": "10. Profile",
+          "p1": "The better your student knows you, the sharper its questions: your year, track, target department, strong and weak subjects. Most fields suggest options without locking you into them — you can always type your own.",
+          "p2": "Upload and crop a profile photo, rotate it, or take one with your camera. If you'd rather stay private, the privacy switch is at the bottom."
+        },
+        "ai": {
+          "t": "11. An honest note: the AI isn't connected yet",
+          "p1": "Right now your student's questions come from hand-written rules and are marked in the interface with a “scripted student” badge. Once Claude is connected the questions will be generated from what you actually wrote; the flow stays the same.",
+          "p2": "Likewise, curriculum documents you upload are stored but not processed yet."
+        }
+      },
+      "tips": {
+        "t": "Three tips to get more out of it",
+        "a": "Explain with cause and effect, not short statements. Sentences with “because” surface gaps faster.",
+        "b": "When the student says it didn't follow, don't repeat the sentence — give an example. Concrete examples beat repeating a definition.",
+        "c": "See a session through to the end. The session note is only written when you finish, and it's usually the most useful feedback."
       }
     }
   },

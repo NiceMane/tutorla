@@ -86,6 +86,7 @@ export function AppNav() {
             <Link
               key={l.href}
               href={l.href}
+              data-tur={l.key === "lessons" ? "dersler" : l.key === "socratic" ? "sokratik" : l.key === "history" ? "gecmis" : l.key === "feed" ? "akis" : l.key === "messages" ? "mesajlar" : l.key === "profile" ? "profil" : undefined}
               aria-current={active(l.href) ? "page" : undefined}
               title={t(l.key)}
               className={`relative flex items-center gap-1.5 whitespace-nowrap rounded-[var(--radius-ui)] px-2.5 py-2 text-[14.5px] font-medium transition-colors xl:px-3 ${
@@ -123,6 +124,7 @@ export function AppNav() {
           <button
             type="button"
             onClick={() => setSearch(true)}
+            data-tur="ara"
             title={`${t("search")} (⌘K)`}
             aria-label={t("search")}
             className="grid size-9 place-items-center rounded-[var(--radius-ui)] border border-line-2 text-ink-2 transition-colors hover:border-primary hover:text-primary"
@@ -131,6 +133,16 @@ export function AppNav() {
               <circle cx="11" cy="11" r="7" /><path d="m20 20-3.2-3.2" />
             </svg>
           </button>
+          <Link
+            href="/app/rehber"
+            title={t("guide")}
+            aria-label={t("guide")}
+            className="hidden size-9 place-items-center rounded-[var(--radius-ui)] border border-line-2 text-ink-2 transition-colors hover:border-primary hover:text-primary sm:grid"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" /><path d="M9.6 9.2a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2-2.4 3.6" /><path d="M12 17.3h.01" />
+            </svg>
+          </Link>
           <ThemeToggle />
           {enabled && user && (
             <button
@@ -169,6 +181,16 @@ export function AppNav() {
               {t(l.key)}
             </Link>
           ))}
+          <Link
+            href="/app/rehber"
+            onClick={() => setOpen(false)}
+            className="flex items-center gap-2.5 border-b border-line py-3 text-[16px] font-semibold"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="9" /><path d="M9.6 9.2a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2-2.4 3.6" /><path d="M12 17.3h.01" />
+            </svg>
+            {t("guide")}
+          </Link>
           <button
             type="button"
             onClick={() => { setOpen(false); setSearch(true); }}

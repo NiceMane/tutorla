@@ -264,7 +264,7 @@ export class LocalRepo implements Repo {
       track: null, targetScore: null,
       weeklyHours: null, studyStyle: null, strongSubjects: [], weakSubjects: [],
       goals: null, isPublic: true, streakDays: 0, longestStreak: 0,
-      createdAt: null, onboardedAt: null,
+      createdAt: null, onboardedAt: null, tourDoneAt: null,
     };
   }
 

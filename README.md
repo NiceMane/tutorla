@@ -83,10 +83,20 @@ bildirim sayısı rozetle görünüyor.
 | `/app/baslangic` | Dört adımlık tanışma — ilk girişte bir kez, `profiles.onboarded_at` ile |
 | `/app/mesajlar` | Birebir mesajlaşma — anlık (realtime), okunmamış rozeti, profilden başlatılır |
 | `/app/ara` | Arama — konu, kavram, kişi, gönderi, sınav; paylaşılabilir `?q=` adresi |
+| `/app/rehber` | Rehber — 11 bölümlük kullanım kılavuzu + turu yeniden başlatma |
 
 **İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
 `src/lib/engine/` altında, seçim `getEngine(mode)` ile.
+
+**Tanıtım turu ve rehber.** Yeni kullanıcı tanışmayı bitirince gerçek arayüzün
+üstünde 12 adımlık bir tur açılıyor: karartmanın içinde asıl öğe (navbar bağlantısı,
+sınav kartı, arama düğmesi) delik olarak kalıyor, yanında ne işe yaradığını anlatan
+kart duruyor. Ekran görüntüsü değil, kullanıcının kendi ekranı. `profiles.tour_done_at`
+ile bir kez gösteriliyor; navbar'daki `?` düğmesi her zaman rehbere götürüyor.
+Rehber (`/app/rehber`) aynı şeyleri uzun uzun anlatıyor: bir seansın adım adım işleyişi
+(gerçek bileşenlerle çizilmiş örnek sohbet), haritadaki üç durum, iki kanıt katmanı,
+kısayollar ve "yapay zekâ henüz bağlı değil" notu.
 
 **Arama.** Navbar'daki büyüteç ya da **⌘K / Ctrl+K**. Konular ve kavramlar zaten
 bellekte olduğu için anında eşleşiyor; kişiler ve gönderiler veritabanından geliyor

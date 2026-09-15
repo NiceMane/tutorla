@@ -321,11 +321,12 @@ export class SupabaseRepo implements Repo {
       longestStreak: num(r.longest_streak),
       createdAt: t("created_at"),
       onboardedAt: t("onboarded_at"),
+      tourDoneAt: t("tour_done_at"),
     };
   }
 
   /* Profil sütunları tek yerde: sorgular arasında kayma olmasın. */
-  private static readonly PROFILE_COLS = "id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,track,target_score,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at";
+  private static readonly PROFILE_COLS = "id,display_name,handle,bio,avatar_emoji,avatar_url,exam_id,grade,school,city,exam_year,target_university,target_department,target_rank,track,target_score,weekly_hours,study_style,strong_subjects,weak_subjects,goals,is_public,streak_days,longest_streak,created_at,onboarded_at,tour_done_at";
 
   async getMyProfile(): Promise<Profile | null> {
     const sb = await this.sb();
@@ -346,7 +347,7 @@ export class SupabaseRepo implements Repo {
       targetRank: "target_rank", track: "track", targetScore: "target_score",
       weeklyHours: "weekly_hours", studyStyle: "study_style",
       strongSubjects: "strong_subjects", weakSubjects: "weak_subjects", goals: "goals",
-      isPublic: "is_public", onboardedAt: "onboarded_at",
+      isPublic: "is_public", onboardedAt: "onboarded_at", tourDoneAt: "tour_done_at",
     };
     const row: Row = {};
     for (const [k, col] of Object.entries(MAP)) {

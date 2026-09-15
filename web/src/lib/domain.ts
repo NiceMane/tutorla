@@ -48,6 +48,8 @@ export type Profile = {
   longestStreak: number;
   createdAt: string | null;
   onboardedAt: string | null;
+  /* Tanıtım turu tamamlandı mı — onboarded_at'ten ayrı tutuluyor */
+  tourDoneAt: string | null;
 };
 
 export type ProfileStats = {
