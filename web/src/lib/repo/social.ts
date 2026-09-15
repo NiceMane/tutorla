@@ -67,6 +67,9 @@ export interface SocialRepo {
   /* medya */
   uploadImage(file: File): Promise<{ url: string; kind: MediaKind }>;
 
+  /* arama — müfredat istemcide, kişiler ve gönderiler veritabanında */
+  search(query: string, limit?: number): Promise<{ people: Profile[]; posts: Post[] }>;
+
   /* mesajlaşma */
   listThreads(): Promise<DmThread[]>;
   openThread(userId: string): Promise<string>;

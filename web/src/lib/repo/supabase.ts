@@ -851,6 +851,49 @@ export class SupabaseRepo implements Repo {
     return data?.signedUrl ?? null;
   }
 
+  /* -------------------------------------------------------------- arama */
+
+  async search(query: string, limit = 8): Promise<{ people: Profile[]; posts: Post[] }> {
+    const q = query.trim();
+    if (q.length < 2) return { people: [], posts: [] };
+    const sb = await this.sb();
+    /* ilike kalıbındaki % ve _ kullanıcıdan gelmemeli: yoksa tek bir "%"
+       bütün kayıtları getirir. */
+    const safe = q.replace(/[%_\\]/g, (c) => `\\${c}`);
+
+    const [people, posts] = await Promise.all([
+      sb.from("profiles")
+        .select(SupabaseRepo.PROFILE_COLS)
+        .or(`display_name.ilike.%${safe}%,handle.ilike.%${safe}%`)
+        .limit(limit),
+      sb.from("posts")
+        .select(`id,author_id,body,exam_id,created_at,edited_at,profiles!posts_author_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+        .ilike("body", `%${safe}%`)
+        .order("created_at", { ascending: false })
+        .limit(limit),
+    ]);
+    if (people.error) fail(people.error, "sorgu");
+    if (posts.error) fail(posts.error, "sorgu");
+
+    return {
+      people: ((people.data as Row[]) ?? []).map((r) => this.toProfile(r)!).filter(Boolean),
+      posts: ((posts.data as Row[]) ?? []).map((r) => ({
+        id: str(r.id),
+        authorId: str(r.author_id),
+        author: this.toProfile(r.profiles as Row | null),
+        body: str(r.body),
+        examId: r.exam_id ? str(r.exam_id) : null,
+        createdAt: str(r.created_at),
+        editedAt: r.edited_at ? str(r.edited_at) : null,
+        media: [],
+        reactions: {},
+        myReactions: [],
+        commentCount: 0,
+        bookmarked: false,
+      })),
+    };
+  }
+
   /* --------------------------------------------------------- mesajlaşma */
 
   private toDm(r: Row): DmMessage {

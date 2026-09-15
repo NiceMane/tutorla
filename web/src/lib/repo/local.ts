@@ -471,6 +471,13 @@ export class LocalRepo implements Repo {
   }
   async documentUrl(): Promise<string | null> { return null; }
 
+  /* Arama: tarayıcı deposunda yalnızca kendi gönderilerin var. */
+  async search(query: string): Promise<{ people: Profile[]; posts: Post[] }> {
+    const q = query.trim().toLocaleLowerCase("tr");
+    if (q.length < 2) return { people: [], posts: [] };
+    return { people: [], posts: read().posts.filter((p) => p.body.toLocaleLowerCase("tr").includes(q)).slice(0, 8) };
+  }
+
   /* ---------------------------------------------------------- mesajlaşma
      Tarayıcı deposunda karşı taraf yok: kanal listesi boş kalıyor, gönderilen
      mesaj yalnızca kendi cihazında duruyor. Supabase bağlıyken asıl hâli. */

@@ -172,7 +172,8 @@
       "close": "Close",
       "notifications": "Notifications",
       "history": "History",
-      "messages": "Messages"
+      "messages": "Messages",
+      "search": "Search"
     },
     "dash": {
       "eyebrow": "your dashboard",
@@ -503,6 +504,31 @@
       "emoji": "Emoji",
       "back": "Back",
       "openChat": "Send a message"
+    },
+    "search": {
+      "eyebrow": "search",
+      "title": "Search",
+      "placeholder": "Search topics, concepts, people or posts…",
+      "hint": "Type at least two letters — a topic, a concept, a friend's name or something from a post.",
+      "searching": "searching…",
+      "none": "No results for “{q}”",
+      "noneHint": "Try a different spelling or a shorter word.",
+      "topics": "topics",
+      "concepts": "concepts",
+      "people": "people",
+      "posts": "posts",
+      "exams": "exams",
+      "keys": "↑↓ move · ⏎ open · esc close",
+      "all": "All results",
+      "open": "Search",
+      "shortcut": "⌘K",
+      "kind": {
+        "topic": "topic",
+        "concept": "concept",
+        "person": "person",
+        "post": "post",
+        "exam": "exam"
+      }
     }
   },
   "auth": {

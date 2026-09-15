@@ -11,6 +11,7 @@ import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
 import { Avatar } from "./Avatar";
 import { NavIcon, type NavKey } from "./NavIcon";
+import { SearchPalette } from "@/components/search/SearchPalette";
 
 const LINKS: { href: string; key: NavKey }[] = [
   { href: "/app", key: "lessons" },
@@ -34,6 +35,7 @@ export function AppNav() {
   const [open, setOpen] = useState(false);
   const [unread, setUnread] = useState(0);
   const [unreadDm, setUnreadDm] = useState(0);
+  const [search, setSearch] = useState(false);
 
   /* Okunmamış bildirim rozeti. 60 sn'de bir tazeleniyor — anlık akış
      (realtime) yerine basit yoklama; bu ölçekte yeterli. */
@@ -53,6 +55,18 @@ export function AppNav() {
     const id = setInterval(tick, 60_000);
     return () => { alive = false; clearInterval(id); };
   }, [enabled, user, pathname]);
+
+  /* ⌘K / Ctrl+K her yerden aramayı açar. Girdi alanındayken araya girmez. */
+  useEffect(() => {
+    const onKey = (e: KeyboardEvent) => {
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === "k") {
+        e.preventDefault();
+        setSearch(true);
+      }
+    };
+    document.addEventListener("keydown", onKey);
+    return () => document.removeEventListener("keydown", onKey);
+  }, []);
 
   /* Seans ekranı odaklanmış bir çalışma alanı: kendi başlığı var ve tam ekran.
      Navbar orada görünmez. */
@@ -106,6 +120,17 @@ export function AppNav() {
               <span className="max-w-[140px] truncate">{profile?.displayName || profile?.handle || user.email}</span>
             </Link>
           )}
+          <button
+            type="button"
+            onClick={() => setSearch(true)}
+            title={`${t("search")} (⌘K)`}
+            aria-label={t("search")}
+            className="grid size-9 place-items-center rounded-[var(--radius-ui)] border border-line-2 text-ink-2 transition-colors hover:border-primary hover:text-primary"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.2-3.2" />
+            </svg>
+          </button>
           <ThemeToggle />
           {enabled && user && (
             <button
@@ -144,6 +169,16 @@ export function AppNav() {
               {t(l.key)}
             </Link>
           ))}
+          <button
+            type="button"
+            onClick={() => { setOpen(false); setSearch(true); }}
+            className="flex items-center gap-2.5 border-b border-line py-3 text-left text-[16px] font-semibold"
+          >
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden="true">
+              <circle cx="11" cy="11" r="7" /><path d="m20 20-3.2-3.2" />
+            </svg>
+            {t("search")}
+          </button>
           {enabled && user && (
             <button
               type="button"
@@ -155,6 +190,7 @@ export function AppNav() {
           )}
         </nav>
       </Collapse>
+      <SearchPalette open={search} onClose={() => setSearch(false)} />
     </header>
   );
 }

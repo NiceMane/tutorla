@@ -339,6 +339,7 @@ Kapsam tek konu / tek özellikle sınırlanırsa 2 haftaya inebilir. Entegrasyon
 - [ ] Konuş / Tahta / Fotoğraf giriş kanalları (arayüzde pasif duruyor)
 - [x] Uygulama navbar'ı, profil, sınav seçimi (7 sınav türü), akış, Sokratik mod
 - [x] Öğrenciler arası birebir mesajlaşma — anlık, engel ve kota korumalı
+- [x] Arama — konu/kavram/kişi/gönderi/sınav, ⌘K paleti + tam sayfa, Türkçe normalleştirme
 - [x] Profil alanlarının sabit listeden kurtarılması (öneri var, kısıt yok)
 - [x] Öğrencinin kendi sınavını ekleyip müfredat yükleyebilmesi
 - [ ] Yüklenen müfredatın gerçekten işlenmesi — Claude'a bağlı

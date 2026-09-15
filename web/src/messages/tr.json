@@ -172,7 +172,8 @@
       "close": "Kapat",
       "notifications": "Bildirimler",
       "history": "Geçmiş",
-      "messages": "Mesajlar"
+      "messages": "Mesajlar",
+      "search": "Ara"
     },
     "dash": {
       "eyebrow": "panelin",
@@ -503,6 +504,31 @@
       "emoji": "Emoji",
       "back": "Geri",
       "openChat": "Mesaj gönder"
+    },
+    "search": {
+      "eyebrow": "ara",
+      "title": "Arama",
+      "placeholder": "Konu, kavram, kişi veya gönderi ara…",
+      "hint": "En az iki harf yaz. Konu adı, kavram, bir arkadaşının adı ya da gönderi içeriği olabilir.",
+      "searching": "aranıyor…",
+      "none": "“{q}” için sonuç yok",
+      "noneHint": "Yazımı değiştirmeyi ya da daha kısa bir kelime denemeyi öneririm.",
+      "topics": "konular",
+      "concepts": "kavramlar",
+      "people": "kişiler",
+      "posts": "gönderiler",
+      "exams": "sınavlar",
+      "keys": "↑↓ gez · ⏎ aç · esc kapat",
+      "all": "Tüm sonuçlar",
+      "open": "Ara",
+      "shortcut": "⌘K",
+      "kind": {
+        "topic": "konu",
+        "concept": "kavram",
+        "person": "kişi",
+        "post": "gönderi",
+        "exam": "sınav"
+      }
     }
   },
   "auth": {

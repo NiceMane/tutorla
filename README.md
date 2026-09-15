@@ -82,10 +82,17 @@ bildirim sayısı rozetle görünüyor.
 | `/app/gecmis` | Seans geçmişi — hangi konu, hangi mod, ne zaman |
 | `/app/baslangic` | Dört adımlık tanışma — ilk girişte bir kez, `profiles.onboarded_at` ile |
 | `/app/mesajlar` | Birebir mesajlaşma — anlık (realtime), okunmamış rozeti, profilden başlatılır |
+| `/app/ara` | Arama — konu, kavram, kişi, gönderi, sınav; paylaşılabilir `?q=` adresi |
 
 **İki mod, iki motor.** `teach` modunda kullanıcı anlatır, AI öğrencidir (ürünün çekirdeği).
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
 `src/lib/engine/` altında, seçim `getEngine(mode)` ile.
+
+**Arama.** Navbar'daki büyüteç ya da **⌘K / Ctrl+K**. Konular ve kavramlar zaten
+bellekte olduğu için anında eşleşiyor; kişiler ve gönderiler veritabanından geliyor
+(220 ms gecikmeli, eski yanıtlar eleniyor). Türkçe iki yönlü normalleştiriliyor:
+"turev" yazan da "türev" yazan da aynı sonucu buluyor. Konuya basınca açık seans
+varsa ona devam ediyor, yoksa yenisini açıyor. ↑↓ ile gez, ⏎ ile aç.
 
 **Mesajlaşma.** Akış herkese açık; mesajlar iki kişi arasında kalıyor. Kanal bir
 profildeki "Mesaj gönder" ile açılıyor (`dm_kanal_ac` işlevi — engel kontrolünü de
