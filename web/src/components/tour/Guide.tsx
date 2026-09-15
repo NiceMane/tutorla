@@ -1,10 +1,10 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import type { ReactNode } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
 import { ConceptIcon } from "@/components/app/ConceptIcon";
 import { MomentChip } from "@/components/app/MomentChip";
-import { Tour } from "./Tour";
+import { useTour } from "./Tour";
 
 /* Turun kalıcı hâli: tur arayüzü gezdiriyor, burası aynı şeyleri uzun uzun
    anlatıyor. Örnek sohbet gerçek seans bileşenlerinin stiliyle çiziliyor —
@@ -18,7 +18,7 @@ function P({ children }: { children: ReactNode }) {
 
 export function Guide() {
   const t = useTranslations("app.guide");
-  const [tour, setTour] = useState(false);
+  const { start } = useTour();
 
   return (
     <main className="mx-auto w-full max-w-[820px] px-[clamp(14px,3vw,28px)] py-10">
@@ -27,7 +27,7 @@ export function Guide() {
       <p className="mt-4 max-w-[60ch] text-[16px] leading-[1.6] text-ink-2">{t("intro")}</p>
 
       <div className="mt-6 flex flex-wrap gap-2">
-        <button type="button" onClick={() => setTour(true)} className="btn btn-primary">{t("start")}</button>
+        <button type="button" onClick={start} className="btn btn-primary">{t("start")}</button>
         <Link href="/app" className="btn btn-ghost">{t("back")}</Link>
       </div>
 
@@ -147,11 +147,10 @@ export function Guide() {
       </article>
 
       <div className="mt-10 flex flex-wrap gap-2">
-        <button type="button" onClick={() => setTour(true)} className="btn btn-primary">{t("start")}</button>
+        <button type="button" onClick={start} className="btn btn-primary">{t("start")}</button>
         <Link href="/app" className="btn btn-ghost">{t("back")}</Link>
       </div>
 
-      <Tour open={tour} onClose={() => setTour(false)} />
     </main>
   );
 }

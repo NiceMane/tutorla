@@ -89,14 +89,14 @@ bildirim sayısı rozetle görünüyor.
 `socratic` modunda roller klasiktir: cevabı vermez, daraltan sorularla götürür. İkisi de
 `src/lib/engine/` altında, seçim `getEngine(mode)` ile.
 
-**Tanıtım turu ve rehber.** Yeni kullanıcı tanışmayı bitirince gerçek arayüzün
-üstünde 12 adımlık bir tur açılıyor: karartmanın içinde asıl öğe (navbar bağlantısı,
-sınav kartı, arama düğmesi) delik olarak kalıyor, yanında ne işe yaradığını anlatan
-kart duruyor. Ekran görüntüsü değil, kullanıcının kendi ekranı. `profiles.tour_done_at`
-ile bir kez gösteriliyor; navbar'daki `?` düğmesi her zaman rehbere götürüyor.
-Rehber (`/app/rehber`) aynı şeyleri uzun uzun anlatıyor: bir seansın adım adım işleyişi
-(gerçek bileşenlerle çizilmiş örnek sohbet), haritadaki üç durum, iki kanıt katmanı,
-kısayollar ve "yapay zekâ henüz bağlı değil" notu.
+**Tanıtım turu.** İlk girişte (hangi sayfada olursa olsun) animasyonlu bir karşılama
+popup'ı açılıyor. "Turu başlat" deyince spot ışığı gerçek arayüzdeki öğelerin üstünde
+kayarak ilerliyor — Derslerim, sınav kartı, Sokratik, Geçmiş, Akış, Mesajlar,
+Bildirimler, arama, Profil — ve her adımda öğenin yanında, özelliği küçük canlı bir
+sahneyle gösteren bir kart beliriyor (yazılan arama, dolan çubuk, gelen mesaj…).
+Kapanış popup'ı ilk konuya götürüyor. `profiles.tour_done_at` ile bir kez; navbar'daki
+`?` ile tekrar izlenir. Telefonda kart alttan yaprak olarak geliyor. Uzun anlatım
+isteyenler için `/app/rehber` ayrıca duruyor.
 
 **Arama.** Navbar'daki büyüteç ya da **⌘K / Ctrl+K**. Konular ve kavramlar zaten
 bellekte olduğu için anında eşleşiyor; kişiler ve gönderiler veritabanından geliyor

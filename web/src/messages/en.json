@@ -533,58 +533,99 @@
     },
     "tour": {
       "title": "Product tour",
-      "step": "step {n}/{total}",
+      "step": "{n}/{total}",
       "next": "Next",
       "back": "Back",
-      "skip": "Skip tour",
-      "finish": "Open the guide",
-      "hos": {
-        "t": "Welcome — the roles are reversed",
-        "b": "In most apps the AI explains and you listen. Here it's the other way round: it's the student, you do the teaching. Explaining a topic to it makes your own gaps visible."
+      "skip": "Skip",
+      "done": "Finish",
+      "friend": "welcome",
+      "viaMenu": "On phones you'll find this in the menu at the top right.",
+      "welcome": {
+        "eyebrow": "welcome to tutorla",
+        "title": "Hi {name}! Here, you're the teacher.",
+        "body": "Your AI student asks a question and you explain. It catches where you get stuck; as you explain, your gaps close.",
+        "duration": "Let us show you around in a minute.",
+        "start": "Start the tour",
+        "later": "Later"
+      },
+      "final": {
+        "eyebrow": "you're set",
+        "title": "That's the tour — ready to teach your first topic?",
+        "body": "You can replay it any time from the ? button at the top.",
+        "cta": "Teach a topic",
+        "guide": "Full guide"
       },
       "dersler": {
         "t": "My lessons",
-        "b": "Everything starts here: pick your exam and the subjects open up. YKS is loaded today — 11 subjects, 24 topics, 120 concepts."
+        "b": "Everything starts here: pick your exam and its subjects and topics open up."
       },
       "sinav": {
-        "t": "Exam cards",
-        "b": "Tap a card to open its subjects. The thin bar is your progress: how many concepts have settled. Preparing for an exam that isn't listed? Add it and write your own curriculum."
-      },
-      "seans": {
-        "t": "How a session works",
-        "b": "Open a topic and your student asks you something. You explain, it tells you where it got lost. It never answers — it makes the gap visible. Every message you write updates your understanding map."
-      },
-      "harita": {
-        "t": "Understanding map and gaps",
-        "b": "The list on the right holds the topic's concepts: untouched, gap, or settled. When your student catches something missing, a dashed amber label appears under the message. Close that gap by explaining it and the concept is marked “closed by teaching”."
+        "t": "Tap a topic, start teaching",
+        "b": "Your student asks, you explain. Missing pieces show up as amber labels; concepts settle as you explain."
       },
       "sokratik": {
         "t": "Socratic mode",
-        "b": "The opposite of the main mode: it asks, you think. It won't hand you the answer, it narrows in with questions. A good place to start on topics you can't explain yet."
+        "b": "Flip it around: here it asks, you think. It won't give answers, it leads with questions."
       },
       "gecmis": {
         "t": "History",
-        "b": "Which topic, when, in which mode — all here. Pick up an unfinished session from this list."
+        "b": "Which topic you taught and when. Pick up unfinished sessions here."
       },
       "akis": {
         "t": "Feed",
-        "b": "Share where you got stuck, read how others explained it. Photos, GIFs and emoji; comments can be replied to. Whatever you bookmark sits in the “Bookmarks” tab."
+        "b": "Share where you got stuck, read how others explained it. Photos, GIFs, emoji and comments."
       },
       "mesajlar": {
         "t": "Messages",
-        "b": "One-to-one chat to work through a topic together. Open someone's profile and hit “Send a message”. Messages arrive instantly — no refresh needed."
+        "b": "Chat one-to-one with a friend and work through a topic together. Messages arrive instantly."
+      },
+      "bildirimler": {
+        "t": "Notifications",
+        "b": "Comments and reactions on your posts, new followers — all here."
       },
       "ara": {
         "t": "Search — ⌘K",
-        "b": "The magnifier or ⌘K (Ctrl+K on Windows). Topics, concepts, people, posts and exams in one box. Hit a topic and you start teaching it right away."
+        "b": "Topics, concepts, people, posts — one box. Typos and missing accents are fine."
       },
       "profil": {
         "t": "Profile",
-        "b": "The better your student knows you, the sharper its questions: your year, track, target, strong and weak subjects. Crop and upload a photo, or take one with your camera."
+        "b": "Add your year, target, strong and weak subjects — the better your student knows you, the better it asks."
       },
-      "son": {
-        "t": "You're set",
-        "b": "You can restart this tour any time from the guide. Taking you there now — everything explained at length."
+      "tekrar": {
+        "t": "This tour lives here",
+        "b": "Forgot something? Hit the ? button and the tour starts over."
+      },
+      "v": {
+        "w1": "Why do we multiply in the chain rule?",
+        "w2": "Because the inner function changes too…",
+        "w3": "gap: the reason for multiplying wasn't explained",
+        "w4": "closed by teaching",
+        "ready": "ready",
+        "l1": "Limits",
+        "l2": "Derivatives",
+        "l3": "Integrals",
+        "s1": "What do you think a derivative measures?",
+        "s2": "And how does speed relate to it?",
+        "h1": "Chain rule",
+        "h1t": "today",
+        "h2": "Limits",
+        "h2t": "yesterday",
+        "h3": "Reading comprehension",
+        "h3t": "2 days ago",
+        "f1": "Deniz",
+        "f2": "Finally explained implicit differentiation — figured out where dy/dx comes from!",
+        "f3": "comments",
+        "m1": "I keep mixing up the war fronts 😅",
+        "m2": "Want me to explain it with a map?",
+        "n1": "Ece commented on your post",
+        "n2": "Mert started following you",
+        "r1": "Derivative definition",
+        "r2": "Implicit differentiation",
+        "topic": "topic",
+        "p1": "profile completeness",
+        "p2": "Grade 12",
+        "p3": "Science",
+        "p4": "Boğaziçi"
       }
     },
     "guide": {

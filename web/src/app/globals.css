@@ -192,6 +192,73 @@
 /* Listelerde sıralı beliriş: kapsayıcıya .stagger, öğelere style="--i:0,1,2…" */
 .stagger > * { animation: fadeUp .42s cubic-bezier(.22,.61,.36,1) both; animation-delay: calc(var(--i, 0) * 45ms); }
 
+/* ---------------------------------------------------------------- tanıtım turu */
+/* Spot ışığı: tek bir öğe, dışını devasa bir gölgeyle karartıyor. Böylece delik
+   köşeleri yuvarlak kalıyor ve hedefler arasında konum/boyut geçişiyle akıyor. */
+.tour-spot {
+  position: fixed;
+  border-radius: 12px;
+  box-shadow: 0 0 0 200vmax color-mix(in oklab, #0f120c 64%, transparent);
+  transition: top .45s cubic-bezier(.22,.61,.36,1), left .45s cubic-bezier(.22,.61,.36,1),
+              width .45s cubic-bezier(.22,.61,.36,1), height .45s cubic-bezier(.22,.61,.36,1),
+              border-radius .45s ease;
+  pointer-events: none;
+}
+.tour-spot::after {
+  content: ""; position: absolute; inset: -4px; border-radius: inherit;
+  border: 2px solid var(--primary);
+  animation: tourPulse 1.8s ease-out infinite;
+}
+@keyframes tourPulse {
+  0%   { opacity: .95; transform: scale(1); }
+  70%  { opacity: 0;   transform: scale(1.08); }
+  100% { opacity: 0;   transform: scale(1.08); }
+}
+@keyframes tourCardIn {
+  from { opacity: 0; transform: translateY(var(--tour-dy, 10px)) scale(.96); }
+  to   { opacity: 1; transform: none; }
+}
+.tour-card { animation: tourCardIn .38s cubic-bezier(.22,.61,.36,1) both; }
+@keyframes tourBackdrop { from { opacity: 0; backdrop-filter: blur(0); } to { opacity: 1; backdrop-filter: blur(3px); } }
+.tour-backdrop { animation: tourBackdrop .35s ease-out both; }
+@keyframes tourModalIn {
+  from { opacity: 0; transform: translateY(18px) scale(.94); }
+  60%  { transform: translateY(-2px) scale(1.01); }
+  to   { opacity: 1; transform: none; }
+}
+.tour-modal { animation: tourModalIn .5s cubic-bezier(.22,.61,.36,1) both; }
+
+/* Kart içi küçük sahneler */
+@keyframes tvRise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.tv-rise { animation: tvRise .4s cubic-bezier(.22,.61,.36,1) both; animation-delay: var(--d, 0s); }
+@keyframes tvGrow { from { transform: scaleX(0); } to { transform: scaleX(var(--to, 1)); } }
+.tv-grow { transform-origin: left; animation: tvGrow 1.1s cubic-bezier(.22,.61,.36,1) both; animation-delay: var(--d, .2s); }
+@keyframes tvType { from { width: 0; } to { width: var(--w, 5ch); } }
+.tv-type { display: inline-block; overflow: hidden; white-space: nowrap; vertical-align: bottom;
+  animation: tvType .9s steps(var(--n, 5)) both; animation-delay: var(--d, .2s); }
+@keyframes tvCaret { 50% { opacity: 0; } }
+.tv-caret { animation: tvCaret .9s step-end infinite; }
+@keyframes tvPop { 0% { opacity: 0; transform: scale(.4); } 70% { transform: scale(1.15); } 100% { opacity: 1; transform: none; } }
+.tv-pop { animation: tvPop .45s cubic-bezier(.22,.61,.36,1) both; animation-delay: var(--d, 0s); }
+@keyframes tvFloat { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+.tv-float { animation: tvFloat 3s ease-in-out infinite; }
+@keyframes tvConfetti {
+  0%   { opacity: 0; transform: translate(0,0) rotate(0); }
+  15%  { opacity: 1; }
+  100% { opacity: 0; transform: translate(var(--x), var(--y)) rotate(var(--r)); }
+}
+.tv-confetti { position: absolute; top: 50%; left: 50%; width: 7px; height: 11px; border-radius: 2px;
+  animation: tvConfetti 1.3s cubic-bezier(.2,.7,.3,1) both; animation-delay: var(--d, 0s); }
+
+@media (prefers-reduced-motion: reduce) {
+  .tour-spot { transition: none; }
+  .tour-spot::after, .tour-card, .tour-backdrop, .tour-modal,
+  .tv-rise, .tv-grow, .tv-type, .tv-pop, .tv-float, .tv-confetti, .tv-caret { animation: none; }
+  .tv-type { width: var(--w, 5ch); }
+  .tv-grow { transform: scaleX(var(--to, 1)); }
+  .tv-confetti { display: none; }
+}
+
 /* İlerleme çubuğu göründüğü anda sıfırdan değerine dolar; sonraki değişimler
    geçişle akar. Hedef oran --pct ile satır içinde veriliyor. */
 @keyframes growX { from { transform: scaleX(0); } to { transform: scaleX(var(--pct, 1)); } }

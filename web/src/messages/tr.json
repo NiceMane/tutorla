@@ -533,58 +533,99 @@
     },
     "tour": {
       "title": "Tanıtım turu",
-      "step": "adım {n}/{total}",
-      "next": "Devam",
+      "step": "{n}/{total}",
+      "next": "İleri",
       "back": "Geri",
-      "skip": "Turu geç",
-      "finish": "Rehbere git",
-      "hos": {
-        "t": "Hoş geldin — burada roller ters",
-        "b": "Çoğu uygulamada yapay zekâ anlatır, sen dinlersin. Tutorla'da tersi: öğrenci o, anlatan sensin. Bir konuyu ona anlatırken bilmediğin yerler kendiliğinden görünür oluyor."
+      "skip": "Atla",
+      "done": "Bitir",
+      "friend": "hoş geldin",
+      "viaMenu": "Telefonda bu bölüme sağ üstteki menüden ulaşırsın.",
+      "welcome": {
+        "eyebrow": "tutorla'ya hoş geldin",
+        "title": "Merhaba {name}! Burada öğretmen sensin.",
+        "body": "Yapay zekâ öğrencin bir soru sorar, sen anlatırsın. Nerede takıldığını o yakalar; anlattıkça boşlukların kapanır.",
+        "duration": "Uygulamayı 1 dakikada gezdirelim.",
+        "start": "Turu başlat",
+        "later": "Sonra"
+      },
+      "final": {
+        "eyebrow": "hazırsın",
+        "title": "Tur bitti — ilk konunu anlatmaya ne dersin?",
+        "body": "Turu istediğin zaman üstteki ? düğmesinden yeniden izleyebilirsin.",
+        "cta": "İlk konuyu anlat",
+        "guide": "Detaylı rehber"
       },
       "dersler": {
         "t": "Derslerim",
-        "b": "Her şey buradan başlıyor: sınavını seç, dersler ve konular açılsın. Şu an YKS'nin müfredatı yüklü — 11 ders, 24 konu, 120 kavram."
+        "b": "Her şey buradan başlar: sınavını seç, dersler ve konular açılsın."
       },
       "sinav": {
-        "t": "Sınav kartları",
-        "b": "Karta bastığında o sınavın dersleri açılıyor. Karttaki ince çubuk ilerlemen: kaç kavramın oturduğunu gösteriyor. Listede olmayan bir sınava hazırlanıyorsan kendin ekleyip müfredatını yazabilirsin."
-      },
-      "seans": {
-        "t": "Bir seans nasıl işler?",
-        "b": "Konuyu açtığında öğrencin sana bir soru soruyor. Sen anlatıyorsun, o anlamadığı yeri söylüyor. Cevap vermiyor — bilmediğin yeri görünür kılıyor. Anlattığın her mesaj anlayış haritanı değiştiriyor."
-      },
-      "harita": {
-        "t": "Anlayış haritası ve boşluklar",
-        "b": "Sağdaki listede konunun kavramları var: dokunulmamış, boşluk ya da oturmuş. Öğrencin bir eksik yakaladığında altına kesik çizgili turuncu bir etiket düşüyor — “boşluk: çarpımın nedeni açıklanmadı” gibi. O boşluğu anlatarak kapattığında kavram “anlatarak kapattın” diye işaretleniyor."
+        "t": "Bir konuya bas, anlatmaya başla",
+        "b": "Öğrencin soru sorar, sen anlatırsın. Eksik kalan yer turuncu etiketle belirir, anlattıkça kavramların oturur."
       },
       "sokratik": {
         "t": "Sokratik mod",
-        "b": "Ana modun tersi. Burada o sorar, sen düşünürsün: cevabı vermez, daraltan sorularla götürür. Anlatacak kadar bilmediğini düşündüğün konularda buradan başlamak iyi gelir."
+        "b": "Tersini de yapabilirsin: burada o sorar, sen düşünürsün. Cevabı vermez, sorularla götürür."
       },
       "gecmis": {
         "t": "Geçmiş",
-        "b": "Hangi konuyu ne zaman, hangi modda anlattın — hepsi burada. Yarım kalan bir seansa buradan dönebilirsin."
+        "b": "Hangi konuyu ne zaman anlattın. Yarım kalan seansına buradan dönersin."
       },
       "akis": {
         "t": "Akış",
-        "b": "Takıldığın yeri paylaş, başkalarının anlattığını oku. Fotoğraf, GIF ve emoji ile; yorumlara yanıt verilebiliyor. Kaydettiklerin “Kayıtlılar” sekmesinde duruyor."
+        "b": "Takıldığın yeri paylaş, başkalarının nasıl anlattığını oku. Fotoğraf, GIF, emoji ve yorumlar."
       },
       "mesajlar": {
         "t": "Mesajlar",
-        "b": "Bir konuyu birlikte çözmek için birebir yazışma. Birinin profiline gir, “Mesaj gönder” de. Mesajlar anında düşüyor, sayfayı yenilemene gerek yok."
+        "b": "Bir arkadaşınla birebir yazış, konuyu birlikte çözün. Mesajlar anında düşer."
+      },
+      "bildirimler": {
+        "t": "Bildirimler",
+        "b": "Gönderine yorum ya da tepki geldiğinde, biri seni takip ettiğinde burada görürsün."
       },
       "ara": {
         "t": "Arama — ⌘K",
-        "b": "Büyüteç ya da ⌘K (Windows'ta Ctrl+K). Konu, kavram, kişi, gönderi ve sınav aynı kutuda. Bir konuya bastığında doğrudan anlatmaya başlıyorsun. “turev” yazsan da “türev”i bulur."
+        "b": "Konu, kavram, kişi, gönderi — hepsi tek kutuda. “turev” yazsan da “türev”i bulur."
       },
       "profil": {
         "t": "Profil",
-        "b": "Öğrencin seni ne kadar tanırsa o kadar isabetli soru sorar: sınıfın, alanın, hedefin, güçlü ve zayıf derslerin. Fotoğrafını kırpıp ekleyebilir, kameradan da çekebilirsin."
+        "b": "Sınıfını, hedefini, güçlü ve zayıf derslerini ekle; öğrencin seni tanıdıkça daha iyi soru sorar."
       },
-      "son": {
-        "t": "Hazırsın",
-        "b": "Turu istediğin zaman rehberden yeniden başlatabilirsin. Şimdi seni her şeyin uzun uzun anlatıldığı rehbere götürüyorum."
+      "tekrar": {
+        "t": "Bu tur hep burada",
+        "b": "Bir şeyi unutursan ? düğmesine bas, tur baştan başlasın."
+      },
+      "v": {
+        "w1": "Zincir kuralında neden çarpıyoruz?",
+        "w2": "Çünkü iç fonksiyon da değişiyor…",
+        "w3": "boşluk: çarpımın nedeni açıklanmadı",
+        "w4": "anlatarak kapattın",
+        "ready": "hazır",
+        "l1": "Limit",
+        "l2": "Türev",
+        "l3": "İntegral",
+        "s1": "Sence türev neyi ölçüyor?",
+        "s2": "Peki hız bununla nasıl ilişkili?",
+        "h1": "Zincir kuralı",
+        "h1t": "bugün",
+        "h2": "Limit",
+        "h2t": "dün",
+        "h3": "Paragrafta anlam",
+        "h3t": "2 gün önce",
+        "f1": "Deniz",
+        "f2": "Kapalı türevi sonunda anlatabildim, dy/dx'in nereden geldiğini çözdüm!",
+        "f3": "yorum",
+        "m1": "Kurtuluş Savaşı cephelerini karıştırıyorum 😅",
+        "m2": "Haritayla anlatayım mı?",
+        "n1": "Ece gönderine yorum yaptı",
+        "n2": "Mert seni takip etmeye başladı",
+        "r1": "Türev tanımı",
+        "r2": "Kapalı türev",
+        "topic": "konu",
+        "p1": "profil doluluğu",
+        "p2": "12. sınıf",
+        "p3": "Sayısal",
+        "p4": "Boğaziçi"
       }
     },
     "guide": {
