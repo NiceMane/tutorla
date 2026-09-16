@@ -363,13 +363,9 @@
       "closed": "concepts closed by explaining",
       "moments": "behaviour moments",
       "posts": "posts",
-      "followers": "followers",
-      "following": "following",
       "streak": "day streak",
       "longest": "longest streak",
       "member": "joined",
-      "follow": "Follow",
-      "unfollow": "Unfollow",
       "block": "Block",
       "unblock": "Unblock",
       "report": "Report",
@@ -390,7 +386,36 @@
       "missingTitle": "Complete your profile",
       "missingHint": "Still empty: {alanlar}. The better your student knows you, the sharper its questions.",
       "fill": "Fill in",
-      "empty2": "Not filled in yet"
+      "empty2": "Not filled in yet",
+      "connections": "connections",
+      "connect": "Connect",
+      "connectSent": "Request sent",
+      "connectAccept": "Accept request",
+      "connected": "Connected ✓",
+      "entries": "clubs, projects, achievements",
+      "entryLink": "open link",
+      "entryKinds": {
+        "kulup": "club",
+        "proje": "project",
+        "yarisma": "competition",
+        "gonullu": "volunteering",
+        "sertifika": "certificate",
+        "deneyim": "experience",
+        "basari": "achievement"
+      },
+      "entryAdd": "Add an entry",
+      "entryTitle": "title",
+      "entryOrg": "organisation / club",
+      "entryDesc": "short description",
+      "entryStart": "start year",
+      "entryEnd": "end year",
+      "entryUrl": "link (https://…)",
+      "entryKind": "type",
+      "entrySave": "Add",
+      "entryDelete": "Delete",
+      "entryEmpty": "Nothing here yet. Add your clubs, projects and competitions.",
+      "entryHint": "Your student gets to know you from these; what you do outside class shapes how it asks.",
+      "cancel": "Cancel"
     },
     "feed": {
       "eyebrow": "feed",
@@ -418,10 +443,10 @@
       "bookmark": "Save",
       "report": "Report",
       "all": "All",
-      "following": "Following",
       "bookmarks": "Saved",
       "editHint": "edited",
-      "camera": "Camera"
+      "camera": "Camera",
+      "connections": "Connections"
     },
     "socratic": {
       "eyebrow": "socratic mode",
@@ -458,7 +483,8 @@
       "yorum": "commented on your post",
       "yanit": "replied to your comment",
       "tepki": "reacted to your post",
-      "takip": "started following you"
+      "baglanti_istek": "sent you a connection request",
+      "baglanti_kabul": "accepted your connection request"
     },
     "report": {
       "title": "Report",
@@ -504,7 +530,17 @@
       "send": "Send",
       "emoji": "Emoji",
       "back": "Back",
-      "openChat": "Send a message"
+      "openChat": "Send a message",
+      "connections": "Connections",
+      "chats": "Chats",
+      "requests": "Requests",
+      "accept": "Accept",
+      "reject": "Decline",
+      "noConnections": "No connections yet",
+      "noConnectionsHint": "Open someone's profile from the feed and hit “Connect”. Once accepted they show up here.",
+      "pendingOut": "request sent",
+      "startChat": "Message",
+      "incoming": "wants to connect with you"
     },
     "search": {
       "eyebrow": "search",
@@ -581,7 +617,7 @@
       },
       "bildirimler": {
         "t": "Notifications",
-        "b": "Comments and reactions on your posts, new followers — all here."
+        "b": "Comments and reactions on your posts, new connection requests — all here."
       },
       "ara": {
         "t": "Search — ⌘K",
@@ -618,7 +654,7 @@
         "m1": "I keep mixing up the war fronts 😅",
         "m2": "Want me to explain it with a map?",
         "n1": "Ece commented on your post",
-        "n2": "Mert started following you",
+        "n2": "Mert sent you a connection request",
         "r1": "Derivative definition",
         "r2": "Implicit differentiation",
         "topic": "topic",
@@ -679,12 +715,12 @@
         },
         "akis": {
           "t": "7. Feed",
-          "p1": "Share where you got stuck, read how others explained it. Posts with photos, GIFs and emoji; comments and replies; reactions and bookmarks. Bookmarks collect in their own tab.",
+          "p1": "Share where you got stuck, read how others explained it. Posts with photos, GIFs and emoji; comments and replies; reactions and bookmarks. The “Connections” tab shows posts only from people you're connected with.",
           "p2": "If a post or a person bothers you there's reporting and blocking: a blocked person's content disappears from your feed entirely."
         },
         "mesaj": {
           "t": "8. Messages",
-          "p1": "One-to-one chat to work through a topic together. Open someone's profile, hit “Send a message”. Messages arrive instantly, no refresh needed, and unread counts show on the navbar badge."
+          "p1": "One-to-one chat to work through a topic together. Open someone's profile and hit “Connect”; once they accept, they appear under the Connections tab on the Messages page and you can start writing. Messages arrive instantly."
         },
         "arama": {
           "t": "9. Search and shortcuts",
@@ -698,12 +734,17 @@
         "profil": {
           "t": "10. Profile",
           "p1": "The better your student knows you, the sharper its questions: your year, track, target department, strong and weak subjects. Most fields suggest options without locking you into them — you can always type your own.",
-          "p2": "Upload and crop a profile photo, rotate it, or take one with your camera. If you'd rather stay private, the privacy switch is at the bottom."
+          "p2": "Upload and crop a profile photo, rotate it, or take one with your camera. If you'd rather stay private, the privacy switch is at the bottom.",
+          "p3": "Keep your clubs, projects, competitions, volunteering and certificates as separate entries — what you do outside class says something about you too."
         },
         "ai": {
           "t": "11. An honest note: the AI isn't connected yet",
           "p1": "Right now your student's questions come from hand-written rules and are marked in the interface with a “scripted student” badge. Once Claude is connected the questions will be generated from what you actually wrote; the flow stays the same.",
           "p2": "Likewise, curriculum documents you upload are stored but not processed yet."
+        },
+        "baglanti": {
+          "t": "12. Connections",
+          "p1": "No following; the relationship is mutual. You send a request, the other person accepts. Once accepted you both see each other's posts under “Connections” and find each other in the messages list. You can remove a connection any time."
         }
       },
       "tips": {

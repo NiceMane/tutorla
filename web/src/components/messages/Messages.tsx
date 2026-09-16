@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth } from "@/lib/auth";
 import { getRepo } from "@/lib/repo";
-import type { DmMessage, DmThread } from "@/lib/domain";
+import type { Connection, DmMessage, DmThread } from "@/lib/domain";
 import { Avatar } from "@/components/app/Avatar";
 import { TimeAgo } from "@/components/ui/Time";
 import { EmptyState, ErrorState, SkeletonList } from "@/components/ui/States";
@@ -23,6 +23,10 @@ export function Messages() {
   const wanted = params.get("k");
 
   const [threads, setThreads] = useState<DmThread[] | null>(null);
+  /* Sol sütun iki sekme: süren sohbetler ve bağlantı listesi. */
+  const [tab, setTab] = useState<"sohbet" | "baglanti">("sohbet");
+  const [conns, setConns] = useState<Connection[] | null>(null);
+  const [busyId, setBusyId] = useState<string | null>(null);
   const [err, setErr] = useState<string | null>(null);
   const [picked, setPicked] = useState<string | null>(null);
   const [messages, setMessages] = useState<DmMessage[] | null>(null);
@@ -43,14 +47,36 @@ export function Messages() {
   useEffect(() => {
     let alive = true;
     (async () => {
+      const repo = getRepo();
       try {
-        const list = await getRepo().listThreads();
-        if (alive) { setThreads(list); setErr(null); }
+        const [list, cs] = await Promise.all([repo.listThreads(), repo.listConnections()]);
+        if (alive) { setThreads(list); setConns(cs); setErr(null); }
       } catch (e) {
-        if (alive) { setErr(e instanceof Error ? e.message : "—"); setThreads([]); }
+        if (alive) { setErr(e instanceof Error ? e.message : "—"); setThreads([]); setConns([]); }
       }
     })();
     return () => { alive = false; };
+  }, []);
+
+  const yenileBaglantilar = useCallback(async () => {
+    try {
+      setConns(await getRepo().listConnections());
+    } catch { /* liste kritik değil */ }
+  }, []);
+
+  /* Bağlantıyla sohbet: kanal yoksa açılır, varsa ona geçilir. */
+  const sohbetAc = useCallback(async (userId: string) => {
+    setBusyId(userId);
+    try {
+      const id = await getRepo().openThread(userId);
+      setThreads(await getRepo().listThreads());
+      setPicked(id);
+      setTab("sohbet");
+    } catch (e) {
+      setErr(e instanceof Error ? e.message : "—");
+    } finally {
+      setBusyId(null);
+    }
   }, []);
 
   /* Açık kanal: tıklanan varsa o, yoksa adresten gelen (profildeki
@@ -123,9 +149,86 @@ export function Messages() {
       <h1 className="mt-3 text-[clamp(1.7rem,3.4vw,2.4rem)]">{t("title")}</h1>
 
       <div className="mt-8 grid gap-5 lg:grid-cols-[300px_minmax(0,1fr)]">
-        {/* kanal listesi */}
-        <section className={`flex-col gap-2 ${active ? "hidden lg:flex" : "flex"}`}>
-          {threads === null ? (
+        {/* sol sütun: sohbetler / bağlantılar */}
+        <section className={`flex-col gap-3 ${active ? "hidden lg:flex" : "flex"}`}>
+          <div className="flex gap-1.5" role="tablist">
+            {(["sohbet", "baglanti"] as const).map((k) => (
+              <button
+                key={k} type="button" role="tab" aria-selected={tab === k}
+                onClick={() => setTab(k)}
+                className={`rounded-[var(--radius-ui)] px-3 py-1.5 text-[13.5px] font-semibold transition-[background-color,color,rotate,scale,translate] duration-200 active:scale-95 ${
+                  tab === k ? "bg-primary text-on-primary" : "text-ink-2 hover:bg-surface"
+                }`}
+              >
+                {k === "sohbet" ? t("chats") : t("connections")}
+                {k === "baglanti" && (conns?.some((c) => c.status === "beklemede" && !c.outgoing) ?? false) && (
+                  <span className="anim-pop ml-1.5 inline-grid size-4 place-items-center rounded-full bg-accent text-[10px] font-bold text-white">
+                    {conns!.filter((c) => c.status === "beklemede" && !c.outgoing).length}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+
+          {tab === "baglanti" ? (
+            conns === null ? (
+              <SkeletonList count={3} height="h-16" />
+            ) : conns.length === 0 ? (
+              <EmptyState title={t("noConnections")} body={t("noConnectionsHint")} />
+            ) : (
+              <ul className="stagger flex flex-col gap-2">
+                {[...conns]
+                  .sort((a, b) => Number(b.status === "beklemede" && !b.outgoing) - Number(a.status === "beklemede" && !a.outgoing))
+                  .map((c, i) => {
+                    const gelen = c.status === "beklemede" && !c.outgoing;
+                    return (
+                      <li key={c.person.id} style={{ "--i": i } as React.CSSProperties}
+                          className={`card flex flex-col gap-2.5 px-3.5 py-3 ${gelen ? "border-primary/50" : ""}`}>
+                        <Link href={`/app/profil/${c.person.handle ?? ""}` as "/app"} className="flex min-w-0 items-center gap-3">
+                          <Avatar profile={c.person} size="md" />
+                          <span className="min-w-0">
+                            <b className="block truncate text-[14.5px] font-semibold">
+                              {c.person.displayName || (c.person.handle ? `@${c.person.handle}` : "—")}
+                            </b>
+                            {c.status === "beklemede" && (
+                              <span className="meta block text-[12px]">{gelen ? t("incoming") : t("pendingOut")}</span>
+                            )}
+                          </span>
+                        </Link>
+                        {gelen ? (
+                          <span className="flex gap-1.5">
+                            <button
+                              type="button" disabled={busyId === c.person.id}
+                              onClick={async () => {
+                                setBusyId(c.person.id);
+                                try { await getRepo().acceptConnection(c.person.id); await yenileBaglantilar(); }
+                                finally { setBusyId(null); }
+                              }}
+                              className="btn btn-primary h-8 px-3 text-[13px] disabled:opacity-50"
+                            >{t("accept")}</button>
+                            <button
+                              type="button" disabled={busyId === c.person.id}
+                              onClick={async () => {
+                                setBusyId(c.person.id);
+                                try { await getRepo().removeConnection(c.person.id); await yenileBaglantilar(); }
+                                finally { setBusyId(null); }
+                              }}
+                              className="btn btn-ghost h-8 px-3 text-[13px] disabled:opacity-50"
+                            >{t("reject")}</button>
+                          </span>
+                        ) : c.status === "kabul" ? (
+                          <button
+                            type="button" disabled={busyId === c.person.id}
+                            onClick={() => void sohbetAc(c.person.id)}
+                            className="btn btn-ghost h-8 self-start px-3 text-[13px] disabled:opacity-50"
+                          >{t("startChat")}</button>
+                        ) : null}
+                      </li>
+                    );
+                  })}
+              </ul>
+            )
+          ) : threads === null ? (
             <SkeletonList count={4} height="h-16" />
           ) : threads.length === 0 ? (
             <EmptyState title={t("empty")} body={t("emptyHint")} />

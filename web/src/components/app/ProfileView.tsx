@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useTranslations } from "next-intl";
 import { useApp } from "@/lib/store";
 import { getRepo } from "@/lib/repo";
-import type { ProfileStats } from "@/lib/domain";
+import type { ProfileEntry, ProfileStats } from "@/lib/domain";
 import { ProfileCard } from "./ProfileCard";
 import { ProfileForm } from "./ProfileForm";
 import { SkeletonList } from "@/components/ui/States";
@@ -15,11 +15,17 @@ export function ProfileView() {
   const [editing, setEditing] = useState(false);
   const toast = useToast();
   const [stats, setStats] = useState<ProfileStats | null>(null);
+  const [entries, setEntries] = useState<ProfileEntry[]>([]);
 
   useEffect(() => {
     if (!ready || !profile) return;
     let alive = true;
-    getRepo().getProfileStats(profile.id).then((s) => alive && setStats(s));
+    const repo = getRepo();
+    void Promise.all([repo.getProfileStats(profile.id), repo.listEntries(profile.id)]).then(([s, e]) => {
+      if (!alive) return;
+      setStats(s);
+      setEntries(e);
+    });
     return () => { alive = false; };
   }, [ready, profile]);
 
@@ -49,7 +55,7 @@ export function ProfileView() {
           </div>
         ) : (
           <div className="anim-fade-up">
-            <ProfileCard profile={profile} stats={stats} subjectName={subjectName} examName={examName} onEdit={() => setEditing(true)} />
+            <ProfileCard profile={profile} stats={stats} entries={entries} subjectName={subjectName} examName={examName} onEdit={() => setEditing(true)} />
           </div>
         )}
       </div>

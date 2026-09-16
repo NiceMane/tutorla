@@ -9,7 +9,7 @@ import { useTour } from "./Tour";
 /* Turun kalıcı hâli: tur arayüzü gezdiriyor, burası aynı şeyleri uzun uzun
    anlatıyor. Örnek sohbet gerçek seans bileşenlerinin stiliyle çiziliyor —
    kullanıcı burada gördüğünü seansta birebir tanısın. */
-const SECTIONS = ["ters", "seans", "harita", "kanit", "sokratik", "mufredat", "akis", "mesaj", "arama", "profil", "ai"] as const;
+const SECTIONS = ["ters", "seans", "harita", "kanit", "sokratik", "mufredat", "akis", "mesaj", "arama", "profil", "ai", "baglanti"] as const;
 
 /* Render içinde bileşen tanımlamak her çizimde yeni bir tip yaratır; dışarıda. */
 function P({ children }: { children: ReactNode }) {
@@ -129,8 +129,14 @@ export function Guide() {
             <h2 className="text-[1.3rem]">{t(`s.${k}.t`)}</h2>
             <P>{t(`s.${k}.p1`)}</P>
             <P>{t(`s.${k}.p2`)}</P>
+            {k === "profil" && <P>{t("s.profil.p3")}</P>}
           </section>
         ))}
+
+        <section id="baglanti" className="scroll-mt-24">
+          <h2 className="text-[1.3rem]">{t("s.baglanti.t")}</h2>
+          <P>{t("s.baglanti.p1")}</P>
+        </section>
 
         {/* ipuçları */}
         <section className="card border-primary/35 bg-[color-mix(in_oklab,var(--primary)_5%,transparent)] p-5">

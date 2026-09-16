@@ -6,6 +6,7 @@ import { getRepo } from "@/lib/repo";
 import type { Grade, Profile, StudyStyle } from "@/lib/domain";
 import { Avatar } from "./Avatar";
 import { AvatarEditor } from "./AvatarEditor";
+import { ProfileEntries } from "./ProfileEntries";
 import { CITIES, DEPARTMENTS, GRADE_KEYS, STYLE_KEYS, TRACK_KEYS, UNIVERSITIES } from "@/lib/options";
 import { optionLabel } from "@/lib/labels";
 
@@ -315,6 +316,8 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
           </>
         )}
       </Section>
+
+      {profile && <ProfileEntries userId={profile.id} />}
 
       <Section index={5} title={t("privacy")}>
         <label className="flex items-start gap-3">

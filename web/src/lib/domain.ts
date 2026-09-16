@@ -58,11 +58,39 @@ export type ProfileStats = {
   closedByTeaching: number;
   moments: number;
   posts: number;
-  followers: number;
-  following: number;
+  connections: number;
 };
 
-export type FollowState = { following: boolean; followers: number; followingCount: number };
+/* Bağlantı: takip tek yönlüydü, bu karşılıklı. İstek gider, karşı taraf kabul eder. */
+export type ConnectionStatus = "yok" | "gonderildi" | "bekliyor" | "bagli";
+
+export type ConnectionState = { status: ConnectionStatus; count: number };
+
+export type Connection = {
+  /* Karşı taraf */
+  person: Profile;
+  status: "beklemede" | "kabul";
+  /* İsteği ben mi gönderdim */
+  outgoing: boolean;
+  createdAt: string;
+};
+
+/* Profilde kulüp, proje, yarışma gibi girdiler (LinkedIn'deki deneyim
+   bölümünün öğrenciye uyarlanmış hâli). */
+export type EntryKind = "kulup" | "proje" | "yarisma" | "gonullu" | "sertifika" | "deneyim" | "basari";
+
+export type ProfileEntry = {
+  id: string;
+  userId: string;
+  kind: EntryKind;
+  title: string;
+  org: string | null;
+  description: string | null;
+  startYear: number | null;
+  endYear: number | null;
+  url: string | null;
+  position: number;
+};
 
 /* ------------------------------------------------------------ mesajlaşma */
 
@@ -85,7 +113,7 @@ export type DmMessage = {
   pending?: boolean;
 };
 
-export type NotificationKind = "yorum" | "yanit" | "tepki" | "takip";
+export type NotificationKind = "yorum" | "yanit" | "tepki" | "baglanti_istek" | "baglanti_kabul";
 
 export type AppNotification = {
   id: string;

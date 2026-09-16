@@ -6,7 +6,7 @@ import { CURRICULUM, EXAM, PERSONAS } from "@/lib/curriculum";
 import type {
   Comment, Concept, ConceptState, ConceptStatus, DmMessage, DmThread, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
-  AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
+  AppNotification, Connection, ConnectionState, Persona, PersonaCode, Post, Profile, ProfileEntry, ProfileStats,
   Session, SessionMode,
   Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
@@ -52,9 +52,10 @@ type Store = {
   moments: Moment[];
   states: (ConceptState & { conceptId: string })[];
   dms?: DmMessage[];
+  entries?: ProfileEntry[];
 };
 
-const empty: Store = { exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [], dms: [] };
+const empty: Store = { exams: [], docs: [], posts: [], comments: [], sessions: [], messages: [], gaps: [], moments: [], states: [], dms: [], entries: [] };
 
 function read(): Store {
   if (typeof window === "undefined") return { ...empty };
@@ -399,8 +400,7 @@ export class LocalRepo implements Repo {
       closedByTeaching: closed,
       moments: st.moments.length,
       posts: st.posts.length,
-      followers: 0,
-      following: 0,
+      connections: 0,
     };
   }
 
@@ -414,10 +414,6 @@ export class LocalRepo implements Repo {
     await this.updateProfile({ avatarUrl: null });
   }
 
-  async getFollowState(): Promise<FollowState> {
-    return { following: false, followers: 0, followingCount: 0 };
-  }
-  async toggleFollow(): Promise<boolean> { return false; }
 
   async listNotifications(): Promise<AppNotification[]> { return []; }
   async unreadCount(): Promise<number> { return 0; }
@@ -470,6 +466,33 @@ export class LocalRepo implements Repo {
     write(st);
   }
   async documentUrl(): Promise<string | null> { return null; }
+
+  /* Bağlantı ve profil girdileri tarayıcı deposunda anlamlı değil: karşı taraf
+     yok. Supabase bağlıyken asıl hâli. */
+  async getConnectionState(): Promise<ConnectionState> { return { status: "yok", count: 0 }; }
+  async sendConnectionRequest(): Promise<void> { throw new Error("Bağlantı için giriş yapman gerekiyor."); }
+  async acceptConnection(): Promise<void> {}
+  async removeConnection(): Promise<void> {}
+  async listConnections(): Promise<Connection[]> { return []; }
+
+  async listEntries(): Promise<ProfileEntry[]> { return read().entries ?? []; }
+  async addEntry(input: Omit<ProfileEntry, "id" | "userId">): Promise<ProfileEntry> {
+    const st = read();
+    const entry: ProfileEntry = { ...input, id: uid(), userId: "local" };
+    st.entries = [...(st.entries ?? []), entry];
+    write(st);
+    return entry;
+  }
+  async updateEntry(id: string, patch: Partial<Omit<ProfileEntry, "id" | "userId">>): Promise<void> {
+    const st = read();
+    st.entries = (st.entries ?? []).map((e) => (e.id === id ? { ...e, ...patch } : e));
+    write(st);
+  }
+  async deleteEntry(id: string): Promise<void> {
+    const st = read();
+    st.entries = (st.entries ?? []).filter((e) => e.id !== id);
+    write(st);
+  }
 
   /* Arama: tarayıcı deposunda yalnızca kendi gönderilerin var. */
   async search(query: string): Promise<{ people: Profile[]; posts: Post[] }> {

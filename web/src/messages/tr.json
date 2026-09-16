@@ -362,14 +362,10 @@
       "finished": "biten seans",
       "closed": "anlatarak kapatılan kavram",
       "moments": "davranış anı",
-      "posts": "paylaşım",
-      "followers": "takipçi",
-      "following": "takip",
+      "posts": "gönderi",
       "streak": "gün üst üste",
       "longest": "en uzun seri",
       "member": "katılım",
-      "follow": "Takip et",
-      "unfollow": "Takibi bırak",
       "block": "Engelle",
       "unblock": "Engeli kaldır",
       "report": "Şikâyet et",
@@ -390,7 +386,36 @@
       "missingTitle": "Profilini tamamla",
       "missingHint": "Şunlar boş: {alanlar}. Öğrencin seni ne kadar tanırsa anlatırken o kadar isabetli soru sorar.",
       "fill": "Doldur",
-      "empty2": "Bu alan henüz boş"
+      "empty2": "Bu alan henüz boş",
+      "connections": "bağlantı",
+      "connect": "Bağlantı kur",
+      "connectSent": "İstek gönderildi",
+      "connectAccept": "İsteği kabul et",
+      "connected": "Bağlantın ✓",
+      "entries": "kulüpler, projeler, başarılar",
+      "entryLink": "bağlantıyı aç",
+      "entryKinds": {
+        "kulup": "kulüp",
+        "proje": "proje",
+        "yarisma": "yarışma",
+        "gonullu": "gönüllülük",
+        "sertifika": "sertifika",
+        "deneyim": "deneyim",
+        "basari": "başarı"
+      },
+      "entryAdd": "Girdi ekle",
+      "entryTitle": "başlık",
+      "entryOrg": "kurum / kulüp",
+      "entryDesc": "kısa açıklama",
+      "entryStart": "başlangıç yılı",
+      "entryEnd": "bitiş yılı",
+      "entryUrl": "bağlantı (https://…)",
+      "entryKind": "tür",
+      "entrySave": "Ekle",
+      "entryDelete": "Sil",
+      "entryEmpty": "Henüz girdi yok. Kulüplerini, projelerini, yarışmalarını ekle.",
+      "entryHint": "Öğrencin seni burada anlatılanlarla tanıyor; ders dışı yaptıkların da anlatımını şekillendiriyor.",
+      "cancel": "Vazgeç"
     },
     "feed": {
       "eyebrow": "akış",
@@ -418,10 +443,10 @@
       "bookmark": "Kaydet",
       "report": "Şikâyet",
       "all": "Tümü",
-      "following": "Takip",
       "bookmarks": "Kayıtlılar",
       "editHint": "düzenlendi",
-      "camera": "Kamera"
+      "camera": "Kamera",
+      "connections": "Bağlantılar"
     },
     "socratic": {
       "eyebrow": "sokratik mod",
@@ -458,7 +483,8 @@
       "yorum": "gönderine yorum yaptı",
       "yanit": "yorumuna yanıt verdi",
       "tepki": "gönderine tepki verdi",
-      "takip": "seni takip etmeye başladı"
+      "baglanti_istek": "sana bağlantı isteği gönderdi",
+      "baglanti_kabul": "bağlantı isteğini kabul etti"
     },
     "report": {
       "title": "Şikâyet et",
@@ -504,7 +530,17 @@
       "send": "Gönder",
       "emoji": "Emoji",
       "back": "Geri",
-      "openChat": "Mesaj gönder"
+      "openChat": "Mesaj gönder",
+      "connections": "Bağlantılar",
+      "chats": "Sohbetler",
+      "requests": "Gelen istekler",
+      "accept": "Kabul et",
+      "reject": "Reddet",
+      "noConnections": "Henüz bağlantın yok",
+      "noConnectionsHint": "Akışta birinin profiline gir, “Bağlantı kur” de. Kabul edince burada görünür.",
+      "pendingOut": "istek gönderildi",
+      "startChat": "Yaz",
+      "incoming": "sana bağlantı isteği gönderdi"
     },
     "search": {
       "eyebrow": "ara",
@@ -581,7 +617,7 @@
       },
       "bildirimler": {
         "t": "Bildirimler",
-        "b": "Gönderine yorum ya da tepki geldiğinde, biri seni takip ettiğinde burada görürsün."
+        "b": "Gönderine yorum ya da tepki geldiğinde, biri sana bağlantı isteği gönderdiğinde burada görürsün."
       },
       "ara": {
         "t": "Arama — ⌘K",
@@ -618,7 +654,7 @@
         "m1": "Kurtuluş Savaşı cephelerini karıştırıyorum 😅",
         "m2": "Haritayla anlatayım mı?",
         "n1": "Ece gönderine yorum yaptı",
-        "n2": "Mert seni takip etmeye başladı",
+        "n2": "Mert sana bağlantı isteği gönderdi",
         "r1": "Türev tanımı",
         "r2": "Kapalı türev",
         "topic": "konu",
@@ -679,12 +715,12 @@
         },
         "akis": {
           "t": "7. Akış",
-          "p1": "Takıldığın yeri paylaşabileceğin, başkalarının anlatımını okuyabileceğin yer. Fotoğraf, GIF ve emoji ile gönderi; yorum ve yorumlara yanıt; tepkiler ve yer imleri. Kaydettiklerin “Kayıtlılar” sekmesinde birikir.",
+          "p1": "Takıldığın yeri paylaşabileceğin, başkalarının anlatımını okuyabileceğin yer. Fotoğraf, GIF ve emoji ile gönderi; yorum ve yorumlara yanıt; tepkiler ve yer imleri. “Bağlantılar” sekmesi yalnızca bağlantı kurduğun kişilerin gönderilerini gösterir.",
           "p2": "Rahatsız eden bir gönderi ya da kişi olursa şikâyet ve engelleme var: engellediğin kişinin içeriği akıştan tamamen düşer."
         },
         "mesaj": {
           "t": "8. Mesajlar",
-          "p1": "Bir konuyu birlikte çözmek için birebir yazışma. Birinin profiline gir, “Mesaj gönder” de; kanal açılır. Mesajlar anında düşer, sayfayı yenilemeye gerek yok. Okunmamış sayısı navbar'daki rozette görünür."
+          "p1": "Bir konuyu birlikte çözmek için birebir yazışma. Birinin profiline gir, önce “Bağlantı kur” de; karşı taraf kabul edince Mesajlar sayfasındaki Bağlantılar sekmesinde çıkar ve oradan yazmaya başlarsın. Mesajlar anında düşer."
         },
         "arama": {
           "t": "9. Arama ve kısayollar",
@@ -698,12 +734,17 @@
         "profil": {
           "t": "10. Profil",
           "p1": "Öğrencin seni ne kadar tanırsa o kadar isabetli soru sorar. Sınıfın, alanın, hedef bölümün, güçlü ve zayıf derslerin — hepsi anlatımın nasıl yönlendirileceğini belirler. Alanların çoğu öneri listesi gösterir ama seni listeye hapsetmez: listede olmayanı da yazabilirsin.",
-          "p2": "Profil fotoğrafını yükleyip kırpabilir, döndürebilir, kameradan çekebilirsin. Profilini herkese kapatmak istersen gizlilik ayarı en altta."
+          "p2": "Profil fotoğrafını yükleyip kırpabilir, döndürebilir, kameradan çekebilirsin. Profilini herkese kapatmak istersen gizlilik ayarı en altta.",
+          "p3": "Profilinde kulüplerini, projelerini, yarışmalarını, gönüllülüklerini ve sertifikalarını ayrı girdiler olarak tutabilirsin — ders dışında yaptıkların da seni anlatıyor."
         },
         "ai": {
           "t": "11. Dürüst not: yapay zekâ henüz bağlı değil",
           "p1": "Şu an öğrencinin soruları elle yazılmış kurallarla üretiliyor ve arayüzde “senaryolu öğrenci” rozetiyle işaretli. Claude bağlandığında sorular senin anlattığın metne göre üretilecek; ürünün akışı aynı kalacak.",
           "p2": "Aynı şekilde, kendi sınavına yüklediğin müfredat belgeleri şimdilik saklanıyor ama işlenmiyor."
+        },
+        "baglanti": {
+          "t": "12. Bağlantılar",
+          "p1": "Takip yok; ilişki karşılıklı. İstek gönderirsin, karşı taraf kabul eder. Kabul edilince ikiniz de birbirinizin akışını “Bağlantılar” sekmesinde görürsünüz ve mesajlaşma listesinde birbirinizi bulursunuz. Bağlantıyı istediğin an kaldırabilirsin."
         }
       },
       "tips": {

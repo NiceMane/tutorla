@@ -77,7 +77,7 @@ bildirim sayısı rozetle görünüyor.
 | `/app/sokratik` | Sokratik mod — ana modun tersi: o sorar, sen düşünürsün |
 | `/app/akis` | Akış — Tümü/Takip/Kayıtlılar sekmeleri, sayfalama, iyimser tepkiler, düzenleme, yer imi, şikâyet |
 | `/app/profil` | Profil — fotoğraf (kırp/döndür/kameradan çek), kimlik, öğrencilik, hedef, çalışma alışkanlığı, gizlilik + özet |
-| `/app/profil/[handle]` | Herkese açık profil — takip et, engelle, şikâyet et |
+| `/app/profil/[handle]` | Herkese açık profil — bağlantı kur, mesaj gönder, engelle, şikâyet et |
 | `/app/bildirimler` | Bildirimler — yorum, yanıt, tepki, takip |
 | `/app/gecmis` | Seans geçmişi — hangi konu, hangi mod, ne zaman |
 | `/app/baslangic` | Dört adımlık tanışma — ilk girişte bir kez, `profiles.onboarded_at` ile |
@@ -103,6 +103,18 @@ bellekte olduğu için anında eşleşiyor; kişiler ve gönderiler veritabanın
 (220 ms gecikmeli, eski yanıtlar eleniyor). Türkçe iki yönlü normalleştiriliyor:
 "turev" yazan da "türev" yazan da aynı sonucu buluyor. Konuya basınca açık seans
 varsa ona devam ediyor, yoksa yenisini açıyor. ↑↓ ile gez, ⏎ ile aç.
+
+**Bağlantılar (takip değil).** Takip tek yönlüydü: birini takip etmek onunla bir
+ilişki kurmuyordu. Yerine karşılıklı bağlantı geldi — istek gider, karşı taraf
+kabul eder. Kabul edilince akıştaki "Bağlantılar" sekmesi ve Mesajlar sayfasındaki
+bağlantı listesi ikisini de görür. `connections` tablosu, kabul yalnızca isteği
+alan tarafta (RLS), bildirimler tetikleyiciyle, saatte 40 istek kotası.
+Bağlantı sayısı herkese açık bir rakam; kimlerle bağlı olduğun değil.
+
+**Profilde ders dışı girdiler.** Kulüp, proje, yarışma, gönüllülük, sertifika,
+deneyim ve başarı — sabit alanlar yerine istediğin kadar girdi (`profile_entries`,
+kişi başı en fazla 50). Her girdide başlık, kurum, yıl aralığı, açıklama ve
+isteğe bağlı bağlantı var; adres beyaz listeye bağlı.
 
 **Mesajlaşma.** Akış herkese açık; mesajlar iki kişi arasında kalıyor. Kanal bir
 profildeki "Mesaj gönder" ile açılıyor (`dm_kanal_ac` işlevi — engel kontrolünü de

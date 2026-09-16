@@ -256,7 +256,7 @@ export function Feed() {
       </Modal>
 
       <div className="mt-6 flex gap-1.5" role="tablist">
-        {(["all", "following", "bookmarks"] as FeedScope[]).map((sc) => (
+        {(["all", "connections", "bookmarks"] as FeedScope[]).map((sc) => (
           <button
             key={sc} type="button" role="tab" aria-selected={scope === sc}
             onClick={() => setScope(sc)}

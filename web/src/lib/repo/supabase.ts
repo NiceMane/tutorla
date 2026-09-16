@@ -3,9 +3,10 @@
    fark yalnızca verinin nereden geldiği. */
 import { getSupabase } from "@/lib/supabase";
 import type {
-  Comment, Concept, ConceptState, ConceptStatus, DmMessage, DmThread, Exam, ExamDocument, Gap,
+  Comment, Concept, ConceptState, ConceptStatus, Connection, ConnectionState, DmMessage,
+  DmThread, Exam, ExamDocument, Gap,
   LearningEvidence, MediaKind, Message, MessageRole, Moment, MomentKind,
-  AppNotification, FollowState, Persona, PersonaCode, Post, Profile, ProfileStats,
+  AppNotification, Persona, PersonaCode, Post, Profile, ProfileEntry, ProfileStats,
   ReportReason, Session, SessionMode, SessionStatus,
   Subject, TeachingProfile, Topic, TopicProgress,
 } from "@/lib/domain";
@@ -588,14 +589,15 @@ export class SupabaseRepo implements Repo {
   async getProfileStats(userId: string): Promise<ProfileStats> {
     const sb = await this.sb();
     const c = (q: PromiseLike<{ count: number | null }>) => q;
-    const [ss, fin, le, tp, po, fr, fg] = await Promise.all([
+    const [ss, fin, le, tp, po, bag] = await Promise.all([
       c(sb.from("sessions").select("id", { count: "exact", head: true }).eq("user_id", userId)),
       c(sb.from("sessions").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "finished")),
       sb.from("learning_evidence").select("closed_by_teaching").eq("user_id", userId),
       sb.from("teaching_profile").select("total").eq("user_id", userId),
       c(sb.from("posts").select("id", { count: "exact", head: true }).eq("author_id", userId)),
-      c(sb.from("follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId)),
-      c(sb.from("follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId)),
+      /* Bağlantı sayısı RLS'i aşan bir işlevden geliyor: rakam herkese açık,
+         kimler olduğu değil. */
+      sb.rpc("baglanti_sayisi", { kisi: userId }),
     ]);
     return {
       sessions: ss.count ?? 0,
@@ -603,8 +605,7 @@ export class SupabaseRepo implements Repo {
       closedByTeaching: ((le.data ?? []) as Row[]).reduce((n, r) => n + num(r.closed_by_teaching), 0),
       moments: ((tp.data ?? []) as Row[]).reduce((n, r) => n + num(r.total), 0),
       posts: po.count ?? 0,
-      followers: fr.count ?? 0,
-      following: fg.count ?? 0,
+      connections: typeof bag.data === "number" ? bag.data : 0,
     };
   }
 
@@ -624,29 +625,146 @@ export class SupabaseRepo implements Repo {
     await this.updateProfile({ avatarUrl: null });
   }
 
-  async getFollowState(userId: string): Promise<FollowState> {
+  /* ---------------------------------------------------------- bağlantılar */
+
+  async getConnectionState(userId: string): Promise<ConnectionState> {
     const sb = await this.sb();
     const me = await this.userId();
-    const [mine, fr, fg] = await Promise.all([
-      sb.from("follows").select("follower_id").eq("follower_id", me).eq("following_id", userId).maybeSingle(),
-      sb.from("follows").select("follower_id", { count: "exact", head: true }).eq("following_id", userId),
-      sb.from("follows").select("following_id", { count: "exact", head: true }).eq("follower_id", userId),
+    const [satir, sayi] = await Promise.all([
+      sb.from("connections")
+        .select("requester_id,addressee_id,status")
+        .or(`and(requester_id.eq.${me},addressee_id.eq.${userId}),and(requester_id.eq.${userId},addressee_id.eq.${me})`)
+        .maybeSingle(),
+      sb.rpc("baglanti_sayisi", { kisi: userId }),
     ]);
-    return { following: Boolean(mine.data), followers: fr.count ?? 0, followingCount: fg.count ?? 0 };
+    const count = typeof sayi.data === "number" ? sayi.data : 0;
+    const r = satir.data as Row | null;
+    if (!r) return { status: "yok", count };
+    if (str(r.status) === "kabul") return { status: "bagli", count };
+    /* Bekleyen istek: ben mi gönderdim, bana mı geldi? */
+    return { status: str(r.requester_id) === me ? "gonderildi" : "bekliyor", count };
   }
 
-  async toggleFollow(userId: string): Promise<boolean> {
+  async sendConnectionRequest(userId: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb
+      .from("connections")
+      .insert({ requester_id: await this.userId(), addressee_id: userId });
+    if (error) fail(error, "sorgu");
+  }
+
+  async acceptConnection(userId: string): Promise<void> {
     const sb = await this.sb();
     const me = await this.userId();
-    const { data } = await sb.from("follows").select("follower_id").eq("follower_id", me).eq("following_id", userId).maybeSingle();
-    if (data) {
-      const { error } = await sb.from("follows").delete().eq("follower_id", me).eq("following_id", userId);
-      if (error) fail(error, "sorgu");
-      return false;
-    }
-    const { error } = await sb.from("follows").insert({ follower_id: me, following_id: userId });
+    const { error } = await sb
+      .from("connections")
+      .update({ status: "kabul" })
+      .eq("requester_id", userId)
+      .eq("addressee_id", me);
     if (error) fail(error, "sorgu");
-    return true;
+  }
+
+  async removeConnection(userId: string): Promise<void> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    const { error } = await sb
+      .from("connections")
+      .delete()
+      .or(`and(requester_id.eq.${me},addressee_id.eq.${userId}),and(requester_id.eq.${userId},addressee_id.eq.${me})`);
+    if (error) fail(error, "sorgu");
+  }
+
+  async listConnections(): Promise<Connection[]> {
+    const sb = await this.sb();
+    const me = await this.userId();
+    /* İki yön ayrı sorgu: PostgREST'te tek sorguda iki farklı profil ilişkisini
+       birleştirmek okunaksız oluyor. */
+    const [giden, gelen] = await Promise.all([
+      sb.from("connections")
+        .select(`status,created_at,profiles!connections_addressee_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+        .eq("requester_id", me),
+      sb.from("connections")
+        .select(`status,created_at,profiles!connections_requester_id_fkey(${SupabaseRepo.PROFILE_COLS})`)
+        .eq("addressee_id", me),
+    ]);
+    if (giden.error) fail(giden.error, "sorgu");
+    if (gelen.error) fail(gelen.error, "sorgu");
+
+    const topla = (rows: Row[], outgoing: boolean): Connection[] =>
+      rows
+        .map((r) => {
+          const person = this.toProfile(r.profiles as Row | null);
+          return person
+            ? { person, status: str(r.status) as Connection["status"], outgoing, createdAt: str(r.created_at) }
+            : null;
+        })
+        .filter((x): x is Connection => x !== null);
+
+    return [...topla((giden.data as Row[]) ?? [], true), ...topla((gelen.data as Row[]) ?? [], false)]
+      .sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+  }
+
+  /* ------------------------------------------------------- profil girdileri */
+
+  private toEntry(r: Row): ProfileEntry {
+    return {
+      id: str(r.id),
+      userId: str(r.user_id),
+      kind: str(r.kind) as ProfileEntry["kind"],
+      title: str(r.title),
+      org: r.org ? str(r.org) : null,
+      description: r.description ? str(r.description) : null,
+      startYear: r.start_year === null || r.start_year === undefined ? null : num(r.start_year),
+      endYear: r.end_year === null || r.end_year === undefined ? null : num(r.end_year),
+      url: r.url ? str(r.url) : null,
+      position: num(r.position),
+    };
+  }
+
+  async listEntries(userId: string): Promise<ProfileEntry[]> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("profile_entries")
+      .select("id,user_id,kind,title,org,description,start_year,end_year,url,position")
+      .eq("user_id", userId)
+      .order("position")
+      .order("created_at", { ascending: false });
+    if (error) fail(error, "sorgu");
+    return ((data as Row[]) ?? []).map((r) => this.toEntry(r));
+  }
+
+  async addEntry(input: Omit<ProfileEntry, "id" | "userId">): Promise<ProfileEntry> {
+    const sb = await this.sb();
+    const { data, error } = await sb
+      .from("profile_entries")
+      .insert({
+        user_id: await this.userId(),
+        kind: input.kind, title: input.title, org: input.org,
+        description: input.description, start_year: input.startYear,
+        end_year: input.endYear, url: input.url, position: input.position,
+      })
+      .select("id,user_id,kind,title,org,description,start_year,end_year,url,position")
+      .single();
+    if (error) fail(error, "sorgu");
+    return this.toEntry(data as Row);
+  }
+
+  async updateEntry(id: string, patch: Partial<Omit<ProfileEntry, "id" | "userId">>): Promise<void> {
+    const sb = await this.sb();
+    const MAP: Record<string, string> = {
+      kind: "kind", title: "title", org: "org", description: "description",
+      startYear: "start_year", endYear: "end_year", url: "url", position: "position",
+    };
+    const row: Row = {};
+    for (const [k, col] of Object.entries(MAP)) if (k in patch) row[col] = (patch as Record<string, unknown>)[k];
+    const { error } = await sb.from("profile_entries").update(row).eq("id", id);
+    if (error) fail(error, "sorgu");
+  }
+
+  async deleteEntry(id: string): Promise<void> {
+    const sb = await this.sb();
+    const { error } = await sb.from("profile_entries").delete().eq("id", id);
+    if (error) fail(error, "sorgu");
   }
 
   async listNotifications(limit = 30): Promise<AppNotification[]> {
@@ -726,9 +844,16 @@ export class SupabaseRepo implements Repo {
     const me = await this.userId();
 
     let ids: string[] | null = null;
-    if (scope === "following") {
-      const { data } = await sb.from("follows").select("following_id").eq("follower_id", me);
-      ids = [...(data as Row[] ?? []).map((r) => str(r.following_id)), me];
+    if (scope === "connections") {
+      /* Bağlantı iki yönlü: hem gönderdiğim hem bana gelen kabul edilmiş
+         satırların karşı tarafı. */
+      const { data } = await sb
+        .from("connections")
+        .select("requester_id,addressee_id")
+        .eq("status", "kabul")
+        .or(`requester_id.eq.${me},addressee_id.eq.${me}`);
+      const karsi = (data as Row[] ?? []).map((r) => (str(r.requester_id) === me ? str(r.addressee_id) : str(r.requester_id)));
+      ids = [...karsi, me];
     } else if (scope === "bookmarks") {
       const { data } = await sb.from("bookmarks").select("post_id").eq("user_id", me);
       const postIds = (data as Row[] ?? []).map((r) => str(r.post_id));

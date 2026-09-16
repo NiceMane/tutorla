@@ -2,13 +2,13 @@
    biri müfredat/seans, bu ise sosyal taraf. İkisi de aynı sınıfta uygulanıyor
    ama arayüzleri ayrı olduğu için okuması ve değiştirmesi kolay. */
 import type {
-  AppNotification, Comment, DmMessage, DmThread, Exam, ExamDocument, FollowState,
-  MediaKind, Post, Profile, ProfileStats, ReportReason,
+  AppNotification, Comment, Connection, ConnectionState, DmMessage, DmThread, Exam,
+  ExamDocument, MediaKind, Post, Profile, ProfileEntry, ProfileStats, ReportReason,
 } from "@/lib/domain";
 
 export type NewPost = { body: string; examId: string | null; media: { url: string; kind: MediaKind }[] };
 
-export type FeedScope = "all" | "following" | "bookmarks";
+export type FeedScope = "all" | "connections" | "bookmarks";
 export type FeedPage = { posts: Post[]; nextCursor: string | null };
 
 export interface SocialRepo {
@@ -20,8 +20,18 @@ export interface SocialRepo {
   removeAvatar(): Promise<void>;
 
   /* sosyal grafik */
-  getFollowState(userId: string): Promise<FollowState>;
-  toggleFollow(userId: string): Promise<boolean>;
+  /* bağlantılar */
+  getConnectionState(userId: string): Promise<ConnectionState>;
+  sendConnectionRequest(userId: string): Promise<void>;
+  acceptConnection(userId: string): Promise<void>;
+  removeConnection(userId: string): Promise<void>;
+  listConnections(): Promise<Connection[]>;
+
+  /* profil girdileri */
+  listEntries(userId: string): Promise<ProfileEntry[]>;
+  addEntry(input: Omit<ProfileEntry, "id" | "userId">): Promise<ProfileEntry>;
+  updateEntry(id: string, patch: Partial<Omit<ProfileEntry, "id" | "userId">>): Promise<void>;
+  deleteEntry(id: string): Promise<void>;
 
   /* bildirimler */
   listNotifications(limit?: number): Promise<AppNotification[]>;

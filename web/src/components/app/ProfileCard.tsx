@@ -1,17 +1,25 @@
 "use client";
 import { useTranslations } from "next-intl";
-import type { Profile, ProfileStats } from "@/lib/domain";
+import type { Profile, ProfileEntry, ProfileStats } from "@/lib/domain";
 import { Avatar } from "./Avatar";
 import { CountUp } from "@/components/ui/CountUp";
 import { optionLabel } from "@/lib/labels";
+
+/* Girdi türlerinin simgesi — tek yerde. */
+const ENTRY_ICON: Record<ProfileEntry["kind"], string> = {
+  kulup: "🎭", proje: "🛠", yarisma: "🏅", gonullu: "🤝",
+  sertifika: "📜", deneyim: "💼", basari: "⭐",
+};
 import { ProgressBar } from "./ProgressBar";
 
 /* Profilin okunur görünümü — hem kendi sayfanda hem herkese açık sayfada. */
 export function ProfileCard({
-  profile, stats, subjectName, examName, actions, onEdit,
+  profile, stats, entries, subjectName, examName, actions, onEdit,
 }: {
   profile: Profile;
   stats: ProfileStats | null;
+  /* Kulüp, proje, yarışma… — LinkedIn'deki deneyim bölümünün öğrenci hâli */
+  entries?: ProfileEntry[];
   subjectName: (slug: string) => string;
   examName: string | null;
   actions?: React.ReactNode;
@@ -102,8 +110,8 @@ export function ProfileCard({
         <div className="card anim-fade-up grid grid-cols-2 gap-5 p-5 sm:grid-cols-4">
           {stat(t("sessions"), stats.sessions)}
           {stat(t("closed"), stats.closedByTeaching)}
-          {stat(t("followers"), stats.followers)}
-          {stat(t("following"), stats.following)}
+          {stat(t("posts"), stats.posts)}
+          {stat(t("connections"), stats.connections)}
         </div>
       )}
 
@@ -138,6 +146,44 @@ export function ProfileCard({
               </div>
             </div>
           )}
+        </div>
+      )}
+
+      {entries && entries.length > 0 && (
+        <div className="card anim-fade-up flex flex-col gap-4 p-5">
+          <span className="meta text-[13px]">{t("entries")}</span>
+          <ul className="stagger flex flex-col">
+            {entries.map((e, i) => (
+              <li
+                key={e.id}
+                style={{ "--i": Math.min(i, 8) } as React.CSSProperties}
+                className="flex gap-3 border-t border-line py-3 first:border-t-0 first:pt-0"
+              >
+                <span className="mt-0.5 grid size-8 shrink-0 place-items-center rounded-[30%] border border-line bg-surface text-[15px]" aria-hidden="true">
+                  {ENTRY_ICON[e.kind]}
+                </span>
+                <span className="min-w-0 flex-1">
+                  <span className="flex flex-wrap items-baseline gap-x-2">
+                    <b className="text-[14.5px] font-semibold">{e.title}</b>
+                    <span className="chip text-[11px]">{t(`entryKinds.${e.kind}`)}</span>
+                    {(e.startYear || e.endYear) && (
+                      <span className="meta text-[12.5px] tabular-nums">
+                        {e.startYear ?? "?"}{e.endYear && e.endYear !== e.startYear ? `–${e.endYear}` : ""}
+                      </span>
+                    )}
+                  </span>
+                  {e.org && <span className="meta mt-0.5 block text-[13px]">{e.org}</span>}
+                  {e.description && <p className="mt-1 whitespace-pre-wrap text-[13.5px] leading-[1.5] text-ink-2">{e.description}</p>}
+                  {e.url && (
+                    <a href={e.url} target="_blank" rel="noopener noreferrer nofollow"
+                       className="meta mt-1 inline-block text-[12.5px] !text-primary underline decoration-dotted underline-offset-4">
+                      {t("entryLink")}
+                    </a>
+                  )}
+                </span>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
