@@ -115,6 +115,12 @@ bölüm artık öneri listesi gösteren ama listeye hapsetmeyen alanlar: hazırl
 de, açıköğretimdeki de, "sabah 5'te kalkarım" diyen de kendini yazabiliyor. Eksik
 alanlar profilde adıyla sayılıyor ve tek tıkla forma götürüyor.
 
+**Güvenlik.** Tek gerçek sınır veritabanının içi: 25 tablonun tamamında RLS açık,
+kotalar tetikleyicide, istemciye güvenilmiyor. Tarayıcı tarafında nonce'lu CSP
+(script'lerde `'unsafe-inline'` yok), HSTS, çerçeveleme yasağı, Permissions-Policy;
+medya adresleri veritabanı kısıtıyla beyaz listede; `?next=` açık yönlendirmeye
+kapalı. Ayrıntı ve açık işler: [SECURITY.md](SECURITY.md).
+
 **Güvenlik ağı.** Şikâyet (gönderi/yorum/profil), engelleme (engellenen içerik RLS düzeyinde
 akıştan düşer), kota sınırı (dakikada 3 gönderi / 8 yorum — veritabanı tetikleyicisiyle, istemciye
 güvenilmiyor). `error.tsx`, kök ve dil içi `not-found.tsx`, ortak iskelet/boş/hata bileşenleri.

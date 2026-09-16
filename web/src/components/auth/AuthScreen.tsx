@@ -4,6 +4,7 @@ import { useTranslations } from "next-intl";
 import { useSearchParams } from "next/navigation";
 import { Link, useRouter } from "@/i18n/navigation";
 import { useAuth, type AuthError } from "@/lib/auth";
+import { safeNext } from "@/lib/safeRedirect";
 import { Wordmark } from "@/components/ui/Wordmark";
 import { PasswordField } from "./PasswordField";
 import { PasswordRules, passwordOk } from "./PasswordRules";
@@ -16,7 +17,8 @@ export function AuthScreen() {
   const { user, ready, enabled, signIn, signUp, signInWithGoogle, requestPasswordReset } = useAuth();
   const router = useRouter();
   const params = useSearchParams();
-  const next = params.get("next") || "/app";
+  /* ?next= kullanıcıdan geliyor: dışarı çıkaran adresler eleniyor. */
+  const next = safeNext(params.get("next"));
 
   const [mode, setMode] = useState<Mode>("signin");
   const [email, setEmail] = useState("");

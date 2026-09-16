@@ -3,6 +3,7 @@ import { useEffect, useRef } from "react";
 import { useTranslations } from "next-intl";
 import type { Gap, Message, Moment } from "@/lib/domain";
 import { MomentChip } from "../MomentChip";
+import { safeInlineHtml } from "@/lib/safeHtml";
 
 /* Sohbet akışı. Boşluk etiketi ve davranış anı, ait oldukları mesajın altında durur. */
 export function MessageList({
@@ -34,8 +35,8 @@ export function MessageList({
             className={`flex flex-col gap-2 ${m.role === "teacher" ? "anim-slide-left" : "anim-slide-right"}`}
           >
             <div className={`max-w-[85%] rounded-[9px] px-3.5 py-2.5 leading-[1.5] ${m.role === "teacher" ? "self-end bg-primary text-on-primary" : "border border-line bg-surface-2"}`}>
-              {/* curriculum'daki tek <strong> vurgusu için */}
-              <span dangerouslySetInnerHTML={{ __html: m.content.replace(/<(?!\/?strong>)/g, "&lt;") }} />
+              {/* Yalnızca <strong> vurgusu geçiyor; gerisi metin olarak kaçırılıyor. */}
+              <span dangerouslySetInnerHTML={{ __html: safeInlineHtml(m.content) }} />
             </div>
             {moment && <MomentChip kind={moment.kind} label={moment.label} />}
             {gap && (

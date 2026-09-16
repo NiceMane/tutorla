@@ -3,6 +3,7 @@ import { Figtree, Newsreader } from "next/font/google";
 import { notFound } from "next/navigation";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations, setRequestLocale } from "next-intl/server";
+import { headers } from "next/headers";
 import { ThemeProvider } from "next-themes";
 import { AuthProvider } from "@/lib/auth";
 import { routing } from "@/i18n/routing";
@@ -48,10 +49,13 @@ export default async function LocaleLayout({ children, params }: { children: Rea
   const { locale } = await params;
   if (!hasLocale(routing.locales, locale)) notFound();
   setRequestLocale(locale);
+  /* CSP nonce'u proxy üretiyor; next-themes'in satır içi script'i de onsuz
+     çalışamaz (tema, sayfa boyanmadan önce uygulanmak zorunda). */
+  const nonce = (await headers()).get("x-nonce") ?? undefined;
   return (
     <html lang={locale} suppressHydrationWarning className={`${figtree.variable} ${newsreader.variable}`}>
       <body className="min-h-dvh">
-        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem disableTransitionOnChange>
+        <ThemeProvider attribute="data-theme" defaultTheme="system" enableSystem disableTransitionOnChange nonce={nonce}>
           <NextIntlClientProvider>
             <AuthProvider>{children}</AuthProvider>
           </NextIntlClientProvider>

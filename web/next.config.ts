@@ -17,8 +17,34 @@ const storageHost = (() => {
   }
 })();
 
+/* CSP dışındaki güvenlik başlıkları — bunlar isteğe göre değişmiyor,
+   bu yüzden proxy yerine burada. */
+const GUVENLIK_BASLIKLARI = [
+  /* Sunucu yazılımını söylemeye gerek yok */
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  /* frame-ancestors'ın eski tarayıcılardaki karşılığı */
+  { key: "X-Frame-Options", value: "DENY" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  /* Kamera profil fotoğrafı için gerekli; gerisi kapalı */
+  {
+    key: "Permissions-Policy",
+    value: "camera=(self), microphone=(), geolocation=(), payment=(), usb=(), interest-cohort=()",
+  },
+  /* Tarayıcı bu alan adına bir daha asla http ile gitmesin (2 yıl) */
+  { key: "Strict-Transport-Security", value: "max-age=63072000; includeSubDomains; preload" },
+  { key: "X-DNS-Prefetch-Control", value: "off" },
+  /* Kaynaklarımız başka sayfalarca gömülemesin */
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
+];
+
 const nextConfig: NextConfig = {
   reactStrictMode: true,
+  /* "X-Powered-By: Next.js" gereksiz bilgi veriyor */
+  poweredByHeader: false,
+  async headers() {
+    return [{ source: "/:path*", headers: GUVENLIK_BASLIKLARI }];
+  },
   images: {
     remotePatterns: [
       ...(storageHost
