@@ -27,3 +27,7 @@ alter table profiles add constraint profiles_avatar_url_gecerli
     avatar_url is null
     or avatar_url ~ '^https://bupgkfzkuanzysdpteiy\.supabase\.co/storage/v1/object/public/avatars/[A-Za-z0-9._~/%-]+$'
   );
+
+-- Denetçi notu: işlevin search_path'i sabitlenmeli (rol değiştirerek başka bir
+-- şemayı öne almak mümkün olmasın). Gövde yalnızca düzenli ifade kullanıyor.
+alter function medya_adresi_gecerli(text) set search_path = '';

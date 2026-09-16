@@ -60,6 +60,10 @@ kullanılmıyor.
 
 **Bağımlılıklar.** `npm audit --omit=dev` → 0 açık (16 Eylül 2026).
 
+**Veritabanı denetçisi.** Supabase advisor'da güvenlik uyarısı kalmadı; tek
+istisna panelden açılması gereken "Leaked Password Protection" ve bilerek
+dışarı açık olan `dm_kanal_ac` (kendi içinde oturum/engel kontrolü yapıyor).
+
 ## Bilinen açık işler
 
 - [ ] **Supabase panelinde "Leaked Password Protection"** açılmalı
