@@ -13,7 +13,10 @@ export function Avatar({
   className?: string;
 }) {
   const px = SIZES[size];
-  const base = `shrink-0 overflow-hidden rounded-[30%] border border-line bg-surface ${className}`;
+  /* block şart: span varsayılanı inline ve inline kutuda width/height uygulanmaz —
+     fotoğraflı avatar esnek satırın içinde dikey olarak uzuyordu. Emoji dalı
+     zaten grid olduğu için bu hata yalnızca fotoğrafta görünüyordu. */
+  const base = `block shrink-0 overflow-hidden rounded-[30%] border border-line bg-surface ${className}`;
 
   if (profile?.avatarUrl) {
     return (
