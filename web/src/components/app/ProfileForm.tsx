@@ -47,9 +47,9 @@ function Field({ label, children, hint }: { label: string; children: React.React
 const inputCls =
   "h-10 rounded-[var(--radius-ui)] border border-line-2 bg-paper px-3 outline-none focus:border-primary";
 
-function Section({ title, children }: { title: string; children: React.ReactNode }) {
+function Section({ title, children, index = 0 }: { title: string; children: React.ReactNode; index?: number }) {
   return (
-    <fieldset className="card flex flex-col gap-4 p-5">
+    <fieldset style={{ "--i": index } as React.CSSProperties} className="card flex flex-col gap-4 p-5">
       <legend className="meta px-1 text-[13.5px]">{title}</legend>
       {children}
     </fieldset>
@@ -128,8 +128,8 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
   }
 
   return (
-    <form onSubmit={save} className="flex flex-col gap-5">
-      <Section title={t("photo")}>
+    <form onSubmit={save} className="stagger flex flex-col gap-5">
+      <Section index={0} title={t("photo")}>
         <div className="flex flex-wrap items-center gap-4">
           {/* Fotoğrafın üstüne gelince değiştirme katmanı açılır — kart da tıklanabilir. */}
           <button
@@ -138,7 +138,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
             className="group relative rounded-[30%] outline-none ring-primary/60 focus-visible:ring-2"
             aria-label={t("upload")}
           >
-            <Avatar profile={{ avatarUrl, avatarEmoji: form.avatarEmoji, displayName: form.displayName }} size="xl" className="transition-transform duration-200 group-hover:scale-[1.03]" />
+            <Avatar profile={{ avatarUrl, avatarEmoji: form.avatarEmoji, displayName: form.displayName }} size="xl" className="transition-[transform,rotate,scale,translate] duration-200 group-hover:scale-[1.03]" />
             <span className="absolute inset-0 grid place-items-center rounded-[30%] bg-[color-mix(in_oklab,var(--ink)_55%,transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                 <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
@@ -177,7 +177,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
           <div className="flex flex-wrap gap-1.5">
             {AVATARS.map((a) => (
               <button key={a} type="button" onClick={() => set("avatarEmoji", a)} aria-pressed={form.avatarEmoji === a}
-                className={`grid size-10 place-items-center rounded-[30%] border text-[19px] transition-[transform,border-color,background-color] duration-200 hover:scale-105 active:scale-95 ${
+                className={`grid size-10 place-items-center rounded-[30%] border text-[19px] transition-[transform,border-color,background-color,rotate,scale,translate] duration-200 hover:scale-105 active:scale-95 ${
                   form.avatarEmoji === a ? "border-primary bg-[color-mix(in_oklab,var(--primary)_12%,transparent)]" : "border-line hover:border-line-2"
                 }`}>{a}</button>
             ))}
@@ -185,7 +185,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         </div>
       </Section>
 
-      <Section title={t("identity")}>
+      <Section index={1} title={t("identity")}>
         <div className="grid gap-4 md:grid-cols-2">
           <Field label={t("name")}>
             <input value={form.displayName} onChange={(e) => set("displayName", e.target.value)} maxLength={60} className={inputCls} />
@@ -200,7 +200,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         </Field>
       </Section>
 
-      <Section title={t("study")}>
+      <Section index={2} title={t("study")}>
         <div className="grid gap-4 md:grid-cols-2">
           <Field label={t("exam")}>
             <select value={form.examId} onChange={(e) => set("examId", e.target.value)} className={inputCls}>
@@ -244,7 +244,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         </div>
       </Section>
 
-      <Section title={t("target")}>
+      <Section index={3} title={t("target")}>
         <div className="grid gap-4 md:grid-cols-2">
           <Field label={t("targetUniversity")} hint={t("freeHint")}>
             <input list="secenek-uni" value={form.targetUniversity} onChange={(e) => set("targetUniversity", e.target.value)} maxLength={80} className={inputCls} />
@@ -273,7 +273,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         </Field>
       </Section>
 
-      <Section title={t("habits")}>
+      <Section index={4} title={t("habits")}>
         <div className="grid gap-4 md:grid-cols-2">
           <Field label={t("weeklyHours")}>
             <input type="number" min={0} max={120} value={form.weeklyHours}
@@ -316,7 +316,7 @@ export function ProfileForm({ onDone }: { onDone?: () => void }) {
         )}
       </Section>
 
-      <Section title={t("privacy")}>
+      <Section index={5} title={t("privacy")}>
         <label className="flex items-start gap-3">
           <input type="checkbox" checked={form.isPublic} onChange={(e) => set("isPublic", e.target.checked)}
             className="mt-1 size-4 accent-[var(--primary)]" />

@@ -100,7 +100,7 @@ export function AppNav() {
               <span className="hidden lg:inline">{t(l.key)}</span>
               {/* etkin sekmenin altındaki çizgi ortadan açılır */}
               <i
-                className="pointer-events-none absolute inset-x-2 -bottom-px block h-[2px] origin-center rounded-full bg-primary transition-transform duration-300 ease-out motion-reduce:transition-none"
+                className="pointer-events-none absolute inset-x-2 -bottom-px block h-[2px] origin-center rounded-full bg-primary transition-[transform,rotate,scale,translate] duration-300 ease-out motion-reduce:transition-none"
                 style={{ transform: `scaleX(${active(l.href) ? 1 : 0})` }}
                 aria-hidden="true"
               />
@@ -178,7 +178,7 @@ export function AppNav() {
               href={l.href}
               onClick={() => setOpen(false)}
               style={{ transitionDelay: open ? `${50 + i * 40}ms` : "0ms" }}
-              className={`flex items-center gap-2.5 border-b border-line py-3 text-[16px] font-semibold transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+              className={`flex items-center gap-2.5 border-b border-line py-3 text-[16px] font-semibold transition-[opacity,transform,rotate,scale,translate] duration-300 ease-out motion-reduce:transition-none ${
                 open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
               } ${active(l.href) ? "text-primary" : ""}`}
             >

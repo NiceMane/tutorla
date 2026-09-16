@@ -6,9 +6,14 @@ import { LOGO_LETTERS, LOGO_MARK, LOGO_UNDERSCORE, LOGO_VIEWBOX } from "@/lib/lo
    Çeviri bağlamı olmadığından iki dilde birden yazıyoruz. */
 export default function RootNotFound() {
   return (
-    <html lang="tr">
-      <body style={{ margin: 0, background: "#F8F5EC", color: "#22271A", fontFamily: "system-ui, sans-serif" }}>
+    /* Kök 404 kendi <html>'ini basıyor; istemci tarafında next-themes ve font
+       sınıfları farklı olduğu için hidrasyon uyarısı çıkıyordu. */
+    <html lang="tr" suppressHydrationWarning>
+      <body suppressHydrationWarning style={{ margin: 0, background: "#F8F5EC", color: "#22271A", fontFamily: "system-ui, sans-serif" }}>
         <main style={{ minHeight: "100dvh", display: "grid", placeItems: "center", padding: 24, textAlign: "center" }}>
+          {/* Bu sayfanın CSS'i yüklenmiyor (kök 404, dil düzeninin dışında);
+              animasyon için <style> basmak React 19'da etiketi head'e taşıyıp
+              hidrasyon uyuşmazlığı çıkarıyordu. Sade bırakıldı. */}
           <div style={{ maxWidth: 460 }}>
             <svg viewBox={LOGO_VIEWBOX} width={200} height={57} aria-label="Tutorla">
               <rect x={LOGO_MARK.x} y={LOGO_MARK.y} width={LOGO_MARK.w} height={LOGO_MARK.h} rx={LOGO_MARK.rx} fill="#1F6E85" />

@@ -109,7 +109,7 @@ export function Modal({
         aria-modal="true"
         aria-label={title}
         tabIndex={-1}
-        className={`relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[var(--radius-card)] border border-line bg-paper shadow-[0_24px_60px_-24px_color-mix(in_oklab,var(--ink)_45%,transparent)] outline-none transition-[transform,opacity] duration-200 ease-out motion-reduce:transition-none sm:rounded-[var(--radius-card)] ${
+        className={`relative flex max-h-[92dvh] w-full flex-col overflow-hidden rounded-t-[var(--radius-card)] border border-line bg-paper shadow-[0_24px_60px_-24px_color-mix(in_oklab,var(--ink)_45%,transparent)] outline-none transition-[transform,opacity,rotate,scale,translate] duration-200 ease-out motion-reduce:transition-none sm:rounded-[var(--radius-card)] ${
           wide ? "sm:max-w-[720px]" : "sm:max-w-[460px]"
         } ${shown ? "translate-y-0 opacity-100 sm:scale-100" : "translate-y-4 opacity-0 sm:translate-y-0 sm:scale-[.97]"}`}
       >

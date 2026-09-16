@@ -52,14 +52,15 @@ export function GifPicker({ onPick, onClose }: { onPick: (url: string) => void; 
             value={q} onChange={(e) => setQ(e.target.value)} placeholder={t("gifSearch")}
             className="h-9 w-full rounded-[var(--radius-ui)] border border-line-2 bg-surface px-3 text-[14px] outline-none focus:border-primary"
           />
-          <div className="mt-2 grid max-h-[260px] grid-cols-3 gap-1.5 overflow-y-auto">
+          <div className="stagger mt-2 grid max-h-[260px] grid-cols-3 gap-1.5 overflow-y-auto">
             {loading && <span className="meta col-span-3 py-4 text-center text-[13px]">…</span>}
-            {items.map((g) => (
+            {items.map((g, n) => (
               /* eslint-disable-next-line @next/next/no-img-element */
               <img
                 key={g.id} src={g.preview} alt={g.title} loading="lazy"
                 onClick={() => { onPick(g.url); onClose?.(); }}
-                className="h-20 w-full cursor-pointer rounded-[var(--radius-ui)] object-cover transition-opacity hover:opacity-80"
+                style={{ "--i": Math.min(n, 8) } as React.CSSProperties}
+                className="h-20 w-full cursor-pointer rounded-[var(--radius-ui)] object-cover transition-[opacity,transform,rotate,scale,translate] duration-200 hover:scale-[1.04] hover:opacity-85"
               />
             ))}
           </div>

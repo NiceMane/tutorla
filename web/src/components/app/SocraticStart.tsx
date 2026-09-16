@@ -47,12 +47,12 @@ export function SocraticStart() {
       <h2 className="meta mt-8 text-[15px]">{t("pick")}</h2>
       {!ready ? (
         <div className="mt-3 grid gap-4 md:grid-cols-2">
-          {[0, 1].map((i) => <div key={i} className="card h-40 animate-pulse bg-surface-2/60" />)}
+          {[0, 1].map((i) => <div key={i} className="card shimmer h-40 bg-surface-2/60" />)}
         </div>
       ) : (
-        <div className="mt-3 grid gap-4 md:grid-cols-2">
-          {subjects.map((subject) => (
-            <section key={subject.id} className="card p-5">
+        <div className="stagger mt-3 grid gap-4 md:grid-cols-2">
+          {subjects.map((subject, si) => (
+            <section key={subject.id} style={{ "--i": si } as React.CSSProperties} className="card p-5">
               <h3 className="text-[1.05rem]">{subject.name}</h3>
               <ul className="mt-2 flex flex-col">
                 {curriculum.topics.filter((x) => x.subjectId === subject.id).map((topic) => (

@@ -12,7 +12,7 @@ export default function RouteError({ error, reset }: { error: Error & { digest?:
 
   return (
     <main className="grid min-h-dvh place-items-center bg-paper px-5 text-center">
-      <div className="max-w-[44ch]">
+      <div className="anim-fade-up max-w-[44ch]">
         <p className="eyebrow">{t("errorTitle")}</p>
         <h1 className="mt-3 text-[clamp(1.6rem,3.4vw,2.2rem)]">{t("errorTitle")}</h1>
         <p className="mt-3 text-ink-2">{t("errorBody")}</p>

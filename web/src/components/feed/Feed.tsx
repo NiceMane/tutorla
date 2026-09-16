@@ -207,7 +207,7 @@ export function Feed() {
                 <button
                   type="button" aria-label="×"
                   onClick={() => setMedia((x) => x.filter((_, j) => j !== i))}
-                  className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full border border-line bg-paper text-[13px] transition-transform duration-200 hover:rotate-90 hover:border-accent hover:text-accent"
+                  className="absolute -right-2 -top-2 grid size-6 place-items-center rounded-full border border-line bg-paper text-[13px] transition-[transform,rotate,scale,translate] duration-200 hover:rotate-90 hover:border-accent hover:text-accent"
                 >×</button>
               </div>
             ))}
@@ -260,7 +260,7 @@ export function Feed() {
           <button
             key={sc} type="button" role="tab" aria-selected={scope === sc}
             onClick={() => setScope(sc)}
-            className={`rounded-[var(--radius-ui)] px-3 py-1.5 text-[13.5px] font-semibold transition-[background-color,color,transform] duration-200 active:scale-95 ${
+            className={`rounded-[var(--radius-ui)] px-3 py-1.5 text-[13.5px] font-semibold transition-[background-color,color,transform,rotate,scale,translate] duration-200 active:scale-95 ${
               scope === sc ? "bg-primary text-on-primary" : "text-ink-2 hover:bg-surface"
             }`}
           >

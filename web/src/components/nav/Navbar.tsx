@@ -110,7 +110,7 @@ export function Navbar() {
               href={`#${id}`}
               onClick={go(id)}
               style={{ transitionDelay: open ? `${60 + i * 45}ms` : "0ms" }}
-              className={`border-b border-line py-3.5 text-[17px] font-semibold transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+              className={`border-b border-line py-3.5 text-[17px] font-semibold transition-[opacity,transform,rotate,scale,translate] duration-300 ease-out motion-reduce:transition-none ${
                 open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
               }`}
             >
@@ -119,7 +119,7 @@ export function Navbar() {
           ))}
           <div
             style={{ transitionDelay: open ? `${60 + SECTIONS.length * 45}ms` : "0ms" }}
-            className={`mt-3 flex flex-col gap-2 transition-[opacity,transform] duration-300 ease-out motion-reduce:transition-none ${
+            className={`mt-3 flex flex-col gap-2 transition-[opacity,transform,rotate,scale,translate] duration-300 ease-out motion-reduce:transition-none ${
               open ? "translate-y-0 opacity-100" : "translate-y-1.5 opacity-0"
             }`}
           >

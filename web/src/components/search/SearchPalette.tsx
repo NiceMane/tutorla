@@ -101,14 +101,15 @@ export function SearchPalette({ open, onClose }: { open: boolean; onClose: () =>
           ) : (
             sections.map(([label, hits]) =>
               hits.length === 0 ? null : (
-                <section key={label} className="mb-2">
+                <section key={label} className="stagger mb-2">
                   <p className="meta px-3 py-1 text-[11.5px] uppercase tracking-wide">{label}</p>
-                  {hits.map((hit) => {
+                  {hits.map((hit, n) => {
                     index += 1;
                     const i = index;
                     return (
                       <ResultRow
                         key={`${hit.kind}-${hit.id}`}
+                        index={n}
                         hit={hit}
                         selected={i === cursor}
                         onPick={() => void pick(hit)}

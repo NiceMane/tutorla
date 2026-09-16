@@ -136,7 +136,7 @@ export function AvatarEditor({
               dragging ? "border-primary bg-[color-mix(in_oklab,var(--primary)_8%,transparent)]" : "border-line-2"
             }`}
           >
-            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={`transition-transform duration-200 ${dragging ? "scale-110 text-primary" : "text-ink-3"}`}>
+            <svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className={`transition-[transform,rotate,scale,translate] duration-200 ${dragging ? "scale-110 text-primary" : "text-ink-3"}`}>
               <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><path d="M17 8l-5-5-5 5" /><path d="M12 3v12" />
             </svg>
             <p className="text-[14.5px] font-medium">{t("dropHere")}</p>

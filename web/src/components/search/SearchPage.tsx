@@ -72,10 +72,10 @@ export function SearchPage() {
           <div className="stagger flex flex-col gap-4">
             {sections.map(([label, hits], i) =>
               hits.length === 0 ? null : (
-                <section key={label} style={{ "--i": i } as React.CSSProperties} className="card p-2">
+                <section key={label} style={{ "--i": i } as React.CSSProperties} className="card stagger p-2">
                   <p className="meta px-3 py-1.5 text-[11.5px] uppercase tracking-wide">{label}</p>
-                  {hits.map((hit) => (
-                    <ResultRow key={`${hit.kind}-${hit.id}`} hit={hit} onPick={() => void pick(hit)} />
+                  {hits.map((hit, n) => (
+                    <ResultRow key={`${hit.kind}-${hit.id}`} index={n} hit={hit} onPick={() => void pick(hit)} />
                   ))}
                 </section>
               ),

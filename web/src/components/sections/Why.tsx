@@ -15,7 +15,7 @@ export function Why() {
       <div className="mt-12 grid gap-6 md:grid-cols-3">
         {cards.map((c, i) => (
           <Reveal key={c.title} delay={i * 0.1}>
-            <div className={`card ${rot[i]} h-full p-7 transition-transform duration-300 hover:rotate-0`}>
+            <div className={`card ${rot[i]} h-full p-7 transition-[transform,rotate,scale,translate] duration-300 hover:rotate-0`}>
               <h3 className="font-serif text-[1.55rem] font-light italic tracking-normal text-primary">{c.title}</h3>
               <p className="mt-3 text-[1rem] leading-[1.55] text-ink-2">{c.text}</p>
             </div>

@@ -36,7 +36,7 @@ export function EmojiPicker({ onPick, onClose }: { onPick: (e: string) => void; 
             key={e}
             type="button"
             onClick={() => { onPick(e); onClose?.(); }}
-            className="grid h-8 place-items-center rounded-[var(--radius-ui)] text-[18px] transition-transform hover:scale-110 hover:bg-surface"
+            className="grid h-8 place-items-center rounded-[var(--radius-ui)] text-[18px] transition-[transform,rotate,scale,translate] hover:scale-110 hover:bg-surface"
             aria-label={e}
           >
             {e}

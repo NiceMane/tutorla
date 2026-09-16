@@ -22,7 +22,7 @@ export function TiltCard({ children, className = "" }: { children: ReactNode; cl
       ref={ref}
       onPointerMove={onMove}
       onPointerLeave={reset}
-      className={`[transform:perspective(900px)_rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] transition-transform duration-200 ease-out will-change-transform motion-reduce:transform-none ${className}`}
+      className={`[transform:perspective(900px)_rotateX(var(--rx,0deg))_rotateY(var(--ry,0deg))] transition-[transform,rotate,scale,translate] duration-200 ease-out will-change-transform motion-reduce:transform-none ${className}`}
     >
       {children}
     </div>

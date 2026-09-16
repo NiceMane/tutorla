@@ -6,12 +6,13 @@ import { NavIcon } from "@/components/app/NavIcon";
 
 /* Tek bir sonuç satırı — palette ve tam sayfa aynı görünümü paylaşıyor. */
 export function ResultRow({
-  hit, selected, onPick, onHover,
+  hit, selected, onPick, onHover, index = 0,
 }: {
   hit: Hit;
   selected?: boolean;
   onPick: () => void;
   onHover?: () => void;
+  index?: number;
 }) {
   const t = useTranslations("app.search");
   const icon = () => {
@@ -27,8 +28,9 @@ export function ResultRow({
       onClick={onPick}
       onMouseMove={onHover}
       data-secili={selected ? "1" : undefined}
-      className={`flex w-full items-center gap-3 rounded-[var(--radius-ui)] px-3 py-2.5 text-left transition-colors ${
-        selected ? "bg-surface" : "hover:bg-surface"
+      style={{ "--i": Math.min(index, 8) } as React.CSSProperties}
+      className={`flex w-full items-center gap-3 rounded-[var(--radius-ui)] px-3 py-2.5 text-left transition-[background-color,padding] duration-200 hover:pl-4 ${
+        selected ? "bg-surface pl-4" : "hover:bg-surface"
       }`}
     >
       <span className="grid size-7 shrink-0 place-items-center">{icon()}</span>

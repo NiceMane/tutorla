@@ -214,6 +214,9 @@
   70%  { opacity: 0;   transform: scale(1.08); }
   100% { opacity: 0;   transform: scale(1.08); }
 }
+@keyframes iconSpin { from { rotate: -90deg; scale: .5; opacity: 0; } to { rotate: 0deg; scale: 1; opacity: 1; } }
+.anim-icon-spin { animation: iconSpin .34s cubic-bezier(.22,.61,.36,1) both; }
+
 @keyframes tourCardIn {
   from { opacity: 0; transform: translateY(var(--tour-dy, 10px)) scale(.96); }
   to   { opacity: 1; transform: none; }
@@ -293,7 +296,7 @@
 
 @media (prefers-reduced-motion: reduce) {
   .anim-fade-up, .anim-fade-in, .anim-slide-left, .anim-slide-right,
-  .anim-pop, .anim-shake, .anim-toast, .anim-flash, .stagger > * { animation: none; }
+  .anim-pop, .anim-shake, .anim-toast, .anim-flash, .anim-icon-spin, .stagger > * { animation: none; }
   .anim-indeterminate { animation: none; transform: none; }
   .bar-fill { animation: none; transition: none; }
   .shimmer { animation: none; background-image: none; }

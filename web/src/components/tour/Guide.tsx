@@ -45,7 +45,7 @@ export function Guide() {
         </ol>
       </nav>
 
-      <article className="mt-10 flex flex-col gap-10">
+      <article className="stagger mt-10 flex flex-col gap-10">
         {/* 1 */}
         <section id="ters" className="scroll-mt-24">
           <h2 className="text-[1.3rem]">{t("s.ters.t")}</h2>

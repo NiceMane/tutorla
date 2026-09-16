@@ -83,7 +83,7 @@ export function Onboarding() {
               aria-label={tp("upload")}
             >
               <Avatar profile={{ avatarUrl: photo, avatarEmoji: f.avatarEmoji, displayName: f.displayName }} size="lg"
-                className="transition-transform duration-200 group-hover:scale-[1.04]" />
+                className="transition-[transform,rotate,scale,translate] duration-200 group-hover:scale-[1.04]" />
               <span className="absolute inset-0 grid place-items-center rounded-[30%] bg-[color-mix(in_oklab,var(--ink)_55%,transparent)] opacity-0 transition-opacity duration-200 group-hover:opacity-100 group-focus-visible:opacity-100">
                 <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
                   <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" /><circle cx="12" cy="13" r="4" />
@@ -106,7 +106,7 @@ export function Onboarding() {
           <div className="flex flex-wrap gap-1.5">
             {AVATARS.map((a) => (
               <button key={a} type="button" onClick={() => set("avatarEmoji", a)} aria-pressed={f.avatarEmoji === a}
-                className={`grid size-11 place-items-center rounded-[30%] border text-[20px] transition-[transform,border-color,background-color] duration-200 hover:scale-105 active:scale-95 ${
+                className={`grid size-11 place-items-center rounded-[30%] border text-[20px] transition-[transform,border-color,background-color,rotate,scale,translate] duration-200 hover:scale-105 active:scale-95 ${
                   f.avatarEmoji === a ? "border-primary bg-[color-mix(in_oklab,var(--primary)_12%,transparent)]" : "border-line"
                 }`}>{a}</button>
             ))}
@@ -230,7 +230,7 @@ export function Onboarding() {
         {steps.map((_, i) => (
           <span key={i} className="h-1 flex-1 overflow-hidden rounded-full bg-surface-2">
             <i
-              className="block h-full origin-left rounded-full bg-primary transition-transform duration-500 ease-out motion-reduce:transition-none"
+              className="block h-full origin-left rounded-full bg-primary transition-[transform,rotate,scale,translate] duration-500 ease-out motion-reduce:transition-none"
               style={{ transform: `scaleX(${i <= step ? 1 : 0})` }}
             />
           </span>

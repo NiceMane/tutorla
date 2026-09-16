@@ -86,8 +86,12 @@ export function CommentThread({
   const roots = comments.filter((c) => !c.parentId);
   const repliesOf = (id: string) => comments.filter((c) => c.parentId === id);
 
-  const render = (c: Comment, depth: number) => (
-    <li key={c.id} className={depth > 0 ? "ml-7 border-l border-line pl-3" : ""}>
+  const render = (c: Comment, depth: number, index = 0) => (
+    <li
+      key={c.id}
+      style={{ "--i": Math.min(index, 6) } as React.CSSProperties}
+      className={depth > 0 ? "ml-7 border-l border-line pl-3" : ""}
+    >
       <div className="flex gap-2.5 py-2">
         <Avatar emoji={c.author?.avatarEmoji ?? "🦉"} />
         <div className="min-w-0 flex-1">
@@ -123,13 +127,13 @@ export function CommentThread({
           )}
         </div>
       </div>
-      {repliesOf(c.id).length > 0 && <ul>{repliesOf(c.id).map((r) => render(r, depth + 1))}</ul>}
+      {repliesOf(c.id).length > 0 && <ul className="stagger">{repliesOf(c.id).map((r, n) => render(r, depth + 1, n))}</ul>}
     </li>
   );
 
   return (
     <div className="border-t border-line pt-2">
-      <ul>{roots.map((c) => render(c, 0))}</ul>
+      <ul className="stagger">{roots.map((c, n) => render(c, 0, n))}</ul>
       <div className="pt-2">
         <CommentBox placeholder={t("commentPlaceholder")} onSend={(b, g) => onAdd(null, b, g)} />
       </div>

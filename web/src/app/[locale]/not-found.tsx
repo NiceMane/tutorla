@@ -6,7 +6,7 @@ export default async function NotFound() {
   const t = await getTranslations("common");
   return (
     <main className="grid min-h-dvh place-items-center bg-paper px-5 text-center">
-      <div className="max-w-[44ch]">
+      <div className="anim-fade-up max-w-[44ch]">
         <Wordmark className="mx-auto h-8 w-auto" />
         <h1 className="mt-6 text-[clamp(1.6rem,3.4vw,2.2rem)]">{t("notFoundTitle")}</h1>
         <p className="mt-3 text-ink-2">{t("notFoundBody")}</p>
